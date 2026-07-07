@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "@context7/mcp"
+      ],
+      "autoStart": true,
+      "workingDirectory": "/Users/aleksandrsobolev/Sites/myproject"
+    }
+  }
+}
