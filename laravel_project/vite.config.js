@@ -10,4 +10,15 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+
+    server: {
+        watch: {
+            ignored: [
+                '**/storage/**',
+                '**/public/**',
+                '**/public_html/**',
+                '**/node_modules/**'
+            ]
+        }
+    }
 });

@@ -8,9 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms;
 use Filament\Schemas\Schema;
 use App\Models\Blog;
 use Illuminate\Support\Str;
@@ -38,14 +36,12 @@ class BlogForm
                     ->label('Краткое описание')
                     ->rows(3)
                     ->columnSpanFull(),
-                // === HTML КОНТЕНТ ===
                 Textarea::make('content')
                     ->label('Контент (HTML)')
                     ->rows(8)
                     ->live(onBlur: true)
                     ->helperText('Вводите HTML-код. Используйте теги: <p>, <h2>, <h3>, <ul>, <li>, <strong>, <em>, <a>')
                     ->columnSpanFull(),
-
                 Placeholder::make('content_preview')
                     ->label('Предпросмотр контента')
                     ->content(function ($get) {
@@ -53,7 +49,6 @@ class BlogForm
                         if (!$content) {
                             return new HtmlString('<div class="text-gray-500 italic p-4 bg-gray-50 rounded-lg">Введите контент выше для предпросмотра</div>');
                         }
-
                         return new HtmlString(
                             '<div class="p-4 bg-white border rounded-lg shadow-sm" style="max-height: 300px; overflow-y: auto;">' .
                             '<div style="color: #4b5563; line-height: 1.6;">' .
@@ -76,12 +71,37 @@ class BlogForm
                     })
                     ->hidden(fn ($get) => empty($get('content')))
                     ->columnSpanFull(),
-                // Минимальный тестовый пример для отладки
+
+                // === ИЗОБРАЖЕНИЕ (финальная версия) ===
                 FileUpload::make('image')
+                    ->label('Изображение')
                     ->image()
                     ->disk('public')
                     ->directory('images')
-                    ->visibility('public'),
+                    ->visibility('public')
+                    ->multiple(false)
+                    ->maxFiles(1)
+                    ->enableOpen()
+                    ->preserveFilenames()
+                    ->afterStateHydrated(function ($component, $state) {
+                        if (is_array($state)) {
+                            $state = $state[array_key_first($state)] ?? null;
+                        }
+                        if (is_string($state) && filter_var($state, FILTER_VALIDATE_URL)) {
+                            $state = basename(parse_url($state, PHP_URL_PATH));
+                        }
+                        if (empty($state)) {
+                            $state = null;
+                        }
+                        $component->state($state);
+                    })
+                    ->dehydrateStateUsing(function ($state) {
+                        if (is_array($state)) {
+                            return $state[array_key_first($state)] ?? null;
+                        }
+                        return $state ?: null;
+                    }),
+
                 Select::make('category_id')
                     ->relationship('blogCategory', 'name', function ($query) {
                         $query->where('is_active', true);

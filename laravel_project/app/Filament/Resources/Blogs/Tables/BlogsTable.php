@@ -30,8 +30,23 @@ class BlogsTable
                 TextColumn::make('slug')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
+
+                // === ИЗОБРАЖЕНИЕ В ТАБЛИЦЕ (правильная настройка) ===
                 ImageColumn::make('image')
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->label('Изображение')
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->checkFileExistence(false)
+                    ->defaultImageUrl(function ($record) {
+                        $image = $record->image;
+
+                        // Если image — массив, берём первый элемент
+                        if (is_array($image)) {
+                            $image = $image[array_key_first($image)] ?? null;
+                        }
+
+                        return $image ? asset('storage/' . $image) : null;
+                    }),
+
                 TextColumn::make('blogCategory.name')
                     ->label('Категория')
                     ->searchable()
