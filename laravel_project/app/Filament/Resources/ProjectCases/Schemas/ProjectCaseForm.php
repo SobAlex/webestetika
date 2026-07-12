@@ -46,7 +46,7 @@ class ProjectCaseForm
                 FileUpload::make('image')
                     ->image()
                     ->disk('public')
-                    ->directory('storage/images')
+                    ->directory('images')
                     ->visibility('public'),
                 Textarea::make('description')
                     ->label('Описание проекта')
