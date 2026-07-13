@@ -85,16 +85,4 @@ Route::prefix('api')->name('api.')->middleware(['auth', 'web'])->group(function 
     Route::resource('industry-categories', IndustryCategoryController::class);
 });
 
-Route::get('/debug-session', function () {
-    session(['test' => 'ok']);
-    return [
-        'app_name' => config('app.name'),
-        'app_url' => config('app.url'),
-        'session_driver' => config('session.driver'),
-        'session_domain' => config('session.domain'),
-        'session_secure_cookie' => config('session.secure_cookie'),
-        'session_test' => session('test'),
-    ];
-});
-
 // Остальные админ роуты в филаменте
