@@ -45,7 +45,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {{-- Case image --}}
                 <div class="relative h-64 lg:h-80 overflow-hidden rounded-md">
-                    <img src="{{ $caseData['image_url'] }}" alt="{{ $caseData['title'] }}" class="w-full h-full object-cover">
+                    <img src="{{ $caseData['image_url'] }}" alt="{{ $caseData['title'] }}"
+                        class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div class="absolute bottom-4 left-4 text-white">
                         @if ($caseData['has_valid_category'])
@@ -87,8 +88,7 @@
             <h2 class="block-title text-center">Ключевые результаты</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach ($caseData['results'] as $result)
-                    <div
-                        class="flex items-start space-x-3 p-4 bg-white rounded-md shadow-sm">
+                    <div class="flex items-start space-x-3 p-4 bg-white rounded-md shadow-sm">
                         <i class="material-icons text-cyan-500 mt-1">check_circle</i>
                         <span class="text-gray-700">{{ $result }}</span>
                     </div>
@@ -153,6 +153,7 @@
                         onclick="openServiceOrderModal('{{ $serviceData['service_name'] }}')">
                         Заказать услугу
                     </button>
+
                     <button class="bg-white text-cyan-600 px-8 py-3 rounded-md font-semibold hover:bg-gray-100 transition"
                         onclick="window.dispatchEvent(new CustomEvent('open-callback'))">
                         Заказать звонок

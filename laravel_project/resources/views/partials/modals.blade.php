@@ -10,7 +10,8 @@
             aria-labelledby="callback_title">
             <div class="flex items-start justify-between mb-4">
                 <h3 id="callback_title" class="text-xl font-semibold">Заказать звонок</h3>
-                <button class="text-gray-500 hover:text-gray-700 rounded-lg" aria-label="Закрыть" @click="callbackOpen = false">
+                <button class="text-gray-500 hover:text-gray-700 rounded-lg" aria-label="Закрыть"
+                    @click="callbackOpen = false">
                     <span class="material-icons">close</span>
                 </button>
             </div>
@@ -28,6 +29,8 @@
                     <input type="tel" id="phone_callback" name="phone" required placeholder="+7 (999) 999-99-99"
                         class="w-full px-3 py-2 rounded-lg" aria-required="true" aria-label="Телефон" />
                 </div>
+
+                @include('partials._consent')
 
                 <div class="flex items-center justify-end gap-3 pt-2">
                     <button type="button" class="btn" @click="callbackOpen = false">Отмена</button>
@@ -70,7 +73,8 @@
                 @csrf
 
                 <!-- Скрытое поле с названием услуги -->
-                <input type="hidden" name="service_name" id="service_name_input" required value="{{ old('service_name') }}">
+                <input type="hidden" name="service_name" id="service_name_input" required
+                    value="{{ old('service_name') }}">
                 @error('service_name')
                     <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded">
                         <p class="text-sm text-red-600">{{ $message }}</p>
@@ -87,8 +91,7 @@
                     <label for="name_service" class="block mb-1 text-sm font-medium">Имя *</label>
                     <input type="text" id="name_service" name="name" required placeholder="Ваше имя"
                         class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-required="true" aria-label="Имя"
-                        value="{{ old('name') }}"
+                        aria-required="true" aria-label="Имя" value="{{ old('name') }}"
                         aria-invalid="@error('name') true @else false @enderror" />
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -99,8 +102,7 @@
                     <label for="email_service" class="block mb-1 text-sm font-medium">Email *</label>
                     <input type="email" id="email_service" name="email" required placeholder="your@email.com"
                         class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-required="true" aria-label="Email"
-                        value="{{ old('email') }}"
+                        aria-required="true" aria-label="Email" value="{{ old('email') }}"
                         aria-invalid="@error('email') true @else false @enderror" />
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -109,10 +111,10 @@
 
                 <div>
                     <label for="phone_service" class="block mb-1 text-sm font-medium">Телефон *</label>
-                    <input type="tel" id="phone_service" name="phone" required placeholder="+7 (999) 999-99-99"
+                    <input type="tel" id="phone_service" name="phone" required
+                        placeholder="+7 (999) 999-99-99"
                         class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-required="true" aria-label="Телефон"
-                        value="{{ old('phone') }}"
+                        aria-required="true" aria-label="Телефон" value="{{ old('phone') }}"
                         aria-invalid="@error('phone') true @else false @enderror" />
                     @error('phone')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -123,8 +125,7 @@
                     <label for="message_service" class="block mb-1 text-sm font-medium">Сообщение</label>
                     <textarea id="message_service" name="message" rows="3" placeholder="Опишите ваши требования или вопросы..."
                         class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-label="Сообщение"
-                        aria-invalid="@error('message') true @else false @enderror">{{ old('message') }}</textarea>
+                        aria-label="Сообщение" aria-invalid="@error('message') true @else false @enderror">{{ old('message') }}</textarea>
                     @error('message')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -135,8 +136,7 @@
                     <input type="file" id="attachment_service" name="attachment"
                         accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
                         class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-label="Прикрепить файл"
-                        aria-invalid="@error('attachment') true @else false @enderror" />
+                        aria-label="Прикрепить файл" aria-invalid="@error('attachment') true @else false @enderror" />
                     @error('attachment')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -145,6 +145,8 @@
                 </div>
             </form>
         </div>
+
+        @include('partials._consent')
 
         <!-- Кнопки - всегда видимые внизу -->
         <div class="flex items-center justify-end gap-3 pt-4 mt-4 border-t border-gray-200 bg-white sticky bottom-0">
@@ -155,27 +157,33 @@
 </div>
 
 <script>
-// Автоматически открыть модальное окно заказа услуги при ошибках валидации
-document.addEventListener('DOMContentLoaded', function() {
-    @if ($errors->has('service_name') || $errors->has('name') || $errors->has('email') || $errors->has('phone') || $errors->has('message') || $errors->has('attachment'))
-        // Есть ошибки валидации для формы заказа услуги - открыть модальное окно
-        document.getElementById('serviceOrderModal').style.display = 'flex';
+    // Автоматически открыть модальное окно заказа услуги при ошибках валидации
+    document.addEventListener('DOMContentLoaded', function() {
+        @if (
+            $errors->has('service_name') ||
+                $errors->has('name') ||
+                $errors->has('email') ||
+                $errors->has('phone') ||
+                $errors->has('message') ||
+                $errors->has('attachment'))
+            // Есть ошибки валидации для формы заказа услуги - открыть модальное окно
+            document.getElementById('serviceOrderModal').style.display = 'flex';
 
-        // Восстановить значение названия услуги из old input
-        @if (old('service_name'))
-            document.getElementById('service_display').value = '{{ old('service_name') }}';
-            document.getElementById('service_name_input').value = '{{ old('service_name') }}';
+            // Восстановить значение названия услуги из old input
+            @if (old('service_name'))
+                document.getElementById('service_display').value = '{{ old('service_name') }}';
+                document.getElementById('service_name_input').value = '{{ old('service_name') }}';
+            @endif
         @endif
-    @endif
 
-    @if (session('status') && request()->route()->getName() === 'service.order')
-        // Показать сообщение об успехе в модальном окне
-        document.getElementById('serviceOrderModal').style.display = 'flex';
+        @if (session('status') && request()->route()->getName() === 'service.order')
+            // Показать сообщение об успехе в модальном окне
+            document.getElementById('serviceOrderModal').style.display = 'flex';
 
-        // Автоматически закрыть через 3 секунды
-        setTimeout(function() {
-            closeServiceOrderModal();
-        }, 3000);
-    @endif
-});
+            // Автоматически закрыть через 3 секунды
+            setTimeout(function() {
+                closeServiceOrderModal();
+            }, 3000);
+        @endif
+    });
 </script>

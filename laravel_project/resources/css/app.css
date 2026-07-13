@@ -19,7 +19,7 @@
 
     --font-train:
     'Train One', system-ui;
-    
+
      --font-montserrat:
     'Montserrat', sans-serif;
 
@@ -341,4 +341,9 @@
     .service-content pre code {
         @apply bg-transparent px-0 py-0;
     }
+}
+
+button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }

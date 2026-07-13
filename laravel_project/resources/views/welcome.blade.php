@@ -5,8 +5,8 @@
 @section('content')
     {{-- hero --}}
     <section id="hero" class="section-bg relative">
-        @if($activeHeroes && $activeHeroes->count() > 0)
-            @if($activeHeroes->count() === 1)
+        @if ($activeHeroes && $activeHeroes->count() > 0)
+            @if ($activeHeroes->count() === 1)
                 {{-- Одиночный Hero блок --}}
                 @include('partials.hero-single', ['activeHeroes' => $activeHeroes->first()])
             @else
@@ -26,20 +26,23 @@
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
             @forelse($featuredServices as $service)
-                <article class="bg-white/80 backdrop-blur-sm rounded-md shadow-sm flex flex-col @if($loop->first) sm:col-span-2 md:row-span-1 @endif">
+                <article
+                    class="bg-white/80 backdrop-blur-sm rounded-md shadow-sm flex flex-col @if ($loop->first) sm:col-span-2 md:row-span-1 @endif">
                     <div class="flex flex-col flex-[2] p-4">
                         <div class="flex flex-col items-center mb-4">
-                            @if($service->icon)
-                                <i class="material-icons mb-3" style="font-size: 48px; color: {{ $service->color ?? '#06b6d4' }};">{{ $service->icon }}</i>
+                            @if ($service->icon)
+                                <i class="material-icons mb-3"
+                                    style="font-size: 48px; color: {{ $service->color ?? '#06b6d4' }};">{{ $service->icon }}</i>
                             @endif
-                            <h3 class="@if($loop->first) text-xl @else text-lg @endif font-semibold mb-2 text-center">
+                            <h3
+                                class="@if ($loop->first) text-xl @else text-lg @endif font-semibold mb-2 text-center">
                                 <a href="{{ route('services.show', $service->slug) }}" class="hover:text-cyan-500">
                                     {{ $service->title }}
                                 </a>
                             </h3>
                             <p class="text-gray-600 mb-4 text-center">{{ $service->description }}</p>
 
-                            @if($service->price_from)
+                            @if ($service->price_from)
                                 <div class="text-lg text-gray-500 mb-2">{{ $service->formatted_price }}</div>
                             @endif
                         </div>
@@ -57,9 +60,10 @@
             @endforelse
         </div>
 
-        @if($featuredServices->count() > 0)
+        @if ($featuredServices->count() > 0)
             <div class="text-center mt-8">
-                <a href="{{ route('services.index') }}" class="text-lg font-medium text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                <a href="{{ route('services.index') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-cyan-600 transition-colors duration-200">
                     Все услуги →
                 </a>
             </div>
@@ -70,20 +74,18 @@
     {{-- Why we --}}
     <section id="why" class="section-bg">
         <h2 class="page-title text-center">Почему мы</h2>
-        @if($whyUsBlocks && $whyUsBlocks->count() > 0)
+        @if ($whyUsBlocks && $whyUsBlocks->count() > 0)
             <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                @foreach($whyUsBlocks as $block)
+                @foreach ($whyUsBlocks as $block)
                     <li class="bg-white/80 backdrop-blur-sm rounded-md shadow-sm p-4 flex justify-center items-start">
                         <div class="flex flex-col items-center">
-                            @if($block->icon)
-                                <i class="material-icons md-48 mb-3"
-                                   aria-label="{{ $block->title }}"
-                                   role="img"
-                                   style="font-size: 48px; color: {{ $block->color ?: '#06b6d4' }};">{{ $block->icon }}</i>
+                            @if ($block->icon)
+                                <i class="material-icons md-48 mb-3" aria-label="{{ $block->title }}" role="img"
+                                    style="font-size: 48px; color: {{ $block->color ?: '#06b6d4' }};">{{ $block->icon }}</i>
                             @endif
                             <div class="text-center">
                                 <h3 class="text-lg font-semibold">{{ $block->title }}</h3>
-                                @if($block->description)
+                                @if ($block->description)
                                     <p class="text-base text-gray-600">{{ $block->description }}</p>
                                 @endif
                             </div>
@@ -150,8 +152,7 @@
         @if (!empty($transformlatestCases))
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($transformlatestCases as $case)
-                    <article
-                        class="bg-white/80 backdrop-blur-sm overflow-hidden rounded-lg shadow-sm flex flex-col h-full">
+                    <article class="bg-white/80 backdrop-blur-sm overflow-hidden rounded-lg shadow-sm flex flex-col h-full">
                         {{-- Case image --}}
                         <div class="relative h-48 overflow-hidden">
                             <img src="{{ $case['image_url'] }}" alt="{{ $case['title'] }}"
@@ -174,7 +175,9 @@
                         {{-- Case content --}}
                         <div class="p-6 flex-1 flex flex-col">
                             <a href="{{ route('cases.show', $case['id']) }}" class="group">
-                                <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-cyan-600 transition-colors">{{ $case['title'] }}</h3>
+                                <h3
+                                    class="text-lg font-bold text-gray-800 mb-2 group-hover:text-cyan-600 transition-colors">
+                                    {{ $case['title'] }}</h3>
                             </a>
                             <p class="text-sm text-gray-500 mb-3">{{ $case['client'] }} • {{ $case['period'] }}</p>
                             <p class="text-gray-600 text-sm mb-4 line-clamp-2">
@@ -199,7 +202,8 @@
 
             {{-- View all cases link --}}
             <div class="text-center mt-8">
-                <a href="{{ route('cases.index') }}" class="text-lg font-medium text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                <a href="{{ route('cases.index') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-cyan-600 transition-colors duration-200">
                     Все кейсы →
                 </a>
             </div>
@@ -228,7 +232,8 @@
                         {{-- Article image --}}
                         @if ($article->image)
                             <div class="relative h-48 overflow-hidden">
-                                <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $article->image_url }}" alt="{{ $article->title }}"
+                                    class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                             </div>
                         @else
@@ -261,7 +266,8 @@
 
                             {{-- Title --}}
                             <a href="{{ $article->url }}" class="group">
-                                <h3 class="text-lg font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+                                <h3
+                                    class="text-lg font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-cyan-600 transition-colors">
                                     {{ $article->title }}
                                 </h3>
                             </a>
@@ -283,7 +289,8 @@
 
             {{-- View all articles link --}}
             <div class="text-center mt-8">
-                <a href="{{ route('blog.index') }}" class="text-lg font-medium text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                <a href="{{ route('blog.index') }}"
+                    class="text-lg font-medium text-gray-700 hover:text-cyan-600 transition-colors duration-200">
                     Все статьи →
                 </a>
             </div>
@@ -401,7 +408,8 @@
 
                     <div>
                         <h3 class="font-medium text-gray-700">Телефон:</h3>
-                        <a href="tel:{{ str_replace(' ', '', $contactInfo['phone']) }}" class="text-cyan-500">{{ $contactInfo['phone'] }}</a>
+                        <a href="tel:{{ str_replace(' ', '', $contactInfo['phone']) }}"
+                            class="text-cyan-500">{{ $contactInfo['phone'] }}</a>
                     </div>
                 </div>
 
@@ -416,7 +424,8 @@
 
                     <div>
                         <h3 class="font-medium text-gray-700">Email:</h3>
-                        <a href="mailto:{{ $contactInfo['email'] }}" class="text-cyan-500">{{ $contactInfo['email'] }}</a>
+                        <a href="mailto:{{ $contactInfo['email'] }}"
+                            class="text-cyan-500">{{ $contactInfo['email'] }}</a>
                     </div>
                 </div>
             </div>
@@ -433,8 +442,7 @@
                     <label for="name_contact">Имя</label>
 
                     <input type="text" name="name" id="name_contact" required placeholder="Ваше имя"
-                        aria-required="true" aria-label="Имя"
-                        class="mt-1 block w-full"
+                        aria-required="true" aria-label="Имя" class="mt-1 block w-full"
                         aria-invalid="@if (isset($errors) && $errors->has('name')) true @else false @endif"
                         aria-describedby="name_contact_error">
                     @if (isset($errors) && $errors->has('name'))
@@ -446,8 +454,7 @@
                     <label for="email_contact">Email</label>
 
                     <input type="email" name="email" id="email_contact" required placeholder="your@email.com"
-                        aria-required="true" aria-label="Email"
-                        class="mt-1 block w-full"
+                        aria-required="true" aria-label="Email" class="mt-1 block w-full"
                         aria-invalid="@if (isset($errors) && $errors->has('email')) true @else false @endif"
                         aria-describedby="email_contact_error">
                     @if (isset($errors) && $errors->has('email'))
@@ -459,8 +466,7 @@
                     <label for="phone_contact">Телефон *</label>
 
                     <input type="tel" name="phone" id="phone_contact" required aria-label="Телефон"
-                        placeholder="+7 (999) 999-99-99"
-                        class="mt-1 block w-full"
+                        placeholder="+7 (999) 999-99-99" class="mt-1 block w-full"
                         aria-invalid="@if (isset($errors) && $errors->has('phone')) true @else false @endif"
                         aria-describedby="phone_contact_error">
                     @if (isset($errors) && $errors->has('phone'))
@@ -472,8 +478,7 @@
                     <label for="message_contact">Сообщение</label>
 
                     <textarea name="message" id="message_contact" rows="5" required placeholder="Расскажите о вашем проекте..."
-                        aria-required="true" aria-label="Сообщение"
-                        class="mt-1 block w-full"
+                        aria-required="true" aria-label="Сообщение" class="mt-1 block w-full"
                         aria-invalid="@if (isset($errors) && $errors->has('message')) true @else false @endif"
                         aria-describedby="message_contact_error">
                     </textarea>
@@ -482,6 +487,8 @@
                         </p>
                     @endif
                 </div>
+
+                @include('partials._consent')
 
                 <div>
                     <button type="submit" class="btn" aria-label="Отправить сообщение">Отправить</button>
