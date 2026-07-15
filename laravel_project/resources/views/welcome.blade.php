@@ -15,7 +15,7 @@
             @endif
         @else
             {{-- Fallback статичный контент --}}
-            @include('partials.hero-fallback')
+            {{-- @include('partials.hero-fallback') --}}
         @endif
     </section>
     {{-- End hero --}}
