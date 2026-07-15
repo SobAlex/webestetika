@@ -85,4 +85,8 @@ Route::prefix('api')->name('api.')->middleware(['auth', 'web'])->group(function 
     Route::resource('industry-categories', IndustryCategoryController::class);
 });
 
+Route::view('/soglasie', 'pages.soglasie')->name('soglasie');
+Route::view('/policy', 'pages.policy')->name('policy');
+Route::view('/terms', 'pages.terms')->name('terms');
+
 // Остальные админ роуты в филаменте

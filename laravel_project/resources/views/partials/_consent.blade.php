@@ -5,9 +5,9 @@
             style="margin-top: 2px; flex-shrink: 0; width: 18px; height: 18px;" required>
         <span style="font-size: 14px; line-height: 1.4;">
             Я даю согласие на обработку моих персональных данных в соответствии с
-            <a href="/storage/soglasie.html" target="_blank" style="text-decoration: underline; color: #007bff;">
+            <a href="{{ route('soglasie') }}" target="_blank" style="text-decoration: underline; color: #007bff;">
                 Согласием на обработку персональных данных
-            </a>.
+            </a>
         </span>
     </label>
 </div>

@@ -1,6 +1,12 @@
-<!-- Модальное окно: Заказать звонок -->
-<div x-data="{ callbackOpen: false }" @open-callback.window="callbackOpen = true" @keydown.escape.window="callbackOpen = false">
-    <div x-show="callbackOpen" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center"
+<!-- ============================================ -->
+<!-- Модальное окно: Заказать звонок (Alpine.js) -->
+<!-- ============================================ -->
+<div x-data="{ callbackOpen: false }" @open-callback.window="callbackOpen = true" @keydown.escape.window="callbackOpen = false"
+    style="display: contents;">
+    <div x-show="callbackOpen" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95" class="fixed inset-0 z-50 flex items-center justify-center"
         style="display: none;">
         <!-- Фон -->
         <div class="absolute inset-0 bg-black/50" aria-hidden="true" @click="callbackOpen = false"></div>
@@ -21,13 +27,13 @@
                 <div>
                     <label for="name_callback" class="block mb-1">Имя</label>
                     <input type="text" id="name_callback" name="name" required placeholder="Ваше имя"
-                        class="w-full px-3 py-2 rounded-lg" aria-required="true" aria-label="Имя" />
+                        class="w-full px-3 py-2 rounded-lg" />
                 </div>
 
                 <div>
                     <label for="phone_callback" class="block mb-1">Телефон</label>
                     <input type="tel" id="phone_callback" name="phone" required placeholder="+7 (999) 999-99-99"
-                        class="w-full px-3 py-2 rounded-lg" aria-required="true" aria-label="Телефон" />
+                        class="w-full px-3 py-2 rounded-lg" />
                 </div>
 
                 @include('partials._consent')
@@ -41,7 +47,9 @@
     </div>
 </div>
 
-<!-- Модальное окно: Заказ услуги -->
+<!-- ============================================ -->
+<!-- Модальное окно: Заказ услуги (обычный JS)    -->
+<!-- ============================================ -->
 <div id="serviceOrderModal" class="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto"
     style="display: none;">
     <!-- Фон -->
@@ -50,7 +58,7 @@
     <!-- Диалог -->
     <div class="relative bg-white w-full max-w-lg mx-4 my-4 sm:my-8 shadow-sm p-4 sm:p-6" role="dialog"
         aria-modal="true" aria-labelledby="service_order_title">
-        <!-- Заголовок с кнопкой закрытия - всегда видимый -->
+        <!-- Заголовок -->
         <div class="flex items-start justify-between mb-4 sticky top-0 bg-white pb-2 border-b border-gray-200">
             <h3 id="service_order_title" class="text-lg sm:text-xl font-semibold pr-2">Заказ услуги</h3>
             <button class="text-gray-500 hover:text-gray-700 flex-shrink-0 p-1 rounded-lg" aria-label="Закрыть"
@@ -59,28 +67,21 @@
             </button>
         </div>
 
-        <!-- Прокручиваемая область формы -->
-        <div class="max-h-[calc(100vh-200px)] overflow-y-auto">
-            <!-- Сообщение об успехе -->
-            @if (session('status'))
-                <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded">
-                    <p class="text-sm text-green-600">{{ session('status') }}</p>
+        <!-- Форма -->
+        <form id="serviceOrderForm" action="{{ route('service.order') }}" method="POST" class="space-y-4"
+            enctype="multipart/form-data">
+            @csrf
+
+            <input type="hidden" name="service_name" id="service_name_input" required
+                value="{{ old('service_name') }}">
+            @error('service_name')
+                <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded">
+                    <p class="text-sm text-red-600">{{ $message }}</p>
                 </div>
-            @endif
+            @enderror
 
-            <form id="serviceOrderForm" action="{{ route('service.order') }}" method="POST" class="space-y-4"
-                enctype="multipart/form-data">
-                @csrf
-
-                <!-- Скрытое поле с названием услуги -->
-                <input type="hidden" name="service_name" id="service_name_input" required
-                    value="{{ old('service_name') }}">
-                @error('service_name')
-                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded">
-                        <p class="text-sm text-red-600">{{ $message }}</p>
-                    </div>
-                @enderror
-
+            <!-- Прокручиваемая область с полями ввода -->
+            <div class="max-h-[calc(100vh-260px)] overflow-y-auto pr-1">
                 <div>
                     <label for="service_display" class="block mb-1 text-sm font-medium">Услуга</label>
                     <input type="text" id="service_display" readonly
@@ -143,47 +144,17 @@
                     <p class="text-xs text-gray-500 mt-1">Поддерживаются: PDF, DOC, DOCX, TXT, JPG, JPEG, PNG, GIF (до
                         10 МБ)</p>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        @include('partials._consent')
+            <!-- Блок согласия – вне прокручиваемой области, всегда виден -->
+            @include('partials._consent')
 
-        <!-- Кнопки - всегда видимые внизу -->
-        <div class="flex items-center justify-end gap-3 pt-4 mt-4 border-t border-gray-200 bg-white sticky bottom-0">
-            <button type="button" class="btn" onclick="closeServiceOrderModal()">Отмена</button>
-            <button type="submit" form="serviceOrderForm" class="btn">Заказать услугу</button>
-        </div>
+            <!-- Кнопки - всегда видимые внизу -->
+            <div
+                class="flex items-center justify-end gap-3 pt-4 mt-4 border-t border-gray-200 sticky bottom-0 bg-white">
+                <button type="button" class="btn" onclick="closeServiceOrderModal()">Отмена</button>
+                <button type="submit" form="serviceOrderForm" class="btn">Заказать услугу</button>
+            </div>
+        </form>
     </div>
 </div>
-
-<script>
-    // Автоматически открыть модальное окно заказа услуги при ошибках валидации
-    document.addEventListener('DOMContentLoaded', function() {
-        @if (
-            $errors->has('service_name') ||
-                $errors->has('name') ||
-                $errors->has('email') ||
-                $errors->has('phone') ||
-                $errors->has('message') ||
-                $errors->has('attachment'))
-            // Есть ошибки валидации для формы заказа услуги - открыть модальное окно
-            document.getElementById('serviceOrderModal').style.display = 'flex';
-
-            // Восстановить значение названия услуги из old input
-            @if (old('service_name'))
-                document.getElementById('service_display').value = '{{ old('service_name') }}';
-                document.getElementById('service_name_input').value = '{{ old('service_name') }}';
-            @endif
-        @endif
-
-        @if (session('status') && request()->route()->getName() === 'service.order')
-            // Показать сообщение об успехе в модальном окне
-            document.getElementById('serviceOrderModal').style.display = 'flex';
-
-            // Автоматически закрыть через 3 секунды
-            setTimeout(function() {
-                closeServiceOrderModal();
-            }, 3000);
-        @endif
-    });
-</script>

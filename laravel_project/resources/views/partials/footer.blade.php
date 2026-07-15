@@ -5,7 +5,9 @@
         <div>
             <div>
                 <a href="{{ route('home') }}"
-                    class="font-train text-[34px] text-white hover:text-cyan-400 transition">SobAlex</a>
+                    class="font-inter font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">Web<span
+                        class="font-cormorant italic font-light tracking-wide text-5xl">Estetika</span>
+                </a>
                 <p class="mt-2 text-sm text-gray-400">Оптимизация сайтов и SEO продвижение.</p>
             </div>
 
@@ -101,11 +103,11 @@
     </div>
 
     <div class="px-6 py-4 border-t border-gray-700 text-sm flex flex-col sm:flex-row items-center justify-between">
-        <p class="mb-2 sm:mb-0">© {{ date('Y') }} SobAlex. Все права защищены.</p>
+        <p class="mb-2 sm:mb-0">© {{ date('Y') }} WebEstetika. Все права защищены.</p>
         <div class="flex items-center space-x-4">
-            <a href="#" class="hover:text-cyan-400 transition">Политика конфиденциальности</a>
+            <a href="{{ route('policy') }}">Политика конфиденциальности</a>
             <span class="text-gray-600">|</span>
-            <a href="#" class="hover:text-cyan-400 transition">Пользовательское соглашение</a>
+            <a href="{{ route('terms') }}" class="hover:underline">Пользовательское соглашение</a>
         </div>
     </div>
 </footer>
