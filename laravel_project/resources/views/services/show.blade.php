@@ -10,7 +10,7 @@
         @include('partials.breadcrumbs', [
             'breadcrumbs' => [
                 ['title' => 'Услуги', 'url' => route('services.index')],
-                ['title' => $service->title, 'url' => null]
+                ['title' => $service->title, 'url' => null],
             ],
         ])
     </div>
@@ -21,15 +21,15 @@
             <!-- Левая часть -->
             <div class="flex-1">
                 <div class="flex items-center mb-6">
-                    @if($service->icon)
+                    @if ($service->icon)
                         <div class="w-16 h-16 rounded-md flex items-center justify-center mr-6"
-                             style="background: linear-gradient(135deg, {{ $service->color }}20, {{ $service->color }}10); border: 2px solid {{ $service->color }}40;">
+                            style="background: linear-gradient(135deg, {{ $service->color }}20, {{ $service->color }}10); border: 2px solid {{ $service->color }}40;">
                             <i class="material-icons text-4xl" style="color: {{ $service->color }}">{{ $service->icon }}</i>
                         </div>
                     @endif
                     <div>
                         <h1 class="page-title">{{ $service->title }}</h1>
-                        @if($service->is_featured)
+                        @if ($service->is_featured)
                             <span class="inline-block mt-2 px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-md">
                                 Рекомендуемая услуга
                             </span>
@@ -42,24 +42,29 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div class="p-4 rounded-md" style="background-color: {{ $service->color }}10; border: 1px solid {{ $service->color }}30;">
+                    <div class="p-4 rounded-md"
+                        style="background-color: {{ $service->color }}10; border: 1px solid {{ $service->color }}30;">
                         <div class="text-sm text-gray-600">Стоимость</div>
                         <div class="text-2xl" style="color: {{ $service->color }}">{{ $service->formatted_price }}</div>
                     </div>
-                    @if($service->price_type)
-                        <div class="p-4 rounded-md" style="background-color: {{ $service->color }}10; border: 1px solid {{ $service->color }}30;">
+                    @if ($service->price_type)
+                        <div class="p-4 rounded-md"
+                            style="background-color: {{ $service->color }}10; border: 1px solid {{ $service->color }}30;">
                             <div class="text-sm text-gray-600">Тип оплаты</div>
                             <div class="text-2xl" style="color: {{ $service->color }}">
                                 @switch($service->price_type)
                                     @case('hour')
                                         Почасовая
-                                        @break
+                                    @break
+
                                     @case('month')
                                         Ежемесячная
-                                        @break
+                                    @break
+
                                     @case('project')
                                         За проект
-                                        @break
+                                    @break
+
                                     @default
                                         {{ $service->price_type }}
                                 @endswitch
@@ -79,12 +84,11 @@
             </div>
 
             <!-- Правая часть (изображение) -->
-            @if($service->image)
+            @if ($service->image)
                 <div class="flex-1 lg:max-w-md">
                     <div class="aspect-square bg-gray-100 rounded-md overflow-hidden">
-                        <img src="{{ asset('storage/' . $service->image) }}"
-                             alt="{{ $service->title }}"
-                             class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}"
+                            class="w-full h-full object-cover">
                     </div>
                 </div>
             @endif
@@ -92,24 +96,42 @@
     </section>
 
     {{-- Content section --}}
-    @if($service->content)
+    @if ($service->content)
         <section class="section-bg">
             <div class="service-content max-w-none" style="color: #4b5563; line-height: 1.6;">
-                {!! html_entity_decode($service->content, ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}
+                @php
+                    $content = $service->content;
+
+                    // 1. Декодируем все HTML-сущности во всём контенте
+                    $content = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                    // 2. Обрабатываем блоки <pre><code> – экранируем их содержимое
+                    $content = preg_replace_callback(
+                        '/<pre><code>(.*?)<\/code><\/pre>/s',
+                        function ($matches) {
+                            // Экранируем внутреннее содержимое, чтобы оно отображалось как текст
+                            $inner = htmlspecialchars($matches[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                            return '<pre><code>' . $inner . '</code></pre>';
+                        },
+                        $content,
+                    );
+                @endphp
+                {!! $content !!}
             </div>
         </section>
     @endif
 
     {{-- Features section --}}
-    @if($service->features && is_array($service->features) && count($service->features) > 0)
+    @if ($service->features && is_array($service->features) && count($service->features) > 0)
         <section class="section-bg">
             <h2 class="block-title text-center">Что входит в услугу</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($service->features as $feature)
-                    @if(is_string($feature))
+                @foreach ($service->features as $feature)
+                    @if (is_string($feature))
                         <div class="flex items-start p-4 bg-white rounded-md shadow-sm">
                             <div class="flex-shrink-0 mr-4">
-                                <div class="w-8 h-8 rounded-md flex items-center justify-center" style="background-color: {{ $service->color }}20;">
+                                <div class="w-8 h-8 rounded-md flex items-center justify-center"
+                                    style="background-color: {{ $service->color }}20;">
                                     <i class="material-icons text-sm" style="color: {{ $service->color }}">check</i>
                                 </div>
                             </div>
@@ -122,25 +144,25 @@
     @endif
 
     {{-- Related Services --}}
-    @if($relatedServices->count() > 0)
+    @if ($relatedServices->count() > 0)
         <section class="section-bg">
             <h2 class="block-title text-center">Другие услуги</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($relatedServices as $relatedService)
+                @foreach ($relatedServices as $relatedService)
                     <article class="rounded-md shadow-sm overflow-hidden">
-                        @if($relatedService->image)
+                        @if ($relatedService->image)
                             <div class="relative h-48 overflow-hidden">
                                 <img src="{{ asset('storage/' . $relatedService->image) }}"
-                                     alt="{{ $relatedService->title }}"
-                                     class="w-full h-full object-cover object-center">
+                                    alt="{{ $relatedService->title }}" class="w-full h-full object-cover object-center">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                             </div>
                         @else
                             <div class="h-48 bg-gray-100 flex items-center justify-center">
-                                @if($relatedService->icon)
+                                @if ($relatedService->icon)
                                     <div class="w-16 h-16 rounded-md flex items-center justify-center"
-                                         style="background-color: {{ $relatedService->color }}20; border: 2px solid {{ $relatedService->color }}40;">
-                                        <i class="material-icons text-4xl" style="color: {{ $relatedService->color }}">{{ $relatedService->icon }}</i>
+                                        style="background-color: {{ $relatedService->color }}20; border: 2px solid {{ $relatedService->color }}40;">
+                                        <i class="material-icons text-4xl"
+                                            style="color: {{ $relatedService->color }}">{{ $relatedService->icon }}</i>
                                     </div>
                                 @else
                                     <i class="material-icons text-6xl text-gray-300">business</i>
@@ -158,7 +180,8 @@
                                 <span class="text-sm font-semibold" style="color: {{ $relatedService->color }}">
                                     {{ $relatedService->formatted_price }}
                                 </span>
-                                <button class="btn text-xs px-3 py-1" onclick="openServiceOrderModal('{{ $relatedService->title }}')">
+                                <button class="btn text-xs px-3 py-1"
+                                    onclick="openServiceOrderModal('{{ $relatedService->title }}')">
                                     Заказать
                                 </button>
                             </div>
@@ -170,22 +193,21 @@
     @endif
 
     {{-- Related Articles --}}
-    @if($relatedArticles->count() > 0)
+    @if ($relatedArticles->count() > 0)
         <section class="section-bg">
             <h2 class="block-title text-center">Полезные статьи</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($relatedArticles as $article)
+                @foreach ($relatedArticles as $article)
                     <article class="rounded-md shadow-sm overflow-hidden">
-                        @if($article->image)
+                        @if ($article->image)
                             <div class="relative h-48 overflow-hidden">
-                                <img src="{{ asset('storage/' . $article->image) }}"
-                                     alt="{{ $article->title }}"
-                                     class="w-full h-full object-cover object-center">
+                                <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
+                                    class="w-full h-full object-cover object-center">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                                @if($article->category)
+                                @if ($article->category)
                                     <div class="absolute top-3 left-3">
                                         <a href="{{ route('blog.category', $article->category->slug ?? 'uncategorized') }}"
-                                           class="inline-block px-2 py-1 bg-white/90 text-gray-800 text-xs rounded-md font-medium hover:bg-white transition-colors">
+                                            class="inline-block px-2 py-1 bg-white/90 text-gray-800 text-xs rounded-md font-medium hover:bg-white transition-colors">
                                             {{ $article->category->name }}
                                         </a>
                                     </div>
@@ -204,7 +226,8 @@
                                     {{ $article->title }}
                                 </a>
                             </h3>
-                            <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ Str::limit($article->excerpt, 120) }}</p>
+                            <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ Str::limit($article->excerpt, 120) }}
+                            </p>
                             <div class="flex items-center justify-between text-sm">
                                 <span class="text-gray-500">{{ $article->published_at->format('d.m.Y') }}</span>
                                 <a href="{{ $article->url }}" class="text-cyan-500 font-medium hover:underline">
@@ -219,20 +242,21 @@
     @endif
 
     {{-- Related Cases --}}
-    @if($relatedCases->count() > 0)
+    @if ($relatedCases->count() > 0)
         <section class="section-bg">
             <h2 class="block-title text-center">Наши кейсы</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($relatedCases as $case)
+                @foreach ($relatedCases as $case)
                     <article class="rounded-md shadow-sm">
-                        @if($case->image)
+                        @if ($case->image)
                             <div class="relative h-48 overflow-hidden rounded-t-md">
-                                <img src="{{ asset('storage/' . $case->image) }}" alt="{{ $case->title }}" class="w-full h-full object-cover object-center">
+                                <img src="{{ asset('storage/' . $case->image) }}" alt="{{ $case->title }}"
+                                    class="w-full h-full object-cover object-center">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                                @if($case->industryCategory)
+                                @if ($case->industryCategory)
                                     <div class="absolute top-3 left-3">
                                         <a href="{{ route('cases.category', $case->industryCategory->slug ?? 'uncategorized') }}"
-                                           class="inline-block px-2 py-1 bg-white/90 text-gray-800 text-xs rounded-md font-medium hover:bg-white transition-colors">
+                                            class="inline-block px-2 py-1 bg-white/90 text-gray-800 text-xs rounded-md font-medium hover:bg-white transition-colors">
                                             {{ $case->industryCategory->name }}
                                         </a>
                                     </div>
@@ -241,23 +265,25 @@
                         @endif
                         <div class="p-6">
                             <div class="flex items-start mb-4">
-                                <div class="w-12 h-12 bg-cyan-500 rounded-md flex items-center justify-center mr-4 flex-shrink-0">
+                                <div
+                                    class="w-12 h-12 bg-cyan-500 rounded-md flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="material-icons text-white text-xl">trending_up</i>
                                 </div>
                                 <div class="flex-1">
                                     <a href="{{ $case->url }}" class="group">
-                                        <h3 class="text-lg font-semibold leading-tight mb-2 group-hover:text-cyan-500 transition-colors">
+                                        <h3
+                                            class="text-lg font-semibold leading-tight mb-2 group-hover:text-cyan-500 transition-colors">
                                             {{ $case->title }}
                                         </h3>
                                     </a>
-                                    @if($case->client)
+                                    @if ($case->client)
                                         <p class="text-sm text-gray-500 mb-2">Клиент: {{ $case->client }}</p>
                                     @endif
                                 </div>
                             </div>
                             <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ $case->excerpt }}</p>
                             <div class="flex items-center text-sm">
-                                @if($case->period)
+                                @if ($case->period)
                                     <span class="text-gray-500">{{ $case->period }}</span>
                                 @endif
                             </div>
@@ -269,16 +295,18 @@
     @endif
 
     {{-- FAQ Section --}}
-    @if($servicesFaqs->count() > 0)
+    @if ($servicesFaqs->count() > 0)
         <section class="section-bg">
             <h2 class="block-title text-center">Часто задаваемые вопросы</h2>
             <div class="max-w-3xl mx-auto">
-                @foreach($servicesFaqs as $faq)
+                @foreach ($servicesFaqs as $faq)
                     <div class="mb-4">
                         <details class="group">
-                            <summary class="flex items-center justify-between w-full p-4 bg-white rounded-md shadow-sm cursor-pointer hover:bg-gray-50">
+                            <summary
+                                class="flex items-center justify-between w-full p-4 bg-white rounded-md shadow-sm cursor-pointer hover:bg-gray-50">
                                 <span class="font-medium text-gray-800">{{ $faq->question }}</span>
-                                <i class="material-icons text-gray-400 group-open:rotate-180 transition-transform">expand_more</i>
+                                <i
+                                    class="material-icons text-gray-400 group-open:rotate-180 transition-transform">expand_more</i>
                             </summary>
                             <div class="p-4 bg-gray-50 rounded-b-md shadow-sm">
                                 <p class="text-gray-600">{{ $faq->answer }}</p>

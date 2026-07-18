@@ -2,7 +2,7 @@
     <!-- Логотип слева -->
     <div>
         <a href="{{ route('home') }}"
-            class="font-inter font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">Web<span class="font-cormorant italic font-light tracking-wide text-5xl">Estetika</span>
+            class="font-inter font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">SobAlex
         </a>
 
         <p class="text-md">Оптимизация сайтов</p>
@@ -22,13 +22,18 @@
                         <div class="text-sm font-semibold text-gray-600 mb-3">Популярные услуги:</div>
                         <div class="space-y-2">
                             @php
-                                $headerServices = \App\Models\Service::published()->showOnHomepage()->ordered()->take(5)->get();
+                                $headerServices = \App\Models\Service::published()
+                                    ->showOnHomepage()
+                                    ->ordered()
+                                    ->take(5)
+                                    ->get();
                             @endphp
                             @forelse($headerServices as $service)
                                 <a href="{{ route('services.show', $service->slug) }}"
                                     class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
-                                    @if($service->icon)
-                                        <i class="material-icons text-sm mr-2" style="color: {{ $service->color ?? '#06b6d4' }}">{{ $service->icon }}</i>
+                                    @if ($service->icon)
+                                        <i class="material-icons text-sm mr-2"
+                                            style="color: {{ $service->color ?? '#06b6d4' }}">{{ $service->icon }}</i>
                                     @endif
                                     {{ Str::limit($service->title, 25) }}
                                 </a>
@@ -38,7 +43,7 @@
                         </div>
                         <div class="border-t border-gray-200 mt-3 pt-3">
                             <a href="{{ route('services.index') }}"
-                               class="flex items-center text-sm font-medium text-cyan-600 hover:text-cyan-700 transition">
+                                class="flex items-center text-sm font-medium text-cyan-600 hover:text-cyan-700 transition">
                                 <i class="material-icons text-sm mr-2">arrow_forward</i>
                                 Все услуги
                             </a>
@@ -56,7 +61,7 @@
                     <div class="p-4">
                         <div class="text-sm font-semibold text-gray-600 mb-3">Популярные отрасли:</div>
                         <div class="space-y-2">
-                            @if(isset($activeCaseCategories) && !empty($activeCaseCategories))
+                            @if (isset($activeCaseCategories) && !empty($activeCaseCategories))
                                 @foreach ($activeCaseCategories as $category)
                                     <a href="{{ route($category['route'], ...$category['route_params']) }}"
                                         class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
@@ -67,19 +72,23 @@
                                 @endforeach
                             @else
                                 {{-- Статичные категории для главной страницы --}}
-                                <a href="{{ route('cases.category', 'clothing') }}" class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
+                                <a href="{{ route('cases.category', 'clothing') }}"
+                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
                                     <i class="material-icons text-sm mr-2" style="color: #FFD700">apparel</i>
                                     Одежда
                                 </a>
-                                <a href="{{ route('cases.category', 'production') }}" class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
+                                <a href="{{ route('cases.category', 'production') }}"
+                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
                                     <i class="material-icons text-sm mr-2" style="color: #3B82F6">factory</i>
                                     Production
                                 </a>
-                                <a href="{{ route('cases.category', 'electronics') }}" class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
+                                <a href="{{ route('cases.category', 'electronics') }}"
+                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
                                     <i class="material-icons text-sm mr-2" style="color: #10B981">devices</i>
                                     Electronics
                                 </a>
-                                <a href="{{ route('cases.category', 'furniture') }}" class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
+                                <a href="{{ route('cases.category', 'furniture') }}"
+                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
                                     <i class="material-icons text-sm mr-2" style="color: #8B5CF6">chair</i>
                                     Furniture
                                 </a>
@@ -168,8 +177,8 @@
     </div>
 
     <!-- Бургер справа (<lg) -->
-    <button @click="open = !open" class="lg:hidden flex-shrink-0 focus:outline-none ml-4 rounded-md" aria-label="Открыть меню"
-        :aria-expanded="open.toString()">
+    <button @click="open = !open" class="lg:hidden flex-shrink-0 focus:outline-none ml-4 rounded-md"
+        aria-label="Открыть меню" :aria-expanded="open.toString()">
         <svg x-show="!open" class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             style="display: block;">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -209,13 +218,18 @@
                     <div class="text-gray-600 text-sm font-medium mb-3">Популярные услуги:</div>
                     <div class="space-y-2">
                         @php
-                            $mobileServices = \App\Models\Service::published()->showOnHomepage()->ordered()->take(4)->get();
+                            $mobileServices = \App\Models\Service::published()
+                                ->showOnHomepage()
+                                ->ordered()
+                                ->take(4)
+                                ->get();
                         @endphp
                         @forelse($mobileServices as $service)
                             <a href="{{ route('services.show', $service->slug) }}"
                                 class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
-                                @if($service->icon)
-                                    <i class="material-icons text-sm mr-2" style="color: {{ $service->color ?? '#06b6d4' }}">{{ $service->icon }}</i>
+                                @if ($service->icon)
+                                    <i class="material-icons text-sm mr-2"
+                                        style="color: {{ $service->color ?? '#06b6d4' }}">{{ $service->icon }}</i>
                                 @endif
                                 {{ Str::limit($service->title, 30) }}
                             </a>
@@ -224,7 +238,7 @@
                         @endforelse
                         <div class="border-t border-gray-200 mt-3 pt-3">
                             <a href="{{ route('services.index') }}"
-                               class="flex items-center text-sm font-medium text-cyan-600 hover:text-cyan-700 transition">
+                                class="flex items-center text-sm font-medium text-cyan-600 hover:text-cyan-700 transition">
                                 <i class="material-icons text-sm mr-2">arrow_forward</i>
                                 Все услуги
                             </a>
@@ -250,7 +264,7 @@
                     class="pl-6 space-y-4 overflow-hidden" style="display: none;">
                     <div class="text-gray-600 text-sm font-medium mb-3">Популярные отрасли:</div>
                     <div class="space-y-2">
-                        @if(isset($activeCategories) && !empty($activeCategories))
+                        @if (isset($activeCategories) && !empty($activeCategories))
                             @foreach ($activeCategories as $category)
                                 <a href="{{ route($category['route'], ...$category['route_params']) }}"
                                     class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
@@ -261,26 +275,31 @@
                             @endforeach
                         @else
                             {{-- Статичные категории для мобильного меню --}}
-                            <a href="{{ route('cases.category', 'clothing') }}" class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
+                            <a href="{{ route('cases.category', 'clothing') }}"
+                                class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
                                 <i class="material-icons text-sm mr-2" style="color: #FFD700">apparel</i>
                                 Одежда
                             </a>
-                            <a href="{{ route('cases.category', 'production') }}" class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
+                            <a href="{{ route('cases.category', 'production') }}"
+                                class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
                                 <i class="material-icons text-sm mr-2" style="color: #3B82F6">factory</i>
                                 Production
                             </a>
-                            <a href="{{ route('cases.category', 'electronics') }}" class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
+                            <a href="{{ route('cases.category', 'electronics') }}"
+                                class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
                                 <i class="material-icons text-sm mr-2" style="color: #10B981">devices</i>
                                 Electronics
                             </a>
-                            <a href="{{ route('cases.category', 'furniture') }}" class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
+                            <a href="{{ route('cases.category', 'furniture') }}"
+                                class="flex items-center text-sm text-gray-600 hover:text-cyan-600 transition">
                                 <i class="material-icons text-sm mr-2" style="color: #8B5CF6">chair</i>
                                 Furniture
                             </a>
                         @endif
                     </div>
                     <div class="pt-3 border-t border-gray-200">
-                        <a href="{{ route('cases.index') }}" class="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
+                        <a href="{{ route('cases.index') }}"
+                            class="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
                             Все кейсы →
                         </a>
                     </div>
@@ -314,7 +333,8 @@
                         @endforeach
                     </div>
                     <div class="pt-3 border-t border-gray-200">
-                        <a href="{{ route('blog.index') }}" class="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
+                        <a href="{{ route('blog.index') }}"
+                            class="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
                             Все статьи →
                         </a>
                     </div>
