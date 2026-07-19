@@ -17,42 +17,36 @@ class HeroSectionForm
                 TextInput::make('title')
                     ->label('Заголовок')
                     ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-
+                    ->maxLength(255),
                 Textarea::make('description')
                     ->label('Описание')
                     ->required()
                     ->rows(4)
                     ->columnSpanFull(),
-
                 FileUpload::make('image')
                     ->label('Изображение')
                     ->image()
                     ->disk('public')
                     ->directory('images/hero')
                     ->visibility('public')
-                    ->imageEditor()
-                    ->columnSpanFull(),
-
+                    ->imageEditor(),
                 TextInput::make('button_text')
                     ->label('Текст кнопки')
                     ->required()
                     ->default('Получить консультацию')
                     ->maxLength(255)
                     ->helperText('Кнопка отправляет форму обратной связи'),
-
-                // === НАСТРОЙКИ ОТОБРАЖЕНИЯ ===
-                Toggle::make('is_active')
-                    ->label('Активен')
-                    ->default(true)
-                    ->helperText('Только активные блоки отображаются на сайте'),
-
                 TextInput::make('sort_order')
                     ->label('Порядок сортировки')
                     ->numeric()
                     ->default(0)
                     ->helperText('Чем меньше число, тем выше в списке'),
+                // === НАСТРОЙКИ ОТОБРАЖЕНИЯ ===
+                Toggle::make('is_active')
+                    ->columnSpan(2)
+                    ->label('Активен')
+                    ->default(true)
+                    ->helperText('Только активные блоки отображаются на сайте'),
             ]);
     }
 }

@@ -52,9 +52,11 @@ class ServicesTable
                     })
                     ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('is_published')
+                    ->label('Опубликована')
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('is_featured')
+                    ->label('Рекомендуемая')
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('show_on_homepage')
@@ -62,6 +64,7 @@ class ServicesTable
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: false),
                 TextInputColumn::make('sort_order')
+                    ->label('Сортировка')
                     ->rules(['integer', 'min:0'])
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -82,7 +85,7 @@ class ServicesTable
                     ->falseLabel('Только неопубликованные')
                     ->native(false),
                 TernaryFilter::make('is_featured')
-                    ->label('Рекомендуемые')
+                    ->label('Рекомендуемая')
                     ->placeholder('Все услуги')
                     ->trueLabel('Только рекомендуемые')
                     ->falseLabel('Только обычные')

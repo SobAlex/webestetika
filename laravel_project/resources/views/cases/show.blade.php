@@ -135,8 +135,25 @@
         <section class="section-bg">
             <div>
                 <h2 class="block-title text-center">Дополнительная информация</h2>
-                <div class="prose prose-lg max-w-none mx-auto">
-                    {!! $caseData['content'] !!}
+                <div class="service-content max-w-none" style="color: #4b5563; line-height: 1.6;">
+                    @php
+                        $content = $caseData['content'];
+
+                        // 1. Декодируем все HTML-сущности во всём контенте
+                        $content = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                        // 2. Обрабатываем блоки <pre><code> – экранируем их содержимое
+                        $content = preg_replace_callback(
+                            '/<pre><code>(.*?)<\/code><\/pre>/s',
+                            function ($matches) {
+                                // Экранируем внутреннее содержимое, чтобы оно отображалось как текст
+                                $inner = htmlspecialchars($matches[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                return '<pre><code>' . $inner . '</code></pre>';
+                            },
+                            $content,
+                        );
+                    @endphp
+                    {!! $content !!}
                 </div>
             </div>
         </section>

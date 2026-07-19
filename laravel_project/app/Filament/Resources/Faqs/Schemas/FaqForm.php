@@ -22,15 +22,17 @@ class FaqForm
                     ->required()
                     ->numeric()
                     ->default(0),
-                Toggle::make('is_active')
-                    ->label('Активно')
-                    ->required(),
                 Toggle::make('show_on_homepage')
+                    ->columnSpan(2)
                     ->label('Показывать на главной странице')
                     ->default(true),
                 Toggle::make('show_on_services')
+                    ->columnSpan(2)
                     ->label('Показывать на страницах услуг')
                     ->default(true),
+                Toggle::make('is_active')
+                    ->label('Активно')
+                    ->required(),
             ]);
     }
 }

@@ -20,12 +20,26 @@ class ProjectCaseForm
     {
         return $schema
             ->components([
+                TextInput::make('meta_title')
+                    ->label('SEO Заголовок')
+                    ->placeholder('Введите SEO заголовок'),
+                Textarea::make('meta_description')
+                    ->label('SEO Описание')
+                    ->placeholder('Введите SEO описание')
+                    ->columnSpanFull(),
                 TextInput::make('case_id')
                     ->required(),
                 TextInput::make('title')
                     ->required(),
                 TextInput::make('client')
                     ->required(),
+                TextInput::make('period')
+                    ->required(),
+                FileUpload::make('image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('images')
+                    ->visibility('public'),
                 Select::make('industry_category_id')
                     ->relationship('industryCategory', 'name', function ($query) {
                         $query->where('is_active', true);
@@ -40,19 +54,24 @@ class ProjectCaseForm
                                 $category->id => $category->name
                             ]);
                     }),
-                TextInput::make('period')
-                    ->required(),
-                // Минимальный тестовый пример для отладки
-                FileUpload::make('image')
-                    ->image()
-                    ->disk('public')
-                    ->directory('images')
-                    ->visibility('public'),
                 Textarea::make('description')
                     ->label('Описание проекта')
                     ->required()
                     ->rows(4)
                     ->columnSpanFull(),
+                // === 🎯 РЕЗУЛЬТАТЫ ПРОЕКТА ===
+                Repeater::make('results')
+                    ->label('Результаты проекта')
+                    ->simple(
+                        TextInput::make('result')
+                            ->placeholder('Результат проекта')
+                            ->required()
+                    )
+                    ->addActionLabel('Добавить результат')
+                    ->reorderableWithButtons()
+                    ->collapsible()
+                    ->columnSpanFull()
+                    ->grid(2),
                 // === 📊 МЕТРИКИ ДО/ПОСЛЕ ===
                 Repeater::make('metrics')
                     ->label('Метрики "До и После"')
@@ -73,86 +92,48 @@ class ProjectCaseForm
                     ->collapsible()
                     ->columnSpanFull()
                     ->grid(3),
-                Toggle::make('is_published')
-                    ->required(),
-                TextInput::make('sort_order')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-
                 // === 🔗 ССЫЛКА НА УСЛУГУ ===
                 TextInput::make('service_link_text')
                     ->label('Текст ссылки на услугу')
                     ->placeholder('Например: SEO продвижение')
                     ->helperText('Текст, который будет отображаться как ссылка на услугу под заголовком кейса'),
-
                 TextInput::make('service_link_url')
                     ->label('URL ссылки на услугу')
                     ->placeholder('Например: /services/seo-prodvizhenie')
                     ->helperText('URL страницы услуги (можно использовать относительный путь)'),
-
-                Select::make('user_id')
+                // === HTML ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ===
+                RichEditor::make('content')
+                    ->label('Контент')
+                    ->toolbarButtons([
+                        // Группа 1: Форматирование текста
+                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript', 'link'],
+                        // Группа 2: Заголовки и выравнивание
+                        ['h1', 'h2', 'h3', 'h4', 'alignStart', 'alignCenter', 'alignEnd', 'alignJustify'],
+                        // Группа 3: Списки и цитаты
+                        ['bulletList', 'orderedList', 'blockquote', 'codeBlock', 'code'],
+                        // Группа 4: Вставка элементов
+                        ['attachFiles', 'table', 'horizontalRule', 'details'],
+                        // Группа 5: Цвет текста и очистка форматирования
+                        ['textColor', 'highlight', 'clearFormatting'],
+                        // Группа 6: Отмена/Повтор
+                        ['undo', 'redo'],
+                    ])
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('attachments')
+                    ->fileAttachmentsVisibility('public')
+                    ->resizableImages()  // <-- добавляем эту строку
+                    ->columnSpanFull()
+                    ->helperText('Редактируйте контент с помощью визуального редактора. HTML сохраняется автоматически.'),
+                    Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-
-                // === 🎯 РЕЗУЛЬТАТЫ ПРОЕКТА ===
-                Repeater::make('results')
-                    ->label('Результаты проекта')
-                    ->simple(
-                        TextInput::make('result')
-                            ->placeholder('Результат проекта')
-                            ->required()
-                    )
-                    ->addActionLabel('Добавить результат')
-                    ->reorderableWithButtons()
-                    ->collapsible()
-                    ->columnSpanFull()
-                    ->grid(2),
-                // === HTML ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ===
-                Textarea::make('content')
-                    ->label('Дополнительная информация (HTML)')
-                    ->rows(6)
-                    ->live(onBlur: true)
-                    ->helperText('Вводите HTML-код. Используйте теги: <p>, <h2>, <h3>, <ul>, <li>, <strong>, <em>, <a>')
-                    ->columnSpanFull(),
-
-                Placeholder::make('content_preview')
-                    ->label('Предпросмотр дополнительной информации')
-                    ->content(function ($get) {
-                        $content = $get('content');
-                        if (!$content) {
-                            return new HtmlString('<div class="text-gray-500 italic p-4 bg-gray-50 rounded-lg">Введите дополнительную информацию выше для предпросмотра</div>');
-                        }
-
-                        return new HtmlString(
-                            '<div class="p-4 bg-white border rounded-lg shadow-sm" style="max-height: 250px; overflow-y: auto;">' .
-                            '<div style="color: #4b5563; line-height: 1.6;">' .
-                            '<style scoped>' .
-                            '.preview-content h1 { font-size: 2rem; font-weight: bold; color: #1f2937; margin: 1.5rem 0 1rem 0; }' .
-                            '.preview-content h2 { font-size: 1.75rem; font-weight: bold; color: #1f2937; margin: 1.25rem 0 0.75rem 0; }' .
-                            '.preview-content h3 { font-size: 1.5rem; font-weight: 600; color: #1f2937; margin: 1rem 0 0.5rem 0; }' .
-                            '.preview-content p { margin-bottom: 1rem; color: #4b5563; line-height: 1.6; }' .
-                            '.preview-content ul { list-style-type: disc; list-style-position: inside; margin-bottom: 1rem; }' .
-                            '.preview-content ol { list-style-type: decimal; list-style-position: inside; margin-bottom: 1rem; }' .
-                            '.preview-content li { margin-bottom: 0.5rem; color: #4b5563; }' .
-                            '.preview-content strong { font-weight: 600; color: #1f2937; }' .
-                            '.preview-content em { font-style: italic; }' .
-                            '.preview-content a { color: #0891b2; text-decoration: underline; }' .
-                            '</style>' .
-                            '<div class="preview-content">' . $content . '</div>' .
-                            '</div>' .
-                            '</div>'
-                        );
-                    })
-                    ->hidden(fn ($get) => empty($get('content')))
-                    ->columnSpanFull(),
-                TextInput::make('meta_title')
-                    ->label('SEO Заголовок')
-                    ->placeholder('Введите SEO заголовок'),
-                Textarea::make('meta_description')
-                    ->label('SEO Описание')
-                    ->placeholder('Введите SEO описание')
-                    ->columnSpanFull(),
+                    TextInput::make('sort_order')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                    Toggle::make('is_published')
+                    ->columnSpan(2)
+                    ->required(),
             ]);
     }
 }

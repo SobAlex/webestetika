@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Blogs\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -20,7 +21,15 @@ class BlogForm
     {
         return $schema
             ->components([
+                TextInput::make('meta_title')
+                    ->label('SEO заголовок')
+                    ->helperText('Заголовок для поисковых систем (если не указан, будет использован обычный заголовок)'),
+                Textarea::make('meta_description')
+                    ->label('SEO описание')
+                    ->helperText('Описание для поисковых систем (если не указано, будет использовано краткое описание)')
+                    ->columnSpanFull(),
                 TextInput::make('title')
+                    ->label('H1')
                     ->required()
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (string $operation, $state, $set) {
@@ -32,46 +41,6 @@ class BlogForm
                 TextInput::make('slug')
                     ->required()
                     ->unique(Blog::class, 'slug', ignoreRecord: true),
-                Textarea::make('excerpt')
-                    ->label('Краткое описание')
-                    ->rows(3)
-                    ->columnSpanFull(),
-                Textarea::make('content')
-                    ->label('Контент (HTML)')
-                    ->rows(8)
-                    ->live(onBlur: true)
-                    ->helperText('Вводите HTML-код. Используйте теги: <p>, <h2>, <h3>, <ul>, <li>, <strong>, <em>, <a>')
-                    ->columnSpanFull(),
-                Placeholder::make('content_preview')
-                    ->label('Предпросмотр контента')
-                    ->content(function ($get) {
-                        $content = $get('content');
-                        if (!$content) {
-                            return new HtmlString('<div class="text-gray-500 italic p-4 bg-gray-50 rounded-lg">Введите контент выше для предпросмотра</div>');
-                        }
-                        return new HtmlString(
-                            '<div class="p-4 bg-white border rounded-lg shadow-sm" style="max-height: 300px; overflow-y: auto;">' .
-                            '<div style="color: #4b5563; line-height: 1.6;">' .
-                            '<style scoped>' .
-                            '.preview-content h1 { font-size: 2rem; font-weight: bold; color: #1f2937; margin: 1.5rem 0 1rem 0; }' .
-                            '.preview-content h2 { font-size: 1.75rem; font-weight: bold; color: #1f2937; margin: 1.25rem 0 0.75rem 0; }' .
-                            '.preview-content h3 { font-size: 1.5rem; font-weight: 600; color: #1f2937; margin: 1rem 0 0.5rem 0; }' .
-                            '.preview-content p { margin-bottom: 1rem; color: #4b5563; line-height: 1.6; }' .
-                            '.preview-content ul { list-style-type: disc; list-style-position: inside; margin-bottom: 1rem; }' .
-                            '.preview-content ol { list-style-type: decimal; list-style-position: inside; margin-bottom: 1rem; }' .
-                            '.preview-content li { margin-bottom: 0.5rem; color: #4b5563; }' .
-                            '.preview-content strong { font-weight: 600; color: #1f2937; }' .
-                            '.preview-content em { font-style: italic; }' .
-                            '.preview-content a { color: #0891b2; text-decoration: underline; }' .
-                            '</style>' .
-                            '<div class="preview-content">' . $content . '</div>' .
-                            '</div>' .
-                            '</div>'
-                        );
-                    })
-                    ->hidden(fn ($get) => empty($get('content')))
-                    ->columnSpanFull(),
-
                 // === ИЗОБРАЖЕНИЕ (финальная версия) ===
                 FileUpload::make('image')
                     ->label('Изображение')
@@ -101,7 +70,32 @@ class BlogForm
                         }
                         return $state ?: null;
                     }),
-
+                Textarea::make('excerpt')
+                    ->label('Краткое описание')
+                    ->rows(3)
+                    ->columnSpanFull(),
+                RichEditor::make('content')
+                    ->label('Контент')
+                    ->toolbarButtons([
+                        // Группа 1: Форматирование текста
+                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript', 'link'],
+                        // Группа 2: Заголовки и выравнивание
+                        ['h1', 'h2', 'h3', 'h4', 'alignStart', 'alignCenter', 'alignEnd', 'alignJustify'],
+                        // Группа 3: Списки и цитаты
+                        ['bulletList', 'orderedList', 'blockquote', 'codeBlock', 'code'],
+                        // Группа 4: Вставка элементов
+                        ['attachFiles', 'table', 'horizontalRule', 'details'],
+                        // Группа 5: Цвет текста и очистка форматирования
+                        ['textColor', 'highlight', 'clearFormatting'],
+                        // Группа 6: Отмена/Повтор
+                        ['undo', 'redo'],
+                    ])
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('attachments')
+                    ->fileAttachmentsVisibility('public')
+                    ->resizableImages()  // <-- добавляем эту строку
+                    ->columnSpanFull()
+                    ->helperText('Редактируйте контент с помощью визуального редактора. HTML сохраняется автоматически.'),
                 Select::make('category_id')
                     ->relationship('blogCategory', 'name', function ($query) {
                         $query->where('is_active', true);
@@ -116,15 +110,6 @@ class BlogForm
                                 $category->id => $category->name
                             ]);
                     }),
-                TextInput::make('meta_title')
-                    ->label('SEO заголовок')
-                    ->helperText('Заголовок для поисковых систем (если не указан, будет использован обычный заголовок)'),
-                Textarea::make('meta_description')
-                    ->label('SEO описание')
-                    ->helperText('Описание для поисковых систем (если не указано, будет использовано краткое описание)')
-                    ->columnSpanFull(),
-                Toggle::make('is_published')
-                    ->required(),
                 TextInput::make('sort_order')
                     ->required()
                     ->numeric()
@@ -133,6 +118,8 @@ class BlogForm
                     ->relationship('user', 'name')
                     ->required(),
                 DateTimePicker::make('published_at'),
+                Toggle::make('is_published')
+                    ->required(),
             ]);
     }
 }

@@ -20,7 +20,53 @@ class ServiceForm
     {
         return $schema
             ->components([
+                // === SEO НАСТРОЙКИ ===
+                TextInput::make('meta_title')
+                    ->label('Meta Title')
+                    ->helperText('Заголовок для поисковых систем')
+                    ->columnSpanFull(),
+                Textarea::make('meta_description')
+                    ->label('Meta Description')
+                    ->rows(3)
+                    ->helperText('Описание для поисковых систем')
+                    ->columnSpanFull(),
+                TextInput::make('meta_keywords')
+                    ->label('Meta Keywords')
+                    ->helperText('Ключевые слова через запятую')
+                    ->columnSpanFull(),
+                ColorPicker::make('color')
+                    ->required()
+                    ->default('#06b6d4')
+                    ->hex()
+                    ->formatStateUsing(fn ($state) => $state ?: '#06b6d4')
+                    ->live()
+                    ->helperText('Выберите цвет для услуги'),
+                TextInput::make('icon')
+                    ->live()
+                    ->helperText('Введите название иконки Material Icons (например: business, trending_up, web)')
+                    ->placeholder('business'),
+                Placeholder::make('icon_preview')
+                    ->label('Превью иконки')
+                    ->content(function ($get) {
+                        $icon = $get('icon') ?: 'business';
+                        $color = $get('color') ?: '#06b6d4';
+
+                        return new \Illuminate\Support\HtmlString(
+                            '<div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200">' .
+                            '<div class="inline-flex items-center justify-center w-10 h-10 rounded-lg shadow-sm border" style="background-color: ' . $color . '20; border-color: ' . $color . '40;">' .
+                            '<i class="material-icons text-xl" style="color: ' . $color . '">' . $icon . '</i>' .
+                            '</div>' .
+                            '<div class="flex flex-col">' .
+                            '<span class="text-sm font-medium text-gray-900">' . $icon . '</span>' .
+                            '<span class="text-xs text-gray-500">' . $color . '</span>' .
+                            '</div>' .
+                            '</div>'
+                        );
+                    })
+                    ->hidden(fn ($get) => empty($get('icon')))
+                    ->columnSpan(2),
                 TextInput::make('title')
+                    ->label('H1')
                     ->required()
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (string $operation, $state, callable $set) {
@@ -34,6 +80,11 @@ class ServiceForm
                     ->unique(ignoreRecord: true)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (callable $set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                FileUpload::make('image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('images')
+                    ->visibility('public'),
                 Textarea::make('description')
                     ->label('Краткое описание')
                     ->rows(3)
@@ -62,41 +113,6 @@ class ServiceForm
                     ->resizableImages()  // <-- добавляем эту строку
                     ->columnSpanFull()
                     ->helperText('Редактируйте контент с помощью визуального редактора. HTML сохраняется автоматически.'),
-                ColorPicker::make('color')
-                    ->required()
-                    ->default('#06b6d4')
-                    ->hex()
-                    ->formatStateUsing(fn ($state) => $state ?: '#06b6d4')
-                    ->live()
-                    ->helperText('Выберите цвет для услуги'),
-                Placeholder::make('icon_preview')
-                    ->label('Превью иконки')
-                    ->content(function ($get) {
-                        $icon = $get('icon') ?: 'business';
-                        $color = $get('color') ?: '#06b6d4';
-
-                        return new \Illuminate\Support\HtmlString(
-                            '<div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200">' .
-                            '<div class="inline-flex items-center justify-center w-10 h-10 rounded-lg shadow-sm border" style="background-color: ' . $color . '20; border-color: ' . $color . '40;">' .
-                            '<i class="material-icons text-xl" style="color: ' . $color . '">' . $icon . '</i>' .
-                            '</div>' .
-                            '<div class="flex flex-col">' .
-                            '<span class="text-sm font-medium text-gray-900">' . $icon . '</span>' .
-                            '<span class="text-xs text-gray-500">' . $color . '</span>' .
-                            '</div>' .
-                            '</div>'
-                        );
-                    })
-                    ->hidden(fn ($get) => empty($get('icon'))),
-                TextInput::make('icon')
-                    ->live()
-                    ->helperText('Введите название иконки Material Icons (например: business, trending_up, web)')
-                    ->placeholder('business'),
-                FileUpload::make('image')
-                    ->image()
-                    ->disk('public')
-                    ->directory('images')
-                    ->visibility('public'),
                 TextInput::make('price_from')
                     ->numeric()
                     ->prefix('₽')
@@ -117,38 +133,6 @@ class ServiceForm
                     ->addActionLabel('Добавить особенность')
                     ->columnSpanFull()
                     ->grid(2),
-
-                // === SEO НАСТРОЙКИ ===
-                TextInput::make('meta_title')
-                    ->label('Meta Title')
-                    ->helperText('Заголовок для поисковых систем')
-                    ->columnSpanFull(),
-                Textarea::make('meta_description')
-                    ->label('Meta Description')
-                    ->rows(3)
-                    ->helperText('Описание для поисковых систем')
-                    ->columnSpanFull(),
-                TextInput::make('meta_keywords')
-                    ->label('Meta Keywords')
-                    ->helperText('Ключевые слова через запятую')
-                    ->columnSpanFull(),
-
-                // === НАСТРОЙКИ ПУБЛИКАЦИИ ===
-                Toggle::make('is_published')
-                    ->label('Опубликовано')
-                    ->default(true)
-                    ->helperText('Услуга будет доступна на сайте'),
-                Toggle::make('is_featured')
-                    ->label('Рекомендуемая')
-                    ->helperText('Услуга будет отмечена как рекомендуемая'),
-                Toggle::make('show_on_homepage')
-                    ->label('Показывать на главной')
-                    ->helperText('Услуга будет отображаться в секции услуг на главной странице'),
-                TextInput::make('sort_order')
-                    ->label('Порядок сортировки')
-                    ->numeric()
-                    ->default(0)
-                    ->helperText('Чем меньше число, тем выше в списке'),
 
                 // === 🔗 СВЯЗИ ===
 
@@ -214,6 +198,22 @@ class ServiceForm
                     ->label('ID связанного кейса #3')
                     ->numeric()
                     ->helperText('Введите ID кейса для отображения в блоке "Наши кейсы"'),
+                // === НАСТРОЙКИ ПУБЛИКАЦИИ ===
+                TextInput::make('sort_order')
+                    ->label('Порядок сортировки')
+                    ->numeric()
+                    ->default(0)
+                    ->helperText('Чем меньше число, тем выше в списке'),
+                Toggle::make('is_featured')
+                    ->label('Рекомендуемая')
+                    ->helperText('Услуга будет отмечена как рекомендуемая'),
+                Toggle::make('show_on_homepage')
+                    ->label('Показывать на главной')
+                    ->helperText('Услуга будет отображаться в секции услуг на главной странице'),
+                Toggle::make('is_published')
+                    ->label('Опубликовано')
+                    ->default(true)
+                    ->helperText('Услуга будет доступна на сайте'),
             ]);
     }
 }
