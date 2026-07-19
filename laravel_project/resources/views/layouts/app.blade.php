@@ -12,7 +12,6 @@
     <meta name="apple-mobile-web-app-title" content="SobAlex" />
     <link rel="manifest" href="/site.webmanifest" />
 
-
     <title>@yield('title', 'SEO продвижение сайтов в интернете')</title>
 
     @hasSection('meta_description')
