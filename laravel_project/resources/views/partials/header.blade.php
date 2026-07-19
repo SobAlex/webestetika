@@ -2,7 +2,7 @@
     <!-- Логотип слева -->
     <div>
         <a href="{{ route('home') }}"
-            class="font-inter font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">SobAlex
+            class="font-train font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">SobAlex
         </a>
 
         <p class="text-md">Оптимизация сайтов</p>
