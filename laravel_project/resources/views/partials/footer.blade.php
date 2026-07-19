@@ -5,7 +5,8 @@
         <div>
             <div>
                 <a href="{{ route('home') }}"
-                    class="font-train font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">SA
+                    class="font-train font-medium text-[38px] text-cyan-500 whitespace-nowrap hover:text-cyan-600 transition">
+                    SobAlex
                 </a>
                 <p class="mt-2 text-sm text-gray-400">Оптимизация сайтов и SEO продвижение.</p>
             </div>
