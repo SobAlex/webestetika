@@ -61,38 +61,14 @@
                     <div class="p-4">
                         <div class="text-sm font-semibold text-gray-600 mb-3">Популярные отрасли:</div>
                         <div class="space-y-2">
-                            @if (isset($activeCaseCategories) && !empty($activeCaseCategories))
-                                @foreach ($activeCaseCategories as $category)
-                                    <a href="{{ route($category['route'], ...$category['route_params']) }}"
-                                        class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
-                                        <i class="material-icons text-sm mr-2"
-                                            style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
-                                        {{ $category['name'] }}
-                                    </a>
-                                @endforeach
-                            @else
-                                {{-- Статичные категории для главной страницы --}}
-                                <a href="{{ route('cases.category', 'clothing') }}"
+                            @foreach ($activeCaseCategories as $category)
+                                <a href="{{ route($category['route'], ...$category['route_params']) }}"
                                     class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
-                                    <i class="material-icons text-sm mr-2" style="color: #FFD700">apparel</i>
-                                    Одежда
+                                    <i class="material-icons text-sm mr-2"
+                                        style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                                    {{ $category['name'] }}
                                 </a>
-                                <a href="{{ route('cases.category', 'production') }}"
-                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
-                                    <i class="material-icons text-sm mr-2" style="color: #3B82F6">factory</i>
-                                    Production
-                                </a>
-                                <a href="{{ route('cases.category', 'electronics') }}"
-                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
-                                    <i class="material-icons text-sm mr-2" style="color: #10B981">devices</i>
-                                    Electronics
-                                </a>
-                                <a href="{{ route('cases.category', 'furniture') }}"
-                                    class="flex items-center text-sm text-gray-700 hover:text-cyan-600 transition">
-                                    <i class="material-icons text-sm mr-2" style="color: #8B5CF6">chair</i>
-                                    Furniture
-                                </a>
-                            @endif
+                            @endforeach
                         </div>
                         <div class="border-t border-gray-200 mt-3 pt-3">
                             <a href="{{ route('cases.index') }}"

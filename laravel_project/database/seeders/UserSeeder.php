@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
                 'name' => 'SobolDev',
                 'email' => 'soboldev@yandex.ru',
                 'email_verified_at' => now(),
-                'password' => Hash::make('123123123'),
+                'password' => Hash::make('gO@!Q2{@97ZN'),
             ]);
         }
     }

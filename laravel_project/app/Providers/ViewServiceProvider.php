@@ -10,20 +10,13 @@ use App\Models\Contact;
 
 class ViewServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap services.
-     */
     public function boot(): void
     {
-        // Передаем активные категории во все представления
         View::composer('*', function ($view) {
             // Категории кейсов
             $activeCategories = IndustryCategory::active()
@@ -68,7 +61,8 @@ class ViewServiceProvider extends ServiceProvider
             ];
 
             $view->with([
-                'activeCategories' => $activeCategories,
+                // Изменено с 'activeCategories' на 'activeCaseCategories'
+                'activeCaseCategories' => $activeCategories,
                 'activeBlogCategories' => $activeBlogCategories,
                 'contactInfo' => $contactInfo
             ]);
