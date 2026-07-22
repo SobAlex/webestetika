@@ -87,7 +87,7 @@
                             class="hover:text-cyan-400 transition">{{ $category['name'] }}</a></li>
                 @endforeach
                 <li class="pt-2 border-t border-gray-700">
-                <li><a href="{{ route('cases.index') }}" class="hover:text-cyan-400 transition">Все кейсы</a></li>
+                <li><a href="{{ route('cases.index') }}" class="hover:text-cyan-400 transition">Все кейсы →</a></li>
                 </li>
             </ul>
         </div>
@@ -102,7 +102,7 @@
                             class="hover:text-cyan-400 transition">{{ $category['name'] }}</a></li>
                 @endforeach
                 <li class="pt-2 border-t border-gray-700">
-                <li><a href="{{ route('blog.index') }}" class="hover:text-cyan-400 transition">Все статьи</a></li>
+                <li><a href="{{ route('blog.index') }}" class="hover:text-cyan-400 transition">Все статьи →</a></li>
                 </li>
             </ul>
         </div>
