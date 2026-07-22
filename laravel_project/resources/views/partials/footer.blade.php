@@ -81,11 +81,14 @@
         <div>
             <h4 class="text-white font-semibold tracking-wide uppercase text-sm">Кейсы</h4>
             <ul class="mt-4 space-y-2">
-                <li><a href="{{ route('cases.index') }}" class="hover:text-cyan-400 transition">Все кейсы</a></li>
+
                 @foreach ($activeCaseCategories as $category)
                     <li><a href="{{ route($category['route'], ...$category['route_params']) }}"
                             class="hover:text-cyan-400 transition">{{ $category['name'] }}</a></li>
                 @endforeach
+                <li class="pt-2 border-t border-gray-700">
+                <li><a href="{{ route('cases.index') }}" class="hover:text-cyan-400 transition">Все кейсы</a></li>
+                </li>
             </ul>
         </div>
 
@@ -93,11 +96,14 @@
         <div>
             <h4 class="text-white font-semibold tracking-wide uppercase text-sm">Блог</h4>
             <ul class="mt-4 space-y-2">
-                <li><a href="{{ route('blog.index') }}" class="hover:text-cyan-400 transition">Все статьи</a></li>
+
                 @foreach ($activeBlogCategories as $category)
                     <li><a href="{{ route('blog.category', $category['slug']) }}"
                             class="hover:text-cyan-400 transition">{{ $category['name'] }}</a></li>
                 @endforeach
+                <li class="pt-2 border-t border-gray-700">
+                <li><a href="{{ route('blog.index') }}" class="hover:text-cyan-400 transition">Все статьи</a></li>
+                </li>
             </ul>
         </div>
     </div>
