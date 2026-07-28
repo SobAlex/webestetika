@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body class="font-sans text-gray-900 bg-gray-100">
+<body class="sans text-gray-900 bg-gray-100">
     <div class="min-h-screen py-8">
         <div class="max-w-2xl mx-auto px-4">
             @yield('content')

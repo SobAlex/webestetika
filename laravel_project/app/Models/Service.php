@@ -61,8 +61,6 @@ class Service extends Model implements PublishableInterface
         return $query->orderBy('sort_order')->orderBy('title');
     }
 
-        // методы ниже пока не разобраны. Разобраться, где применяются. Не нужные удалить.
-
     /**
      * Check if the service is published.
      */
@@ -95,9 +93,8 @@ class Service extends Model implements PublishableInterface
         return $query->where('is_featured', true);
     }
 
-
     /**
-     * Get formatted price string.
+     * Get formatted price string (without period).
      */
     public function getFormattedPriceAttribute(): string
     {
@@ -105,14 +102,8 @@ class Service extends Model implements PublishableInterface
             return 'По договоренности';
         }
 
-        $price = number_format($this->price_from, 0, ',', ' ') . ' ₽';
-
-        return match($this->price_type) {
-            'hour' => "от {$price}/час",
-            'month' => "от {$price}/месяц",
-            'project' => "от {$price}",
-            default => "от {$price}",
-        };
+        $price = number_format($this->price_from, 0, ',', ' ');
+        return 'от ' . $price . ' ₽';
     }
 
     /**

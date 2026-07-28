@@ -209,7 +209,7 @@ class Blog extends Model implements ImageableInterface, PublishableInterface
      */
     public function getFormattedPublishedAtAttribute()
     {
-        return $this->published_at ? $this->published_at->format('d.m.Y H:i') : 'Не опубликовано';
+        return $this->published_at ? $this->published_at->format('d.m.Y') : 'Не опубликовано';
     }
 
     /**

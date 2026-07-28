@@ -15,9 +15,8 @@
         <div class="relative bg-white w-full max-w-md mx-4 shadow-sm p-6" role="dialog" aria-modal="true"
             aria-labelledby="callback_title">
             <div class="flex items-start justify-between mb-4">
-                <h3 id="callback_title" class="text-xl font-semibold">Заказать звонок</h3>
-                <button class="text-gray-500 hover:text-gray-700 rounded-lg" aria-label="Закрыть"
-                    @click="callbackOpen = false">
+                <p id="callback_title" class="modal-title">Заказать звонок</p>
+                <button class="text-gray-500 hover:text-gray-700" aria-label="Закрыть" @click="callbackOpen = false">
                     <span class="material-icons">close</span>
                 </button>
             </div>
@@ -27,13 +26,13 @@
                 <div>
                     <label for="name_callback" class="block mb-1">Имя</label>
                     <input type="text" id="name_callback" name="name" required placeholder="Ваше имя"
-                        class="w-full px-3 py-2 rounded-lg" />
+                        class="form-control" />
                 </div>
 
                 <div>
                     <label for="phone_callback" class="block mb-1">Телефон</label>
                     <input type="tel" id="phone_callback" name="phone" required placeholder="+7 (999) 999-99-99"
-                        class="w-full px-3 py-2 rounded-lg" />
+                        class="form-control" />
                 </div>
 
                 @include('partials._consent')
@@ -60,8 +59,8 @@
         aria-modal="true" aria-labelledby="service_order_title">
         <!-- Заголовок -->
         <div class="flex items-start justify-between mb-4 sticky top-0 bg-white pb-2 border-b border-gray-200">
-            <h3 id="service_order_title" class="text-lg sm:text-xl font-semibold pr-2">Заказ услуги</h3>
-            <button class="text-gray-500 hover:text-gray-700 flex-shrink-0 p-1 rounded-lg" aria-label="Закрыть"
+            <p id="service_order_title" class="modal-title pr-2">Заказ услуги</p>
+            <button class="text-gray-500 hover:text-gray-700 flex-shrink-0 p-1" aria-label="Закрыть"
                 onclick="closeServiceOrderModal()">
                 <span class="material-icons text-2xl">close</span>
             </button>
@@ -75,74 +74,67 @@
             <input type="hidden" name="service_name" id="service_name_input" required
                 value="{{ old('service_name') }}">
             @error('service_name')
-                <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded">
-                    <p class="text-sm text-red-600">{{ $message }}</p>
+                <div class="mb-4 p-3 bg-red-50 border border-red-200">
+                    <p class="text-red-600">{{ $message }}</p>
                 </div>
             @enderror
 
             <!-- Прокручиваемая область с полями ввода -->
             <div class="max-h-[calc(100vh-260px)] overflow-y-auto pr-1">
                 <div>
-                    <label for="service_display" class="block mb-1 text-sm font-medium">Услуга</label>
-                    <input type="text" id="service_display" readonly
-                        class="w-full px-3 py-2 bg-gray-100 text-gray-600 rounded-lg border" />
+                    <label for="service_display" class="block mb-1">Услуга</label>
+                    <input type="text" id="service_display" readonly class="form-control" />
                 </div>
 
                 <div>
-                    <label for="name_service" class="block mb-1 text-sm font-medium">Имя *</label>
+                    <label for="name_service" class="block mb-1">Имя *</label>
                     <input type="text" id="name_service" name="name" required placeholder="Ваше имя"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-required="true" aria-label="Имя" value="{{ old('name') }}"
+                        class="form-control" aria-required="true" aria-label="Имя" value="{{ old('name') }}"
                         aria-invalid="@error('name') true @else false @enderror" />
                     @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="email_service" class="block mb-1 text-sm font-medium">Email *</label>
+                    <label for="email_service" class="block mb-1">Email *</label>
                     <input type="email" id="email_service" name="email" required placeholder="your@email.com"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-required="true" aria-label="Email" value="{{ old('email') }}"
+                        class="form-control" aria-required="true" aria-label="Email" value="{{ old('email') }}"
                         aria-invalid="@error('email') true @else false @enderror" />
                     @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="phone_service" class="block mb-1 text-sm font-medium">Телефон *</label>
+                    <label for="phone_service" class="block mb-1">Телефон *</label>
                     <input type="tel" id="phone_service" name="phone" required
-                        placeholder="+7 (999) 999-99-99"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-required="true" aria-label="Телефон" value="{{ old('phone') }}"
+                        placeholder="+7 (999) 999-99-99" class="form-control" aria-required="true"
+                        aria-label="Телефон" value="{{ old('phone') }}"
                         aria-invalid="@error('phone') true @else false @enderror" />
                     @error('phone')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="message_service" class="block mb-1 text-sm font-medium">Сообщение</label>
+                    <label for="message_service" class="block mb-1">Сообщение</label>
                     <textarea id="message_service" name="message" rows="3" placeholder="Опишите ваши требования или вопросы..."
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-label="Сообщение" aria-invalid="@error('message') true @else false @enderror">{{ old('message') }}</textarea>
+                        class="form-control" aria-label="Сообщение" aria-invalid="@error('message') true @else false @enderror">{{ old('message') }}</textarea>
                     @error('message')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="attachment_service" class="block mb-1 text-sm font-medium">Прикрепить файл</label>
+                    <label for="attachment_service" class="block mb-1">Прикрепить файл</label>
                     <input type="file" id="attachment_service" name="attachment"
-                        accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif" class="form-control"
                         aria-label="Прикрепить файл" aria-invalid="@error('attachment') true @else false @enderror" />
                     @error('attachment')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="text-xs text-gray-500 mt-1">Поддерживаются: PDF, DOC, DOCX, TXT, JPG, JPEG, PNG, GIF (до
-                        10 МБ)</p>
+                    <p class="mt-1">Поддерживаются: PDF, DOC, DOCX, TXT, JPG, JPEG, PNG, GIF (до 10 МБ)</p>
                 </div>
             </div>
 
@@ -150,8 +142,7 @@
             @include('partials._consent')
 
             <!-- Кнопки - всегда видимые внизу -->
-            <div
-                class="flex items-center justify-end gap-3 pt-4 mt-4 border-t border-gray-200 sticky bottom-0 bg-white">
+            <div class="flex items-center justify-end gap-3 pt-4 mt-4 divider sticky bottom-0 bg-white">
                 <button type="button" class="btn" onclick="closeServiceOrderModal()">Отмена</button>
                 <button type="submit" form="serviceOrderForm" class="btn">Заказать услугу</button>
             </div>

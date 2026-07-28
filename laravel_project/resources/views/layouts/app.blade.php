@@ -48,8 +48,10 @@
             @yield('content')
         </main>
 
-        @include('partials.footer')
+
     </div>
+
+    @include('partials.footer')
 
     @include('partials.modals')
     @include('cookie-consent::index')

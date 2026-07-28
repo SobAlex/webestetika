@@ -36,62 +36,166 @@
 }
 
 @layer base {
-  body {
-    @apply text-gray-700 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 min-h-screen;
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
   }
-  [x-cloak] { display: none !important; }
+
+  body {
+    @apply text-base text-gray-700 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 min-h-screen antialiased font-sans;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-gray-700 font-medium leading-tight font-sans;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl mb-4;
+  }
+  h2 {
+    @apply text-3xl md:text-3xl mb-4;
+  }
+  h3 {
+    @apply text-2xl md:text-2xl mb-4;
+  }
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+  h5 {
+    @apply text-lg md:text-xl;
+  }
+  h6 {
+    @apply text-base md:text-lg;
+  }
+
+  p {
+    @apply text-base text-gray-700 leading-relaxed;
+  }
+
+  a {
+    @apply text-cyan-500 hover:text-cyan-800 transition-colors duration-200;
+  }
+
+  /* Ссылки внутри заголовков наследуют цвет родителя */
+  h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    @apply text-inherit;
+  }
+
+  small, .meta {
+    @apply text-sm text-gray-500;
+  }
 }
 
 @layer components {
+    /* ===== Базовые компоненты ===== */
+
+    /* ===== Мета-информация (дата, время чтения) ===== */
+    .meta-info {
+        @apply flex items-center text-sm text-gray-500;
+    }
+
+    .meta-info i {
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* Отступ сверху для секций */
     .section-bg {
         @apply mt-20;
     }
 
-    .element-bg {
-        @apply bg-gray-200
-    }
-
+    /* Заголовок секции: центрирование и отступ снизу */
     .section-title {
-        @apply text-center mb-10 text-4xl text-gray-800;
-        font-weight: normal;
+        @apply text-center mb-10;
     }
 
-    /* Стиль основных заголовков страниц и блоков */
-    h1.page-title,
-    h2.page-title {
-        @apply text-4xl text-gray-700 mb-6 leading-tight;
-        font-weight: normal;
+    /* Подзаголовок секции: центрирование, отступ, ограничение ширины */
+    .section-subtitle {
+        @apply text-center mb-8 max-w-3xl mx-auto text-xl;
     }
 
-    .block-title {
-        @apply text-3xl text-gray-700 mb-6 leading-tight;
-        font-weight: normal;
+    /* ===== Карточки ===== */
+
+    /* Белая карточка с тенью */
+    .card {
+        @apply bg-white shadow-sm overflow-hidden;
     }
 
+    /* Полупрозрачная карточка с блюром */
+    .card-glass {
+        @apply bg-white/80 backdrop-blur-sm shadow-sm overflow-hidden;
+    }
+
+    /* ===== Теги и метки ===== */
+
+    /* Тег категории (например, в блоге) */
+    .tag {
+        @apply inline-flex items-center px-3 py-1 text-xs bg-cyan-100 text-cyan-800 hover:bg-cyan-200 transition-colors;
+    }
+
+    /* Разделитель (горизонтальная линия) */
+    .divider {
+        @apply border-t border-gray-200;
+    }
+
+    /* Подписи контактов (адрес, телефон, email) */
+    .contact-label {
+        @apply text-sm font-semibold text-gray-600 uppercase tracking-wide mb-4;
+    }
+
+    /* Заголовки колонок в футере */
+    .footer-heading {
+        @apply text-sm font-semibold text-white uppercase tracking-wide;
+    }
+
+    /* Заголовок модального окна */
+    .modal-title {
+        @apply text-xl font-semibold text-gray-900;
+    }
+
+    /* ===== Формы: унифицированные поля и кнопки ===== */
+
+    /* Поле ввода */
+    .form-control {
+        @apply w-full px-4 py-2 border border-gray-300 bg-white text-gray-700 placeholder-gray-400 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors;
+    }
+
+    /* Основная кнопка */
     .btn {
-        @apply bg-gray-200 text-gray-600 border border-gray-300 px-6 py-2 rounded-md hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+        @apply bg-cyan-500 text-white px-4 py-2 hover:bg-cyan-600 hover:border-cyan-500 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
     }
 
+    /* Вторичная кнопка */
     .btn-secondary {
-        @apply border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+        @apply border border-gray-300 bg-white text-gray-700 px-4 py-3 hover:bg-gray-50 hover:border-gray-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
     }
 
+    /* Кнопка с обводкой */
     .btn-outline {
-        @apply border border-cyan-500 text-cyan-500 bg-white px-6 py-2 rounded-md hover:bg-cyan-500 hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+        @apply border border-cyan-500 text-cyan-500 bg-white px-6 py-3 hover:bg-cyan-500 hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    textarea {
-        @apply rounded-lg border border-gray-300 bg-white text-gray-700 placeholder-gray-400 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors;
+    /* Компактная кнопка */
+    .btn-sm {
+        @apply px-4 py-2 text-sm;
     }
 
+    /* ===== Обрезка текста ===== */
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 15px;
     }
 
     .line-clamp-4 {
@@ -101,28 +205,31 @@
         overflow: hidden;
     }
 
+    /* ===== Контент из БД (service-content) ===== */
+
+    /* Блок с контентом из базы данных (используется в услугах и кейсах) */
     .service-content {
         @apply text-gray-700 leading-relaxed;
     }
 
     .service-content h1 {
-        @apply text-3xl font-bold text-gray-800 mb-6 mt-8;
+        @apply text-3xl font-medium text-gray-900 mb-6 mt-8;
     }
 
     .service-content h2 {
-        @apply text-2xl font-bold text-gray-800 mb-4 mt-6;
+        @apply text-2xl font-medium text-gray-900 mb-4 mt-6;
     }
 
     .service-content h3 {
-        @apply text-xl font-semibold text-gray-800 mb-3 mt-5;
+        @apply text-xl font-medium text-gray-900 mb-3 mt-5;
     }
 
     .service-content h4 {
-        @apply text-lg font-semibold text-gray-800 mb-2 mt-4;
+        @apply text-lg font-medium text-gray-900 mb-2 mt-4;
     }
 
     .service-content p {
-        @apply mb-4 text-gray-600 leading-relaxed;
+        @apply mb-4 text-gray-700 leading-relaxed;
     }
 
     .service-content ul {
@@ -134,7 +241,7 @@
     }
 
     .service-content li {
-        @apply text-gray-600 leading-relaxed;
+        @apply text-gray-700 leading-relaxed;
     }
 
     .service-content li p {
@@ -146,7 +253,7 @@
     }
 
     .service-content strong {
-        @apply font-semibold text-gray-800;
+        @apply font-medium text-gray-900;
     }
 
     .service-content em {
@@ -157,251 +264,224 @@
         @apply border-l-4 border-cyan-500 pl-4 italic text-gray-600 bg-gray-50 py-2 mb-4;
     }
 
-.service-content code {
-    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
-}
-
-/* Hero Slider Styles */
-.hero-slider {
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-slides {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 500px; /* только для слайдера, если нужно */
-}
-
-/* Hero блок общие стили */
-.hero-container {
-    /* min-height: 500px;  */
-}
-
-/* Сбалансированное позиционирование формы в Hero блоке */
-.hero-container form {
-    margin-top: 2rem; /* Умеренный отступ сверху для формы */
-}
-
-.hero-image-container {
-    max-height: 500px; /* ограничиваем, но не фиксируем */
-    overflow: hidden; /* чтобы ничего не вылезало */
-}
-
-.hero-image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center;
-}
-
-/* Адаптивные размеры */
-@media (max-width: 768px) {
-    .hero-slides,
-    .hero-image-container {
-        max-height: 400px; /* ограничиваем, но не фиксируем */
+    .service-content code {
+        @apply bg-gray-100 px-2 py-1 text-sm font-mono;
     }
-}
-
-@media (max-width: 640px) {
-    .hero-slides,
-    .hero-image-container {
-        max-height: 350px;
-    }
-}
-
-.hero-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    pointer-events: none;
-}
-
-.hero-slide.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-/* Навигация */
-.hero-navigation {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-}
-
-.hero-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    pointer-events: auto;
-    z-index: 10;
-    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
-}
-
-.hero-nav-btn:hover {
-    background: white;
-    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); */
-}
-
-.hero-prev {
-    left: 20px;
-}
-
-.hero-next {
-    right: 20px;
-}
-
-.hero-nav-btn .material-icons {
-    font-size: 24px;
-    color: #374151;
-}
-
-/* Индикаторы */
-.hero-indicators {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    pointer-events: auto;
-    z-index: 10;
-}
-
-.hero-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.hero-indicator.active,
-.hero-indicator:hover {
-    background: white;
-    border-color: white;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .hero-nav-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .hero-prev {
-        left: 10px;
-    }
-
-    .hero-next {
-        right: 10px;
-    }
-
-    .hero-indicators {
-        bottom: 10px;
-    }
-
-    .hero-indicator {
-        width: 10px;
-        height: 10px;
-    }
-}
 
     .service-content pre {
-        @apply bg-gray-100 p-4 rounded mb-4 overflow-x-auto;
+        @apply bg-gray-100 p-4 mb-4 overflow-x-auto;
     }
 
     .service-content pre code {
         @apply bg-transparent px-0 py-0;
     }
-}
 
-button[type="submit"]:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+    /* ===== Hero слайдер ===== */
 
-/* Мобильные и планшетные устройства (до lg=1024px) – убираем ограничение высоты у изображения и отступы */
-@media (max-width: 1023px) {
-    #hero {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+    .hero-slider {
+        position: relative;
+        overflow: hidden;
     }
 
-    .section-bg {
-        margin-top: 30px !important; /* уменьшаем отступ сверху на мобилках */
+    .hero-slides {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 500px;
     }
 
     .hero-container {
-        gap: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        /* min-height: 500px; */
     }
 
-    .hero-container > div {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        width: 100% !important;
+    .hero-container form {
+        margin-top: 2rem;
     }
 
     .hero-image-container {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-height: none !important;
-        width: 100% !important;
-    }
-
-    .hero-image-container img {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        max-height: none !important;
-        object-fit: contain !important;
-    }
-
-    .hero-container p,
-    .hero-container h1 {
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
-        white-space: normal !important;
-    }
-}
-
-/* Десктопная версия (>= 1024px) – картинка на всю высоту контейнера, обрезается */
-@media (min-width: 1024px) {
-    .hero-image-container {
-        height: 400px; /* фиксированная высота, подберите под свой дизайн */
-        max-height: none; /* убираем ограничение, чтобы height работал */
+        max-height: 500px;
         overflow: hidden;
     }
 
     .hero-image-container img {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        object-fit: cover !important; /* заполняет контейнер, обрезая лишнее */
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: center;
+    }
+
+    .hero-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        pointer-events: none;
+    }
+
+    .hero-slide.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .hero-navigation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    .hero-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        pointer-events: auto;
+        z-index: 10;
+    }
+
+    .hero-nav-btn:hover {
+        background: white;
+    }
+
+    .hero-prev {
+        left: 20px;
+    }
+
+    .hero-next {
+        right: 20px;
+    }
+
+    .hero-nav-btn .material-icons {
+        font-size: 24px;
+        color: #374151;
+    }
+
+    .hero-indicators {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        pointer-events: auto;
+        z-index: 10;
+    }
+
+    .hero-indicator {
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .hero-indicator.active,
+    .hero-indicator:hover {
+        background: white;
+        border-color: white;
+    }
+
+    /* ===== Кнопки отправки в disabled состоянии ===== */
+    button[type="submit"]:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* ===== Медиа-правила для адаптивности ===== */
+
+    /* Планшеты и мобильные (до 768px) */
+    @media (max-width: 768px) {
+        .hero-slides,
+        .hero-image-container {
+            max-height: 400px;
+        }
+        .hero-nav-btn {
+            width: 40px;
+            height: 40px;
+        }
+        .hero-prev { left: 10px; }
+        .hero-next { right: 10px; }
+        .hero-indicators { bottom: 10px; }
+        .hero-indicator { width: 10px; height: 10px; }
+    }
+
+    /* Мобильные (< 640px) */
+    @media (max-width: 640px) {
+        .hero-slides,
+        .hero-image-container {
+            max-height: 350px;
+        }
+    }
+
+    /* Мобильные и планшеты (до 1023px) – глобальные корректировки для hero */
+    @media (max-width: 1023px) {
+        #hero {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        .section-bg {
+            margin-top: 30px !important;
+        }
+        .hero-container {
+            gap: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        .hero-container > div {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+        .hero-image-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            max-height: none !important;
+            width: 100% !important;
+        }
+        .hero-image-container img {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            max-height: none !important;
+            object-fit: contain !important;
+        }
+        .hero-container p,
+        .hero-container h1 {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal !important;
+        }
+    }
+
+    /* Десктоп (≥1024px) */
+    @media (min-width: 1024px) {
+        .hero-image-container {
+            height: 400px;
+            max-height: none;
+            overflow: hidden;
+        }
+        .hero-image-container img {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: cover !important;
+        }
     }
 }

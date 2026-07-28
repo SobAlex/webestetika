@@ -123,8 +123,7 @@ class ServiceForm
                         'hour' => 'За час',
                         'month' => 'За месяц',
                     ])
-                    ->default('project')
-                    ->required(),
+                    ->default('project'),
                 Repeater::make('features')
                     ->simple(
                 TextInput::make('feature')

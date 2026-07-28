@@ -1,9 +1,9 @@
 {{-- Блок согласия на обработку персональных данных --}}
 <div class="consent-wrapper" style="margin: 15px 0;">
-    <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-weight: normal;">
+    <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; weight: normal;">
         <input type="checkbox" class="consent-checkbox" name="consent" value="1"
             style="margin-top: 2px; flex-shrink: 0; width: 18px; height: 18px;" required>
-        <span style="font-size: 14px; line-height: 1.4;">
+        <span style="line-height: 1.4;" class="text-sm">
             Я даю согласие на обработку моих персональных данных в соответствии с
             <a href="{{ route('soglasie') }}" target="_blank" style="text-decoration: underline; color: #007bff;">
                 Согласием на обработку персональных данных

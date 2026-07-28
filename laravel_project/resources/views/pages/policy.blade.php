@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-8 max-w-3xl">
-        <h1 class="text-2xl font-bold mb-2 text-center">Политика конфиденциальности</h1>
+        <h1 class="text-2xl bold mb-2 text-center">Политика конфиденциальности</h1>
         <p class="text-center text-gray-600 text-sm mb-8">Редакция от 14.07.2026</p>
 
         <div class="prose prose-blue max-w-none leading-relaxed">

@@ -14,7 +14,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Instrument Sans", ...defaultTheme.fontFamily.sans],
+                train: ["Train One", "system-ui"],
+                playfair: ["Playfair Display", "serif"],
             },
             colors: {
                 primary: {
@@ -74,5 +76,3 @@ export default {
         require("@tailwindcss/aspect-ratio"),
     ],
 };
-
-

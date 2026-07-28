@@ -2,14 +2,14 @@
 <div class="hero-container flex flex-col lg:flex-row gap-4">
     <!-- Левая часть (заголовок, описание, форма) – на мобилках будет второй, на десктопах первым -->
     <div
-        class="w-full lg:basis-1/2 lg:basis-2/3 lg:w-auto flex flex-col justify-between px-4 pt-4 pb-16 text-center sm:text-left order-2 lg:order-1">
+        class="w-full lg:basis-1/2 lg:basis-2/3 lg:w-auto flex flex-col justify-between px-4 lg:px-0 pt-4 pb-16 text-center sm:text-left order-2 lg:order-1">
         <div>
-            <h1 class="text-3xl leading-relaxed mb-6 sm:mb-8">
+            <h1 class="mb-6 sm:mb-8">
                 {{ $activeHeroes->title }}
             </h1>
 
             @if ($activeHeroes->description)
-                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                <p class="mb-8">
                     {{ $activeHeroes->description }}
                 </p>
             @endif
@@ -24,7 +24,7 @@
 
     <!-- Правая часть (картинка) – на мобилках будет первой, на десктопах второй -->
     <div
-        class="w-full lg:basis-1/2 lg:basis-1/3 lg:w-auto hero-image-container px-0 lg:px-4 py-6 overflow-hidden flex items-center justify-center order-1 lg:order-2">
+        class="w-full lg:basis-1/2 lg:basis-1/3 lg:w-auto hero-image-container py-6 overflow-hidden flex items-center justify-center order-1 lg:order-2">
         @if ($activeHeroes->image)
             <img src="{{ $activeHeroes->image_url }}" alt="{{ $activeHeroes->title }}"
                 class="w-full h-auto max-h-64 lg:max-h-80 xl:max-h-[400px] object-contain" loading="eager" decoding="async"

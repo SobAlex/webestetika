@@ -14,50 +14,41 @@
     </div>
 
     <div class="py-12">
-        <!-- Заголовок страницы -->
         <div class="text-center mb-12">
-            <h1 class="page-title">Блог о SEO</h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h1>Блог о SEO</h1>
+            <p class="section-subtitle">
                 Актуальные статьи о поисковой оптимизации, веб-аналитике и продвижении сайтов.
                 Делимся опытом и рассказываем о последних трендах в SEO.
             </p>
         </div>
 
-        <!-- Категории -->
         @if ($activeBlogCategories && count($activeBlogCategories) > 0)
             <div class="grid md:grid-cols-3 gap-6 mb-12">
                 @foreach ($activeBlogCategories as $category)
                     <a href="{{ route('blog.category', $category['slug']) }}"
-                        class="group bg-white/80 backdrop-blur-sm rounded-md shadow-sm p-6 hover:shadow-md transition-shadow">
+                        class="group bg-white/80 backdrop-blur-sm shadow-sm p-6 hover:shadow-md transition-shadow">
                         <div class="flex items-center mb-4">
-                            <div class="p-3 rounded-md" style="background-color: {{ $category['color'] }}20">
-                                <i class="material-icons text-2xl"
-                                    style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
-                            </div>
-                            <h2
-                                class="text-xl font-semibold text-gray-900 ml-4 group-hover:text-cyan-600 transition-colors">
+                            <i class="material-icons text-2xl mr-4"
+                                style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                            <h2 class="group-hover:text-cyan-600 transition-colors mb-0">
                                 {{ $category['name'] }}
                             </h2>
                         </div>
-                        <p class="text-gray-600">
-                            {{ $category['description'] ?? 'Статьи по данной теме' }}
-                        </p>
+                        <p>{{ $category['description'] ?? 'Статьи по данной теме' }}</p>
                     </a>
                 @endforeach
             </div>
         @endif
 
-        <!-- Последние статьи -->
         <div class="mb-8">
-            <h2 class="block-title text-center">Последние статьи</h2>
-
+            <h2 class="section-title">Последние статьи</h2>
             <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
                 @foreach ($articles as $article)
-                    <article
-                        class="bg-white/80 backdrop-blur-sm rounded-md shadow-sm overflow-hidden">
+                    <article class="card-glass">
                         @if ($article->image)
                             <div class="aspect-video overflow-hidden">
-                                <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $article->image_url }}" alt="{{ $article->title }}"
+                                    class="w-full h-full object-cover">
                             </div>
                         @else
                             <div
@@ -77,41 +68,29 @@
                         <div class="p-6">
                             <div class="flex items-center mb-3">
                                 @if ($article->hasActiveCategory())
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-cyan-100 text-cyan-800">
-                                        {{ $article->active_category_name }}
-                                    </span>
+                                    <span class="tag">{{ $article->active_category_name }}</span>
                                 @endif
-                                <span class="text-gray-500 text-sm ml-auto">
-                                    {{ $article->formatted_published_at }}
-                                </span>
+                                <span class="ml-auto">{{ $article->formatted_published_at }}</span>
                             </div>
 
                             <a href="{{ $article->url }}" class="group">
-                                <h3 class="text-xl font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+                                <h3 class="line-clamp-2 group-hover:text-cyan-600 transition-colors">
                                     {{ $article->title }}
                                 </h3>
                             </a>
 
-                            <p class="text-gray-600 mb-4 line-clamp-3">
-                                {{ $article->excerpt }}
-                            </p>
+                            <p class="line-clamp-3">{{ $article->excerpt }}</p>
 
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-500 flex items-center">
-                                    <i class="material-icons text-xs mr-1">schedule</i>
-                                    {{ $article->reading_time ?? '5' }} мин чтения
-                                </span>
+                            <div class="meta-info">
+                                <i class="material-icons text-xs mr-1">schedule</i>
+                                {{ $article->reading_time ?? '5' }} мин чтения
                             </div>
                         </div>
                     </article>
                 @endforeach
             </div>
 
-            <!-- Пагинация -->
-            <div class="mt-12">
-                {{ $articles->links() }}
-            </div>
+            <div class="mt-12">{{ $articles->links() }}</div>
         </div>
     </div>
 @endsection
