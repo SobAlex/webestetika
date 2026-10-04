@@ -8,7 +8,7 @@
     @endphp
 
     <!-- Строка с полями и кнопкой -->
-    <div class="flex flex-col gap-4 w-full lg:flex-row lg:space-x-4 lg:items-end lg:justify-start">
+    <div class="flex w-full flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end">
         <div class="flex-1">
             <label for="name_hero{{ $idSuffix }}" class="block mb-1">Имя:</label>
             <input type="text" id="name_hero{{ $idSuffix }}" name="name" required placeholder="Ваше имя"
@@ -35,7 +35,7 @@
             @endif
         </div>
 
-        <button type="submit" class="btn whitespace-nowrap self-start lg:self-auto"
+        <button type="submit" class="btn shrink-0 self-start lg:self-auto"
             aria-label="{{ $buttonAriaLabel }}">
             {{ $buttonText }}
         </button>

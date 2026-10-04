@@ -45,8 +45,6 @@ class IndustryCategory extends Model implements PublishableInterface
         return $query->orderBy('sort_order', 'asc')->orderBy('name', 'asc');
     }
 
-    // ниже пока не разобраны
-
     /**
      * Check if the category is published.
      */

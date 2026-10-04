@@ -85,8 +85,7 @@
                             <a href="{{ route('blog.category', $category['slug']) }}"
                                 class="group bg-white shadow-sm p-6 hover:shadow-md transition-shadow">
                                 <div class="flex items-center mb-4">
-                                    <i class="material-icons text-xl mr-4"
-                                        style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                                    <i class="material-icons mr-4 text-xl {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                                     <h3 class="group-hover:text-cyan-600 transition-colors mb-0">
                                         {{ $category['name'] }}
                                     </h3>

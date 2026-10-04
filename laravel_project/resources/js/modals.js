@@ -3,12 +3,16 @@ function openServiceOrderModal(serviceName) {
     console.log("Opening modal for service:", serviceName);
     document.getElementById("service_display").value = serviceName;
     document.getElementById("service_name_input").value = serviceName;
-    document.getElementById("serviceOrderModal").style.display = "flex";
+    const modal = document.getElementById("serviceOrderModal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
 }
 
 function closeServiceOrderModal() {
     console.log("Closing modal");
-    document.getElementById("serviceOrderModal").style.display = "none";
+    const modal = document.getElementById("serviceOrderModal");
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
 }
 
 // Fallback modal functions in case JS modules don't load
@@ -17,14 +21,18 @@ if (typeof window.openServiceOrderModal === "undefined") {
         console.log("Opening modal for service:", serviceName);
         document.getElementById("service_display").value = serviceName;
         document.getElementById("service_name_input").value = serviceName;
-        document.getElementById("serviceOrderModal").style.display = "flex";
+        const modal = document.getElementById("serviceOrderModal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
     };
 }
 
 if (typeof window.closeServiceOrderModal === "undefined") {
     window.closeServiceOrderModal = function () {
         console.log("Closing modal");
-        document.getElementById("serviceOrderModal").style.display = "none";
+        const modal = document.getElementById("serviceOrderModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
     };
 }
 

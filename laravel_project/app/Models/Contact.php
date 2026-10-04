@@ -69,21 +69,23 @@ class Contact extends Model
      */
     public static function getContactData(): array
     {
-        $contact = static::getInstance();
+        return once(function () {
+            $contact = static::getInstance();
 
-        return [
-            'email' => $contact->email,
-            'phone' => $contact->phone,
-            'address' => $contact->address,
-            'working_hours' => $contact->working_hours,
-            'social' => [
-                'telegram' => $contact->social_telegram,
-                'whatsapp' => $contact->social_whatsapp,
-                'vk' => $contact->social_vk,
-                'instagram' => $contact->social_instagram,
-                'youtube' => $contact->social_youtube,
-            ],
-        ];
+            return [
+                'email' => $contact->email,
+                'phone' => $contact->phone,
+                'address' => $contact->address,
+                'working_hours' => $contact->working_hours,
+                'social' => [
+                    'telegram' => $contact->social_telegram,
+                    'whatsapp' => $contact->social_whatsapp,
+                    'vk' => $contact->social_vk,
+                    'instagram' => $contact->social_instagram,
+                    'youtube' => $contact->social_youtube,
+                ],
+            ];
+        });
     }
 
     /**

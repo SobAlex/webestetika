@@ -1,8 +1,8 @@
 {{-- Одиночный Hero блок --}}
-<div class="hero-container flex flex-col lg:flex-row gap-4">
+<div class="hero-container flex flex-col gap-6 lg:flex-row lg:items-center">
     <!-- Левая часть (заголовок, описание, форма) – на мобилках будет второй, на десктопах первым -->
     <div
-        class="w-full lg:basis-1/2 lg:basis-2/3 lg:w-auto flex flex-col justify-between px-4 lg:px-0 pt-4 pb-16 text-center sm:text-left order-2 lg:order-1">
+        class="order-2 flex w-full flex-col justify-between pt-4 pb-8 text-center sm:text-left lg:order-1 lg:w-auto lg:basis-2/3">
         <div>
             <h1 class="mb-6 sm:mb-8">
                 {{ $activeHeroes->title }}
@@ -24,14 +24,14 @@
 
     <!-- Правая часть (картинка) – на мобилках будет первой, на десктопах второй -->
     <div
-        class="w-full lg:basis-1/2 lg:basis-1/3 lg:w-auto hero-image-container py-6 overflow-hidden flex items-center justify-center order-1 lg:order-2">
+        class="hero-image-container order-1 flex w-full items-center justify-center overflow-hidden lg:order-2 lg:w-auto lg:basis-1/3">
         @if ($activeHeroes->image)
             <img src="{{ $activeHeroes->image_url }}" alt="{{ $activeHeroes->title }}"
-                class="w-full h-auto max-h-64 lg:max-h-80 xl:max-h-[400px] object-contain" loading="eager" decoding="async"
+                class="h-auto max-h-64 w-full object-contain sm:max-h-80 lg:max-h-96" loading="eager" decoding="async"
                 fetchpriority="high" />
         @else
             <img src="{{ asset('images/human.webp') }}" alt="{{ $activeHeroes->title }}"
-                class="w-full h-auto max-h-64 lg:max-h-80 xl:max-h-[400px] object-contain" loading="eager"
+                class="h-auto max-h-64 w-full object-contain sm:max-h-80 lg:max-h-96" loading="eager"
                 decoding="async" fetchpriority="high" />
         @endif
     </div>

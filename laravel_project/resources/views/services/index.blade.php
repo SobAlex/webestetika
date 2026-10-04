@@ -52,7 +52,7 @@
                                 </ul>
                             @endif
                         </div>
-                        <div class="flex items-center justify-between mt-6 pt-4 border-t border-cyan-500">
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-cyan-500 pt-4">
                             <div class="font-medium text-lg">
                                 @if ($service->price_from)
                                     <div>{{ $service->formatted_price }}</div>

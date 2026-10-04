@@ -42,21 +42,22 @@ class BlogService
      */
     public function getActiveCategories(): SupportCollection
     {
-        return BlogCategory::active()
-            ->ordered()
-            ->get()
-            ->map(function ($category) {
-                return [
-                    'slug' => $category->slug,
-                    'name' => $category->name,
-                    'icon' => $category->icon ?: 'article',
-                    'color' => $category->color,
-                    'description' => $category->description
-                ];
-            });
+        return once(function () {
+            return BlogCategory::active()
+                ->ordered()
+                ->get()
+                ->map(function ($category) {
+                    return [
+                        'slug' => $category->slug,
+                        'name' => $category->name,
+                        'icon' => $category->icon ?: 'article',
+                        'color' => $category->color,
+                        'description' => $category->description,
+                        'route' => 'blog.category',
+                    ];
+                });
+        });
     }
-
-    // ниже пока не разобранные методы
 
     /**
      * Get posts by category.
@@ -99,47 +100,34 @@ class BlogService
      */
     public function getPostByCategoryAndSlug(string $categorySlug, string $slug): ?Blog
     {
-        return Blog::published()
+        $query = Blog::query()
             ->with('blogCategory')
-            ->whereHas('blogCategory', function($query) use ($categorySlug) {
-                $query->where('slug', $categorySlug)->where('is_active', true);
-            })
-            ->where('slug', $slug)
-            ->first();
-    }
-
-    /**
-     * Get blog post by category and slug (including unpublished).
-     */
-    public function getPostByCategoryAndSlugWithUnpublished(string $categorySlug, string $slug): ?Blog
-    {
-        return Blog::with('blogCategory')
-            ->whereHas('blogCategory', function($query) use ($categorySlug) {
+            ->whereHas('blogCategory', function ($query) use ($categorySlug) {
                 $query->where('slug', $categorySlug);
             })
-            ->where('slug', $slug)
-            ->first();
+            ->where('slug', $slug);
+
+        if (! auth()->check()) {
+            $query->published();
+        }
+
+        return $query->first();
     }
 
     /**
-     * Get blog post by slug only (published only).
+     * Get a blog post by slug. Drafts are visible only to a signed-in editor.
      */
     public function getPostBySlug(string $slug): ?Blog
     {
-        return Blog::published()
+        $query = Blog::query()
             ->with('blogCategory')
-            ->where('slug', $slug)
-            ->first();
-    }
+            ->where('slug', $slug);
 
-    /**
-     * Get blog post by slug only (including unpublished).
-     */
-    public function getPostBySlugWithUnpublished(string $slug): ?Blog
-    {
-        return Blog::with('blogCategory')
-            ->where('slug', $slug)
-            ->first();
+        if (! auth()->check()) {
+            $query->published();
+        }
+
+        return $query->first();
     }
 
     /**

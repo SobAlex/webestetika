@@ -7,8 +7,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -19,63 +17,20 @@ class ServicesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('title')
+                    ->label('Заголовок')
                     ->searchable()
-                    ->url(fn ($record) => ServiceResource::getUrl('edit', ['record' => $record]))
-                    ->openUrlInNewTab(false),
-                TextColumn::make('slug')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('icon')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('color')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                ImageColumn::make('image')
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->url(fn ($record) => ServiceResource::getUrl('edit', ['record' => $record])),
                 TextColumn::make('price_from')
+                    ->label('Цена')
                     ->money('RUB')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('price_type')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'project' => 'success',
-                        'hour' => 'warning',
-                        'month' => 'info',
-                        default => 'gray',
-                    })
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->sortable(),
                 IconColumn::make('is_published')
                     ->label('Опубликована')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                IconColumn::make('is_featured')
-                    ->label('Рекомендуемая')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->boolean(),
                 IconColumn::make('show_on_homepage')
                     ->label('На главной')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextInputColumn::make('sort_order')
-                    ->label('Сортировка')
-                    ->rules(['integer', 'min:0'])
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->boolean(),
             ])
             ->filters([
                 TernaryFilter::make('is_published')
@@ -83,18 +38,6 @@ class ServicesTable
                     ->placeholder('Все услуги')
                     ->trueLabel('Только опубликованные')
                     ->falseLabel('Только неопубликованные')
-                    ->native(false),
-                TernaryFilter::make('is_featured')
-                    ->label('Рекомендуемая')
-                    ->placeholder('Все услуги')
-                    ->trueLabel('Только рекомендуемые')
-                    ->falseLabel('Только обычные')
-                    ->native(false),
-                TernaryFilter::make('show_on_homepage')
-                    ->label('На главной странице')
-                    ->placeholder('Все услуги')
-                    ->trueLabel('Только на главной')
-                    ->falseLabel('Не на главной')
                     ->native(false),
             ])
             ->reorderable('sort_order')

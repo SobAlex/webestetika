@@ -10,10 +10,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\BlogCategoryController;
-use App\Http\Controllers\IndustryCategoryController;
 use App\Http\Controllers\MediaLibraryController;
-use App\Http\Controllers\DemoController;
+use App\Http\Controllers\MediaController;
 
 
 // ============================================================================
@@ -49,19 +47,19 @@ Route::prefix('blog')->name('blog.')->group(function () {
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 
 // Contact forms
-Route::prefix('contact')->name('contact.')->group(function () {
+Route::prefix('contact')->name('contact.')->middleware('throttle:10,1')->group(function () {
     Route::post('/hero', [ContactController::class, 'submitHero'])->name('hero');
     Route::post('/', [ContactController::class, 'submitContact'])->name('submit');
 });
-Route::post('/service/order', [ContactController::class, 'submitServiceOrder'])->name('service.order');
+Route::post('/service/order', [ContactController::class, 'submitServiceOrder'])
+    ->middleware('throttle:10,1')
+    ->name('service.order');
 
 // Media Library (protected routes)
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/media', [MediaLibraryController::class, 'index'])->name('media.library');
+    Route::post('/admin/media/upload', [MediaController::class, 'upload'])->name('media.upload');
 });
-
-// Demo routes
-Route::get('/demo/media', [DemoController::class, 'index'])->name('demo.media');
 
 // Sitemap
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
@@ -71,19 +69,6 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 // Route::get('/about', [PageController::class, 'about'])->name('about');
 // Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
-
-// ============================================================================
-// ADMIN ROUTES
-// ============================================================================
-
-// Admin API routes for categories (protected)
-Route::prefix('api')->name('api.')->middleware(['auth', 'web'])->group(function () {
-    // Blog Categories API
-    Route::resource('blog-categories', BlogCategoryController::class);
-
-    // Industry Categories API
-    Route::resource('industry-categories', IndustryCategoryController::class);
-});
 
 Route::view('/soglasie', 'pages.soglasie')->name('soglasie');
 Route::view('/policy', 'pages.policy')->name('policy');

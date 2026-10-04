@@ -5,11 +5,13 @@ namespace App\Filament\Resources\Contacts;
 use App\Filament\Resources\Contacts\Pages\EditContact;
 use App\Filament\Resources\Contacts\Pages\ListContacts;
 use App\Filament\Resources\Contacts\Schemas\ContactForm;
+use App\Filament\Resources\Contacts\Tables\ContactsTable;
 use App\Models\Contact;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 
 class ContactResource extends Resource
 {
@@ -23,9 +25,18 @@ class ContactResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Контакты';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Сайт';
+
+    protected static ?int $navigationSort = 5;
+
     public static function form(Schema $schema): Schema
     {
         return ContactForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return ContactsTable::configure($table);
     }
 
     public static function getRelations(): array

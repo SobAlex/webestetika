@@ -47,8 +47,6 @@ class BlogCategory extends Model implements PublishableInterface
 
 
 
-    // ниже не разобраны
-
     public function blogs(): HasMany
     {
         return $this->hasMany(Blog::class, 'category_id');

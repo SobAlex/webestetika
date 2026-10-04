@@ -14,6 +14,7 @@ class ContactRequest extends BaseRequest
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
             'message' => 'required|string|max:2000',
+            'consent' => 'accepted',
         ];
     }
 }

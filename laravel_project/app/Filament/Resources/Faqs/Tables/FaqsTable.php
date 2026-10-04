@@ -15,39 +15,18 @@ class FaqsTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('question')
+                    ->label('Вопрос')
                     ->searchable(),
-                TextColumn::make('sort_order')
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('is_active')
                     ->label('Активно')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->boolean(),
                 IconColumn::make('show_on_homepage')
                     ->label('На главной')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->boolean(),
                 IconColumn::make('show_on_services')
                     ->label('На услугах')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
+                    ->boolean(),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -56,6 +35,7 @@ class FaqsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->reorderable('sort_order');
     }
 }

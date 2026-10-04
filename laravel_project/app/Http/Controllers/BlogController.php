@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\BlogService;
-use App\Http\Controllers\BlogCategoryController;
 
 class BlogController extends Controller
 {
     public function __construct(
-        private BlogService $blogService,
-        private BlogCategoryController $blogCategoryController
+        private BlogService $blogService
     ) {}
 
     // ============================================================================
@@ -42,11 +40,11 @@ class BlogController extends Controller
     }
 
     /**
-     * Показать конкретную статью (включая неопубликованные)
+     * Показать опубликованную статью.
      */
     public function show($category, $slug)
     {
-        $article = $this->blogService->getPostByCategoryAndSlugWithUnpublished($category, $slug);
+        $article = $this->blogService->getPostByCategoryAndSlug($category, $slug);
 
         if (!$article) {
             abort(404);
@@ -58,11 +56,11 @@ class BlogController extends Controller
     }
 
     /**
-     * Показать статью без категории (включая неопубликованные)
+     * Показать опубликованную статью без категории.
      */
     public function showWithoutCategory($slug)
     {
-        $article = $this->blogService->getPostBySlugWithUnpublished($slug);
+        $article = $this->blogService->getPostBySlug($slug);
 
         if (!$article) {
             abort(404);
@@ -71,48 +69,5 @@ class BlogController extends Controller
         $relatedArticles = $this->blogService->getRelatedPosts($article);
 
         return view('blog.article', compact('article', 'relatedArticles'));
-    }
-
-    // ============================================================================
-    // LEGACY METHODS (для обратной совместимости)
-    // ============================================================================
-
-    /**
-     * SEO новости (legacy)
-     * @deprecated Используйте /blog/category/seo-news
-     */
-    public function seoNews()
-    {
-        return $this->category('seo-news');
-    }
-
-    /**
-     * Аналитика (legacy)
-     * @deprecated Используйте /blog/category/analytics
-     */
-    public function analytics()
-    {
-        return $this->category('analytics');
-    }
-
-    /**
-     * Советы (legacy)
-     * @deprecated Используйте /blog/category/tips
-     */
-    public function tips()
-    {
-        return $this->category('tips');
-    }
-
-    // ============================================================================
-    // API METHODS
-    // ============================================================================
-
-    /**
-     * Получить последние статьи для главной страницы
-     */
-    public function getLatestArticlesForHomepage($limit = 4)
-    {
-        return $this->blogService->getLatestPostsForHomepage($limit);
     }
 }

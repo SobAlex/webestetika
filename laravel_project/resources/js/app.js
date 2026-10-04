@@ -13,7 +13,29 @@ Alpine.start();
 document.addEventListener("DOMContentLoaded", function () {
     initPhoneMask();
     initFAQ();
+    initConsentCheckboxes();
 });
+
+function initConsentCheckboxes() {
+    document.querySelectorAll("form").forEach(function (form) {
+        const checkbox = form.querySelector(".consent-checkbox");
+        if (!checkbox) {
+            return;
+        }
+
+        const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+        if (!submitButton) {
+            return;
+        }
+
+        const sync = function () {
+            submitButton.disabled = !checkbox.checked;
+        };
+
+        sync();
+        checkbox.addEventListener("change", sync);
+    });
+}
 
 // FAQ functionality
 function initFAQ() {

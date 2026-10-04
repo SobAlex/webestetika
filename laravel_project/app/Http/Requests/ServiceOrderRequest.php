@@ -16,6 +16,7 @@ class ServiceOrderRequest extends BaseRequest
             'service_name' => 'required|string|max:255',
             'message' => 'nullable|string|max:2000',
             'attachment' => 'nullable|file|max:10240|mimes:pdf,doc,docx,txt,jpg,jpeg,png,gif',
+            'consent' => 'accepted',
         ];
     }
 }

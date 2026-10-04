@@ -28,41 +28,7 @@ class CaseController extends Controller
         $selectedTag = null;
         $activeCategories = $this->caseService->getActiveCategories();
 
-        // dd($casesData);
-
         return view('cases.index', compact('casesData', 'title', 'selectedTag', 'activeCategories'));
-    }
-
-    /**
-     * Кейсы по одежде
-     */
-    public function clothing()
-    {
-        return $this->filterByTag('clothing', 'Кейсы SEO продвижения: Одежда');
-    }
-
-    /**
-     * Кейсы по производству
-     */
-    public function production()
-    {
-        return $this->filterByTag('production', 'Кейсы SEO продвижения: Производство');
-    }
-
-    /**
-     * Кейсы по электронике
-     */
-    public function electronics()
-    {
-        return $this->filterByTag('electronics', 'Кейсы SEO продвижения: Электроника');
-    }
-
-    /**
-     * Кейсы по мебели
-     */
-    public function furniture()
-    {
-        return $this->filterByTag('furniture', 'Кейсы SEO продвижения: Мебель');
     }
 
     /**
@@ -102,11 +68,11 @@ class CaseController extends Controller
     }
 
     /**
-     * Страница отдельного кейса (включая неопубликованные)
+     * Страница опубликованного кейса.
      */
     public function show($id)
     {
-        $case = $this->caseService->getCaseByIdWithUnpublished($id);
+        $case = $this->caseService->getCaseById($id);
 
         if (!$case) {
             abort(404);
@@ -123,22 +89,5 @@ class CaseController extends Controller
         ];
 
         return view('cases.show', compact('caseData', 'serviceData', 'categoryInfo'));
-    }
-
-    /**
-     * Получить последние кейсы для главной страницы
-     */
-    public function getLatestCasesForHomepage()
-    {
-        $cases = $this->caseService->getLatestCasesForHomepage();
-        return $this->caseService->transformCasesForTemplate($cases);
-    }
-
-    /**
-     * Получить активные категории
-     */
-    public function getActiveCategories()
-    {
-        return $this->caseService->getActiveCategories();
     }
 }

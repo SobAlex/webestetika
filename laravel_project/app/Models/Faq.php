@@ -37,8 +37,6 @@ class Faq extends Model implements PublishableInterface
                     ->orderBy('sort_order');
     }
 
-    // ниже не разобрано
-
     /**
      * Check if the FAQ is published.
      */

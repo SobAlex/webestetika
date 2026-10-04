@@ -98,11 +98,6 @@ class ProjectCase extends Model implements ImageableInterface, PublishableInterf
         'results' => 'array',
     ];
 
-        // скопы реализованы в трейте
-
-        // методы ниже пока не разобраны. Разобраться, где применяются. Не нужные удалить.
-
-
     /**
      * Get the user that owns the case.
      */
@@ -406,15 +401,6 @@ class ProjectCase extends Model implements ImageableInterface, PublishableInterf
             }
         });
 
-        static::updating(function ($case) {
-            \Illuminate\Support\Facades\Log::info('Updating case', [
-                'id' => $case->id,
-                'case_id' => $case->case_id,
-                'meta_title' => $case->meta_title,
-                'meta_description' => $case->meta_description,
-                'dirty' => $case->getDirty()
-            ]);
-        });
     }
 
 }

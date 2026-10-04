@@ -54,7 +54,7 @@
                                 </ul>
                             @endif
                         </div>
-                        <div class="flex items-center justify-between mt-6 pt-4 border-t border-cyan-500">
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-cyan-500 pt-4">
                             <div class="text-cyan-500 font-medium text-lg">
                                 @if ($service->price_from)
                                     <div>{{ $service->formatted_price }}</div>
@@ -94,8 +94,7 @@
                     <li class="bg-white/80 backdrop-blur-sm shadow-sm p-4 flex justify-center items-start">
                         <div class="flex flex-col items-center">
                             @if ($block->icon)
-                                <i class="material-icons md-48 mb-3" aria-label="{{ $block->title }}" role="img"
-                                    style="color: {{ $block->color ?: '#06b6d4' }};">{{ $block->icon }}</i>
+                                <i class="material-icons mb-3 text-5xl {{ \App\Support\Accent::text($block->color ?: '#06b6d4') }}" aria-label="{{ $block->title }}" role="img">{{ $block->icon }}</i>
                             @endif
                             <div class="text-center">
                                 <h3>{{ $block->title }}</h3>
@@ -126,7 +125,7 @@
                             <img src="{{ $case['image_url'] }}" alt="{{ $case['title'] }}"
                                 class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                            <div class="absolute bottom-4 left-4">
+                            <div class="absolute right-4 bottom-4 left-4">
                                 @if ($case['has_valid_category'])
                                     <a href="{{ route('cases.category', $case['industry']) }}"
                                         class="bg-cyan-500 hover:bg-cyan-600 px-3 py-1 transition-colors inline-block text-white">
@@ -146,9 +145,9 @@
                             <div class="space-y-2">
                                 @if (!empty($case['results']) && is_array($case['results']))
                                     @foreach (array_slice($case['results'], 0, 2) as $result)
-                                        <div class="flex items-center">
-                                            <i class="material-icons text-cyan-500 mr-2 text-base">trending_up</i>
-                                            <span>{{ $result }}</span>
+                                        <div class="flex items-start">
+                                            <i class="material-icons mr-2 shrink-0 text-base text-cyan-500">trending_up</i>
+                                            <span class="min-w-0">{{ $result }}</span>
                                         </div>
                                     @endforeach
                                 @endif
@@ -351,8 +350,7 @@
                 <div>
                     <label for="message_contact">Сообщение</label>
                     <textarea name="message" id="message_contact" rows="5" required placeholder="Расскажите о вашем проекте..."
-                        aria-required="true" aria-label="Сообщение" class="form-control mt-1">
-                    </textarea>
+                        aria-required="true" aria-label="Сообщение" class="form-control mt-1">{{ old('message') }}</textarea>
                 </div>
                 @include('partials._consent')
                 <div><button type="submit" class="btn" aria-label="Отправить сообщение">Отправить</button></div>

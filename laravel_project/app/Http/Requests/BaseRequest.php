@@ -33,6 +33,7 @@ abstract class BaseRequest extends FormRequest
             'unique' => 'Поле :attribute должно быть уникальным.',
             'exists' => 'Выбранное значение для :attribute недействительно.',
             'boolean' => 'Поле :attribute должно быть логическим значением.',
+            'accepted' => 'Нужно согласие на обработку персональных данных.',
             'integer' => 'Поле :attribute должно быть целым числом.',
             'array' => 'Поле :attribute должно быть массивом.',
             'image' => 'Поле :attribute должно быть изображением.',
@@ -61,6 +62,7 @@ abstract class BaseRequest extends FormRequest
             'is_published' => 'публикация',
             'is_active' => 'активность',
             'sort_order' => 'порядок сортировки',
+            'consent' => 'согласие на обработку персональных данных',
         ];
     }
 }

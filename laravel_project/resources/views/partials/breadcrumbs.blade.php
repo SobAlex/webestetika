@@ -2,8 +2,8 @@
     {{-- JSON-LD структурированные данные --}}
     @include('partials.breadcrumbs-json-ld', compact('breadcrumbs'))
 
-    <nav class="flex mb-8" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-3" itemscope
+    <nav class="mb-8" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-x-1 gap-y-2 md:gap-x-3" itemscope
             itemtype="https://schema.org/BreadcrumbList">
             <!-- Главная страница всегда первая -->
             <li class="inline-flex items-center" itemprop="itemListElement" itemscope
@@ -17,13 +17,13 @@
 
             <!-- Остальные крошки -->
             @foreach ($breadcrumbs as $key => $breadcrumb)
-                <li @if ($loop->last) aria-current="page" @endif itemprop="itemListElement" itemscope
+                <li class="min-w-0 max-w-full" @if ($loop->last) aria-current="page" @endif itemprop="itemListElement" itemscope
                     itemtype="https://schema.org/ListItem">
-                    <div class="flex items-center">
-                        <i class="material-icons text-gray-400 text-sm">chevron_right</i>
+                    <div class="flex min-w-0 items-center">
+                        <i class="material-icons shrink-0 text-sm text-gray-400">chevron_right</i>
                         @if ($loop->last)
                             <!-- Последний элемент - не ссылка -->
-                            <span class="ml-1 md:ml-2 @if (isset($breadcrumb['truncate']) && $breadcrumb['truncate']) line-clamp-1 @endif"
+                            <span class="ml-1 min-w-0 truncate md:ml-2 @if (isset($breadcrumb['truncate']) && $breadcrumb['truncate']) max-w-[70vw] sm:max-w-md @endif"
                                 itemprop="name">
                                 {{ $breadcrumb['title'] }}
                             </span>

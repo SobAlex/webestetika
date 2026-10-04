@@ -9,12 +9,10 @@ use App\Services\CaseService;
 use App\Services\BlogService;
 use App\Services\FaqService;
 use App\Services\ReviewService;
-use App\Services\ContactService;
 
 class HomeController extends Controller
 {
     public function __construct(
-
         private HeroService $heroService,
         private ServiceService $serviceService,
         private WhyUsService $whyUsService,
@@ -22,8 +20,6 @@ class HomeController extends Controller
         private BlogService $blogService,
         private FaqService $faqService,
         private ReviewService $reviewService,
-        private ContactService $contactService
-
     ) {}
 
     /**
@@ -39,11 +35,6 @@ class HomeController extends Controller
         $latestArticles = $this->blogService->getLatestPostsForHomepage();
         $homepageFaqs = $this->faqService->getHomepageFaqs();
         $randomReviews = $this->reviewService->getRandomReviewsForHomepage();
-        $contactInfo = $this->contactService->getContactInfo();
-
-        // Получаем категории для навигации
-        $activeCaseCategories = $this->caseService->getActiveCategories();
-        $activeBlogCategories = $this->blogService->getActiveCategories();
 
         return view('welcome', compact(
             'activeHeroes',
@@ -53,9 +44,6 @@ class HomeController extends Controller
             'latestArticles',
             'homepageFaqs',
             'randomReviews',
-            'contactInfo',
-            'activeCaseCategories',
-            'activeBlogCategories'
         ));
     }
 }

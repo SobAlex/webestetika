@@ -7,8 +7,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -19,63 +17,16 @@ class BlogsTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('title')
+                    ->label('Заголовок')
                     ->searchable()
-                    ->url(fn ($record) => BlogResource::getUrl('edit', ['record' => $record]))
-                    ->openUrlInNewTab(false),
-                TextColumn::make('slug')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-
-                // === ИЗОБРАЖЕНИЕ В ТАБЛИЦЕ (правильная настройка) ===
-                ImageColumn::make('image')
-                    ->label('Изображение')
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->checkFileExistence(false)
-                    ->defaultImageUrl(function ($record) {
-                        $image = $record->image;
-
-                        // Если image — массив, берём первый элемент
-                        if (is_array($image)) {
-                            $image = $image[array_key_first($image)] ?? null;
-                        }
-
-                        return $image ? asset('storage/' . $image) : null;
-                    }),
-
+                    ->url(fn ($record) => BlogResource::getUrl('edit', ['record' => $record])),
                 TextColumn::make('blogCategory.name')
                     ->label('Категория')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('meta_title')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
                 IconColumn::make('is_published')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextInputColumn::make('sort_order')
-                    ->rules(['integer', 'min:0'])
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('user.name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Опубликована')
+                    ->boolean(),
             ])
             ->filters([
                 TernaryFilter::make('is_published')

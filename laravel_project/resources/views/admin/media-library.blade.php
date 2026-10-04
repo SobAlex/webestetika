@@ -275,11 +275,13 @@
 
             const formData = new FormData(this);
 
-            fetch('/api/media/upload', {
+            fetch('{{ route('media.upload') }}', {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             })
             .then(response => {

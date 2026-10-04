@@ -18,9 +18,19 @@ class IndustryCategoryResource extends Resource
 {
     protected static ?string $model = IndustryCategory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolder;
 
-    protected static ?string $recordTitleAttribute = 'Категория кейса';
+    protected static ?string $navigationLabel = 'Отрасли';
+
+    protected static ?string $modelLabel = 'отрасль';
+
+    protected static ?string $pluralModelLabel = 'Отрасли';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Кейсы';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

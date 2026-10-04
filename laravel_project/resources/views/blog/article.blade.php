@@ -57,12 +57,12 @@
 
                 <h1>{{ $article->title }}</h1>
                 <p>{{ $article->excerpt }}</p>
-                <div class="prose prose-lg max-w-none">{!! $article->content !!}</div>
+                <div class="service-content">{!! $article->content !!}</div>
             </div>
         </article>
 
         <div class="mt-12 pt-8 border-t border-gray-200">
-            <div class="flex justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 @if ($article->hasActiveCategory())
                     <a href="{{ route('blog.category', $article->blogCategory->slug ?? 'uncategorized') }}"
                         class="btn inline-flex items-center">

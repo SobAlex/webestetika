@@ -42,8 +42,6 @@ class WhyUs extends Model
         return $query->orderBy('sort_order')->orderBy('id');
     }
 
-        // методы ниже пока не разобраны. Разобраться, где применяются. Не нужные удалить.
-
     /**
      * Проверяет, активен ли блок
      */

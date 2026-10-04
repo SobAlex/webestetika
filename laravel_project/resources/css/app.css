@@ -8,6 +8,7 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 @source "../node_modules/flowbite";
+@source inline("text-cyan-500 text-emerald-500 text-blue-500 text-amber-500 text-violet-500 bg-cyan-500/10 bg-emerald-500/10 bg-blue-500/10 bg-amber-500/10 bg-violet-500/10 bg-cyan-500/20 bg-emerald-500/20 bg-blue-500/20 bg-amber-500/20 bg-violet-500/20 border-cyan-500/30 border-emerald-500/30 border-blue-500/30 border-amber-500/30 border-violet-500/30 border-cyan-500/40 border-emerald-500/40 border-blue-500/40 border-amber-500/40 border-violet-500/40");
 
 @theme {
     --font-sans:
@@ -36,6 +37,10 @@
 }
 
 @layer base {
+  [x-cloak] {
+    display: none !important;
+  }
+
   html {
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
@@ -47,11 +52,11 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-gray-700 font-medium leading-tight font-sans;
+    @apply text-gray-700 font-medium leading-tight font-sans wrap-break-word;
   }
 
   h1 {
-    @apply text-4xl md:text-5xl mb-4;
+    @apply text-3xl sm:text-4xl md:text-5xl mb-4;
   }
   h2 {
     @apply text-3xl md:text-3xl mb-4;
@@ -103,7 +108,7 @@
 
     /* Отступ сверху для секций */
     .section-bg {
-        @apply mt-20;
+        @apply mt-10 lg:mt-20;
     }
 
     /* Заголовок секции: центрирование и отступ снизу */
@@ -195,7 +200,18 @@
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        margin-bottom: 15px;
+    }
+
+    summary.faq-summary {
+        list-style: none;
+    }
+
+    summary.faq-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary.faq-summary::marker {
+        content: '';
     }
 
     .line-clamp-4 {
@@ -209,7 +225,15 @@
 
     /* Блок с контентом из базы данных (используется в услугах и кейсах) */
     .service-content {
-        @apply text-gray-700 leading-relaxed;
+        @apply max-w-full overflow-x-auto text-gray-700 leading-relaxed;
+    }
+
+    .service-content img {
+        @apply max-w-full h-auto;
+    }
+
+    .service-content table {
+        @apply w-full;
     }
 
     .service-content h1 {
@@ -299,13 +323,11 @@
     }
 
     .hero-image-container {
-        max-height: 500px;
         overflow: hidden;
     }
 
     .hero-image-container img {
         max-width: 100%;
-        max-height: 100%;
         object-fit: contain;
         object-position: center;
     }
@@ -405,12 +427,7 @@
 
     /* ===== Медиа-правила для адаптивности ===== */
 
-    /* Планшеты и мобильные (до 768px) */
     @media (max-width: 768px) {
-        .hero-slides,
-        .hero-image-container {
-            max-height: 400px;
-        }
         .hero-nav-btn {
             width: 40px;
             height: 40px;
@@ -420,68 +437,13 @@
         .hero-indicators { bottom: 10px; }
         .hero-indicator { width: 10px; height: 10px; }
     }
-
-    /* Мобильные (< 640px) */
-    @media (max-width: 640px) {
-        .hero-slides,
-        .hero-image-container {
-            max-height: 350px;
-        }
-    }
-
-    /* Мобильные и планшеты (до 1023px) – глобальные корректировки для hero */
-    @media (max-width: 1023px) {
-        #hero {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-        .section-bg {
-            margin-top: 30px !important;
-        }
-        .hero-container {
-            gap: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-        .hero-container > div {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            width: 100% !important;
-        }
-        .hero-image-container {
-            padding: 0 !important;
-            margin: 0 !important;
-            max-height: none !important;
-            width: 100% !important;
-        }
-        .hero-image-container img {
-            width: 100% !important;
-            max-width: 100% !important;
-            height: auto !important;
-            max-height: none !important;
-            object-fit: contain !important;
-        }
-        .hero-container p,
-        .hero-container h1 {
-            word-wrap: break-word !important;
-            overflow-wrap: break-word !important;
-            white-space: normal !important;
-        }
-    }
-
-    /* Десктоп (≥1024px) */
-    @media (min-width: 1024px) {
-        .hero-image-container {
-            height: 400px;
-            max-height: none;
-            overflow: hidden;
-        }
-        .hero-image-container img {
-            width: 100% !important;
-            height: 100% !important;
-            max-width: 100% !important;
-            max-height: 100% !important;
-            object-fit: cover !important;
-        }
-    }
 }
+
+.material-icons.text-xs { font-size: 0.75rem; }
+.material-icons.text-sm { font-size: 0.875rem; }
+.material-icons.text-base { font-size: 1rem; }
+.material-icons.text-xl { font-size: 1.25rem; }
+.material-icons.text-2xl { font-size: 1.5rem; }
+.material-icons.text-4xl { font-size: 2.25rem; }
+.material-icons.text-5xl { font-size: 3rem; }
+.material-icons.text-6xl { font-size: 3.75rem; }

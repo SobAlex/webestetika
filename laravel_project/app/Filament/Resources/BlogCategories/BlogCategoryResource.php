@@ -18,9 +18,19 @@ class BlogCategoryResource extends Resource
 {
     protected static ?string $model = BlogCategory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
-    protected static ?string $recordTitleAttribute = 'Категория статей';
+    protected static ?string $navigationLabel = 'Категории блога';
+
+    protected static ?string $modelLabel = 'категория блога';
+
+    protected static ?string $pluralModelLabel = 'Категории блога';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Блог';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

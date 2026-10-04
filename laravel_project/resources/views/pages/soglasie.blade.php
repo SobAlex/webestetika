@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-8 max-w-3xl">
-        <h1 class="text-2xl bold mb-2 text-center">Согласие на обработку персональных данных</h1>
-        <p class="text-center text-gray-600 text-sm mb-8">Редакция от 14.07.2026</p>
+        <h1 class="mb-2 text-center text-2xl font-bold">Согласие на обработку персональных данных</h1>
+        <p class="text-center text-gray-600 text-sm mb-8">Редакция от {{ config('legal.consent_edition') }}</p>
 
-        <div class="prose prose-blue max-w-none leading-relaxed">
+        <div class="service-content">
 
             <p class="mb-4">Я, заполняя форму на сайте <strong>https://sobalex.ru</strong>, действуя свободно, своей
                 волей и в своём интересе, даю своё согласие самозанятому гражданину РФ <strong>Соболеву Александру

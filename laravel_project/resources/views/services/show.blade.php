@@ -21,22 +21,20 @@
                     <div>
                         <h1>{{ $service->title }}</h1>
                         @if ($service->is_featured)
-                            <span style="color: {{ $service->color }}" class="inline-block mt-2">Рекомендуемая услуга</span>
+                            <span class="mt-2 inline-block {{ \App\Support\Accent::text($service->color) }}">Рекомендуемая услуга</span>
                         @endif
                     </div>
                 </div>
                 <p class="section-subtitle text-left">{{ $service->description }}</p>
                 <div class="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div class="px-7 py-4 font-medium text-lg"
-                        style="background-color: {{ $service->color }}10; border: 1px solid {{ $service->color }}30;">
+                    <div class="px-7 py-4 text-lg font-medium {{ \App\Support\Accent::panel($service->color) }}">
                         <div>Стоимость</div>
-                        <div style="color: {{ $service->color }}">{{ $service->formatted_price }}</div>
+                        <div class="{{ \App\Support\Accent::text($service->color) }}">{{ $service->formatted_price }}</div>
                     </div>
                     @if ($service->price_type)
-                        <div class="px-7 py-4 font-medium text-lg"
-                            style="background-color: {{ $service->color }}10; border: 1px solid {{ $service->color }}30;">
+                        <div class="px-7 py-4 text-lg font-medium {{ \App\Support\Accent::panel($service->color) }}">
                             <div>Тип оплаты</div>
-                            <div style="color: {{ $service->color }}">
+                            <div class="{{ \App\Support\Accent::text($service->color) }}">
                                 @switch($service->price_type)
                                     @case('hour')
                                         Почасовая
@@ -101,9 +99,8 @@
                     @if (is_string($feature))
                         <div class="flex items-start p-4 bg-white shadow-sm">
                             <div class="flex-shrink-0 mr-4">
-                                <div class="w-8 h-8 flex items-center justify-center"
-                                    style="background-color: {{ $service->color }}20;">
-                                    <i class="material-icons text-sm" style="color: {{ $service->color }}">check</i>
+                                <div class="flex h-8 w-8 items-center justify-center {{ \App\Support\Accent::icon($service->color) }}">
+                                    <i class="material-icons text-sm {{ \App\Support\Accent::text($service->color) }}">check</i>
                                 </div>
                             </div>
                             <div>{{ $feature }}</div>
@@ -129,10 +126,8 @@
                         @else
                             <div class="h-48 bg-gray-100 flex items-center justify-center">
                                 @if ($relatedService->icon)
-                                    <div class="w-16 h-16 flex items-center justify-center"
-                                        style="background-color: {{ $relatedService->color }}20; border: 2px solid {{ $relatedService->color }}40;">
-                                        <i class="material-icons text-4xl"
-                                            style="color: {{ $relatedService->color }}">{{ $relatedService->icon }}</i>
+                                    <div class="flex h-16 w-16 items-center justify-center {{ \App\Support\Accent::frame($relatedService->color) }}">
+                                        <i class="material-icons text-4xl {{ \App\Support\Accent::text($relatedService->color) }}">{{ $relatedService->icon }}</i>
                                     </div>
                                 @else
                                     <i class="material-icons text-6xl text-gray-300">business</i>
@@ -145,9 +140,8 @@
                                 </h3>
                             </a>
                             <p class="mb-4">{{ Str::limit($relatedService->description, 100) }}</p>
-                            <div class="flex items-center justify-between">
-                                <span class="font-medium text-lg"
-                                    style="color: {{ $relatedService->color }}">{{ $relatedService->formatted_price }}</span>
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <span class="text-lg font-medium {{ \App\Support\Accent::text($relatedService->color) }}">{{ $relatedService->formatted_price }}</span>
                                 <button class="btn"
                                     onclick="openServiceOrderModal('{{ $relatedService->title }}')">Заказать</button>
                             </div>
@@ -263,10 +257,10 @@
                     <div class="mb-4">
                         <details class="group">
                             <summary
-                                class="flex items-center justify-between w-full p-4 bg-white shadow-sm cursor-pointer hover:bg-gray-50">
-                                <span>{{ $faq->question }}</span>
+                                class="faq-summary flex w-full cursor-pointer items-center justify-between bg-white p-4 shadow-sm hover:bg-gray-50">
+                                <span class="min-w-0">{{ $faq->question }}</span>
                                 <i
-                                    class="material-icons text-gray-400 group-open:rotate-180 transition-transform">expand_more</i>
+                                    class="material-icons shrink-0 text-gray-400 transition-transform group-open:rotate-180">expand_more</i>
                             </summary>
                             <div class="p-4 bg-gray-50 shadow-sm">
                                 <p>{{ $faq->answer }}</p>

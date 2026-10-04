@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Services\BlogService;
+use App\Services\CaseService;
+use App\Services\ContactService;
 use Illuminate\Support\Facades\View;
-use App\Models\IndustryCategory;
-use App\Models\BlogCategory;
-use App\Models\Contact;
+use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -18,53 +18,10 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            // Категории кейсов
-            $activeCategories = IndustryCategory::active()
-                ->ordered()
-                ->get()
-                ->map(function ($category) {
-                    return [
-                        'slug' => $category->slug,
-                        'name' => $category->name,
-                        'icon' => $category->icon ?: 'business',
-                        'color' => $category->color,
-                        'route' => 'cases.category',
-                        'route_params' => [$category->slug]
-                    ];
-                })
-                ->toArray();
-
-            // Категории блогов
-            $activeBlogCategories = BlogCategory::active()
-                ->ordered()
-                ->get()
-                ->map(function ($category) {
-                    return [
-                        'slug' => $category->slug,
-                        'name' => $category->name,
-                        'icon' => $category->icon ?: 'article',
-                        'color' => $category->color,
-                        'description' => $category->description,
-                        'route' => 'blog.category'
-                    ];
-                })
-                ->toArray();
-
-            // Контактные данные
-            $contactData = Contact::getContactData();
-            $contactInfo = [
-                'address' => $contactData['address'] ?? 'Адрес не указан',
-                'phone' => $contactData['phone'] ?? 'Телефон не указан',
-                'email' => $contactData['email'] ?? 'Email не указан',
-                'working_hours' => $contactData['working_hours'] ?? 'Часы работы не указаны',
-                'social' => $contactData['social'] ?? []
-            ];
-
             $view->with([
-                // Изменено с 'activeCategories' на 'activeCaseCategories'
-                'activeCaseCategories' => $activeCategories,
-                'activeBlogCategories' => $activeBlogCategories,
-                'contactInfo' => $contactInfo
+                'activeCaseCategories' => app(CaseService::class)->getActiveCategories()->all(),
+                'activeBlogCategories' => app(BlogService::class)->getActiveCategories()->all(),
+                'contactInfo' => app(ContactService::class)->getContactInfo(),
             ]);
         });
     }

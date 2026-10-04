@@ -65,23 +65,23 @@ class CaseService
      */
     public function getActiveCategories(): SupportCollection
     {
-        return IndustryCategory::active()
-            ->ordered()
-            ->get()
-            ->map(function ($category) {
-                return [
-                    'name' => $category->name,
-                    'route' => 'cases.category',
-                    'route_params' => [$category->slug],
-                    'slug' => $category->slug,
-                    'icon' => $category->icon ?: 'business',
-                    'color' => $category->color ?: '#3B82F6',
-                    'description' => $category->description
-                ];
-            });
+        return once(function () {
+            return IndustryCategory::active()
+                ->ordered()
+                ->get()
+                ->map(function ($category) {
+                    return [
+                        'name' => $category->name,
+                        'route' => 'cases.category',
+                        'route_params' => [$category->slug],
+                        'slug' => $category->slug,
+                        'icon' => $category->icon ?: 'business',
+                        'color' => $category->color ?: '#3B82F6',
+                        'description' => $category->description,
+                    ];
+                });
+        });
     }
-
-    // ниже пока не разобранные методы
 
     /**
      * Get all published cases with their categories.
@@ -113,20 +113,15 @@ class CaseService
      */
     public function getCaseById(string $caseId): ?ProjectCase
     {
-        return ProjectCase::where('case_id', $caseId)
-            ->with('industryCategory')
-            ->published()
-            ->first();
-    }
+        $query = ProjectCase::query()
+            ->where('case_id', $caseId)
+            ->with('industryCategory');
 
-    /**
-     * Get case by case_id (including unpublished).
-     */
-    public function getCaseByIdWithUnpublished(string $caseId): ?ProjectCase
-    {
-        return ProjectCase::where('case_id', $caseId)
-            ->with('industryCategory')
-            ->first();
+        if (! auth()->check()) {
+            $query->published();
+        }
+
+        return $query->first();
     }
 
     /**

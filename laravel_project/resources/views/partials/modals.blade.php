@@ -2,12 +2,11 @@
 <!-- Модальное окно: Заказать звонок (Alpine.js) -->
 <!-- ============================================ -->
 <div x-data="{ callbackOpen: false }" @open-callback.window="callbackOpen = true" @keydown.escape.window="callbackOpen = false"
-    style="display: contents;">
-    <div x-show="callbackOpen" x-transition:enter="transition ease-out duration-300"
+    class="contents">
+    <div x-show="callbackOpen" x-cloak x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-95" class="fixed inset-0 z-50 flex items-center justify-center"
-        style="display: none;">
+        x-transition:leave-end="opacity-0 scale-95" class="fixed inset-0 z-50 flex items-center justify-center">
         <!-- Фон -->
         <div class="absolute inset-0 bg-black/50" aria-hidden="true" @click="callbackOpen = false"></div>
 
@@ -49,8 +48,7 @@
 <!-- ============================================ -->
 <!-- Модальное окно: Заказ услуги (обычный JS)    -->
 <!-- ============================================ -->
-<div id="serviceOrderModal" class="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto"
-    style="display: none;">
+<div id="serviceOrderModal" class="fixed inset-0 z-50 hidden items-start justify-center overflow-y-auto sm:items-center">
     <!-- Фон -->
     <div class="absolute inset-0 bg-black/50" aria-hidden="true" onclick="closeServiceOrderModal()"></div>
 

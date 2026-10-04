@@ -12,10 +12,10 @@
                 <div class="mb-4">
                     <details class="group">
                         <summary
-                            class="flex items-center justify-between w-full p-4 bg-white shadow-sm cursor-pointer hover:bg-gray-50">
-                            <span>{{ $faq->question }}</span>
+                            class="faq-summary flex w-full cursor-pointer items-center justify-between bg-white p-4 shadow-sm hover:bg-gray-50">
+                            <span class="min-w-0">{{ $faq->question }}</span>
                             <i
-                                class="material-icons text-gray-400 group-open:rotate-180 transition-transform">expand_more</i>
+                                class="material-icons shrink-0 text-gray-400 transition-transform group-open:rotate-180">expand_more</i>
                         </summary>
                         <div class="p-4 bg-gray-50 shadow-sm">
                             <p>{{ $faq->answer }}</p>
@@ -38,10 +38,10 @@
                 <div class="mb-4">
                     <details class="group">
                         <summary
-                            class="flex items-center justify-between w-full p-4 bg-white shadow-sm cursor-pointer hover:bg-gray-50">
-                            <span>{{ $faq->question }}</span>
+                            class="faq-summary flex w-full cursor-pointer items-center justify-between bg-white p-4 shadow-sm hover:bg-gray-50">
+                            <span class="min-w-0">{{ $faq->question }}</span>
                             <i
-                                class="material-icons text-gray-400 group-open:rotate-180 transition-transform">expand_more</i>
+                                class="material-icons shrink-0 text-gray-400 transition-transform group-open:rotate-180">expand_more</i>
                         </summary>
                         <div class="p-4 bg-gray-50 shadow-sm">
                             <p>{{ $faq->answer }}</p>

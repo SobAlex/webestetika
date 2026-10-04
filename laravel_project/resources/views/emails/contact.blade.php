@@ -50,6 +50,9 @@
             <p class="text-center">
                 Это автоматическое уведомление с сайта {{ config('app.name') }}
             </p>
+            <p class="mt-2 text-center">
+                Согласие на обработку персональных данных получено {{ $consentAt }}. Редакция текста от {{ $consentEdition }}.
+            </p>
         </div>
     </div>
 @endsection

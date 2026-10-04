@@ -18,9 +18,19 @@ class BlogResource extends Resource
 {
     protected static ?string $model = Blog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
 
-    protected static ?string $recordTitleAttribute = 'Статья';
+    protected static ?string $navigationLabel = 'Статьи';
+
+    protected static ?string $modelLabel = 'статья';
+
+    protected static ?string $pluralModelLabel = 'Статьи';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Блог';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
     {

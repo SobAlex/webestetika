@@ -1,15 +1,15 @@
-<header class="border-b border-cyan-500 py-2 flex items-center justify-between relative" x-data="{ open: false }">
+<header class="relative flex items-center justify-between gap-4 border-b border-cyan-500 py-2" x-data="{ open: false }">
     <!-- Логотип слева -->
-    <div>
-        <a href="{{ route('home') }}" class="font-train text-4xl whitespace-nowrap transition">SobAlex
+    <div class="min-w-0">
+        <a href="{{ route('home') }}" class="font-train text-3xl leading-none transition sm:text-4xl">SobAlex
         </a>
 
-        <p>Оптимизация сайтов</p>
+        <p class="text-sm">Оптимизация сайтов</p>
     </div>
 
     <!-- Главное меню (по центру ≥lg) -->
-    <nav class="flex-1 flex items-center justify-center [&_a]:text-gray-700">
-        <ul class="hidden lg:flex items-center space-x-8">
+    <nav class="flex min-w-0 flex-1 items-center justify-center [&_a]:text-gray-700">
+        <ul class="hidden items-center gap-4 lg:flex xl:gap-8">
             <li class="relative group">
                 <a href="{{ route('services.index') }}" class="flex items-center">
                     Услуги
@@ -30,8 +30,7 @@
                                 <a href="{{ route('services.show', $service->slug) }}"
                                     class="flex items-center transition">
                                     @if ($service->icon)
-                                        <i class="material-icons text-sm mr-2"
-                                            style="color: {{ $service->color ?? '#06b6d4' }}">{{ $service->icon }}</i>
+                                        <i class="material-icons mr-2 text-sm {{ \App\Support\Accent::text($service->color ?? '#06b6d4') }}">{{ $service->icon }}</i>
                                     @endif
                                     {{ Str::limit($service->title, 25) }}
                                 </a>
@@ -59,8 +58,7 @@
                             @foreach ($activeCaseCategories as $category)
                                 <a href="{{ route($category['route'], ...$category['route_params']) }}"
                                     class="flex items-center transition">
-                                    <i class="material-icons text-sm mr-2"
-                                        style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                                    <i class="material-icons mr-2 text-sm {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                                     {{ $category['name'] }}
                                 </a>
                             @endforeach
@@ -85,8 +83,7 @@
                             @foreach ($activeBlogCategories as $category)
                                 <a href="{{ route('blog.category', $category['slug']) }}"
                                     class="flex items-center transition">
-                                    <i class="material-icons text-sm mr-2"
-                                        style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                                    <i class="material-icons mr-2 text-sm {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                                     {{ $category['name'] }}
                                 </a>
                             @endforeach
@@ -114,7 +111,7 @@
                                 {{ $contactInfo['phone'] }}
                             </a>
                             <a href="mailto:{{ $contactInfo['email'] }}"
-                                class="flex items-center transition whitespace-nowrap">
+                                class="flex min-w-0 items-center break-all transition">
                                 <i class="material-icons text-sm mr-2 text-cyan-500">email</i>
                                 {{ $contactInfo['email'] }}
                             </a>
@@ -144,12 +141,10 @@
     <!-- Бургер справа (<lg) -->
     <button @click="open = !open" class="lg:hidden flex-shrink-0 focus:outline-none ml-4" aria-label="Открыть меню"
         :aria-expanded="open.toString()">
-        <svg x-show="!open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            style="display: block;">
+        <svg x-show="!open" class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <svg x-show="open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            style="display: none;">
+        <svg x-show="open" x-cloak class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
     </button>
@@ -162,7 +157,7 @@
         x-transition:enter-end="opacity-100 transform translate-y-0"
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100 transform translate-y-0"
-        x-transition:leave-end="opacity-0 transform -translate-y-2" style="display: none;">
+        x-transition:leave-end="opacity-0 transform -translate-y-2" x-cloak>
 
         <ul class="flex flex-col space-y-8 p-8">
             <li x-data="{ msub: false }">
@@ -179,7 +174,7 @@
                     x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-96"
                     x-transition:leave="transition ease-in duration-300"
                     x-transition:leave-start="opacity-100 max-h-96" x-transition:leave-end="opacity-0 max-h-0"
-                    class="pl-6 space-y-4 overflow-hidden" style="display: none;">
+                    class="space-y-4 overflow-hidden pl-6" x-cloak>
                     <div class="space-y-3">
                         @php
                             $mobileServices = \App\Models\Service::published()
@@ -192,8 +187,7 @@
                             <a href="{{ route('services.show', $service->slug) }}"
                                 class="flex items-center transition py-2">
                                 @if ($service->icon)
-                                    <i class="material-icons text-base mr-2"
-                                        style="color: {{ $service->color ?? '#06b6d4' }}">{{ $service->icon }}</i>
+                                    <i class="material-icons mr-2 text-base {{ \App\Support\Accent::text($service->color ?? '#06b6d4') }}">{{ $service->icon }}</i>
                                 @endif
                                 {{ Str::limit($service->title, 30) }}
                             </a>
@@ -222,13 +216,12 @@
                     x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-96"
                     x-transition:leave="transition ease-in duration-300"
                     x-transition:leave-start="opacity-100 max-h-96" x-transition:leave-end="opacity-0 max-h-0"
-                    class="pl-6 space-y-4 overflow-hidden" style="display: none;">
+                    class="space-y-4 overflow-hidden pl-6" x-cloak>
                     <div class="space-y-3">
                         @foreach ($activeCaseCategories as $category)
                             <a href="{{ route($category['route'], ...$category['route_params']) }}"
                                 class="flex items-center transition py-2">
-                                <i class="material-icons text-base mr-2"
-                                    style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                                <i class="material-icons mr-2 text-base {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                                 {{ $category['name'] }}
                             </a>
                         @endforeach
@@ -254,13 +247,12 @@
                     x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-96"
                     x-transition:leave="transition ease-in duration-300"
                     x-transition:leave-start="opacity-100 max-h-96" x-transition:leave-end="opacity-0 max-h-0"
-                    class="pl-6 space-y-4 overflow-hidden" style="display: none;">
+                    class="space-y-4 overflow-hidden pl-6" x-cloak>
                     <div class="space-y-3">
                         @foreach ($activeBlogCategories as $category)
                             <a href="{{ route('blog.category', $category['slug']) }}"
                                 class="flex items-center transition py-2">
-                                <i class="material-icons text-base mr-2"
-                                    style="color: {{ $category['color'] }}">{{ $category['icon'] }}</i>
+                                <i class="material-icons mr-2 text-base {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                                 {{ $category['name'] }}
                             </a>
                         @endforeach
@@ -286,19 +278,19 @@
                     x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-96"
                     x-transition:leave="transition ease-in duration-300"
                     x-transition:leave-start="opacity-100 max-h-96" x-transition:leave-end="opacity-0 max-h-0"
-                    class="pl-6 space-y-4 overflow-hidden" style="display: none;">
+                    class="space-y-4 overflow-hidden pl-6" x-cloak>
                     <div class="space-y-3">
                         <a href="tel:{{ str_replace(' ', '', $contactInfo['phone']) }}"
                             class="flex items-center transition py-2">
-                            <i class="material-icons text-base mr-2" style="color: #06b6d4">phone</i>
+                            <i class="material-icons mr-2 text-base text-cyan-500">phone</i>
                             {{ $contactInfo['phone'] }}
                         </a>
                         <a href="mailto:{{ $contactInfo['email'] }}" class="flex items-center transition py-2">
-                            <i class="material-icons text-base mr-2" style="color: #06b6d4">email</i>
+                            <i class="material-icons mr-2 text-base text-cyan-500">email</i>
                             <span class="break-all">{{ $contactInfo['email'] }}</span>
                         </a>
                         <a href="#" class="flex items-center transition py-2">
-                            <i class="material-icons text-base mr-2" style="color: #06b6d4">location_on</i>
+                            <i class="material-icons mr-2 text-base text-cyan-500">location_on</i>
                             <span class="break-words">{{ $contactInfo['address'] }}</span>
                         </a>
                     </div>

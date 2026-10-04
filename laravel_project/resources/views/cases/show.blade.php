@@ -40,7 +40,7 @@
                     <img src="{{ $caseData['image_url'] }}" alt="{{ $caseData['title'] }}"
                         class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
+                    <div class="absolute right-4 bottom-4 left-4 text-white">
                         @if ($caseData['has_valid_category'])
                             <a href="{{ route('cases.category', $caseData['industry']) }}"
                                 class="bg-cyan-500 hover:bg-cyan-600 px-3 py-1 transition-colors inline-block text-white">{{ $caseData['industry_name'] }}</a>
@@ -51,18 +51,18 @@
                 <div class="space-y-6">
                     <div>
                         <h2>Описание проекта</h2>
-                        <div class="text-gray-600 leading-relaxed prose prose-gray max-w-none section-subtitle text-left">
+                        <div class="service-content text-left">
                             {!! $caseData['description'] !!}
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4" style="background-color: #06b6d410; border: 1px solid #06b6d430;">
-                            <div class="font-medium text-lg text-gray-600 mb-1">Клиент</div>
-                            <div class="font-medium text-lg" style="color: #06b6d4;">{{ $caseData['client'] }}</div>
+                        <div class="border border-cyan-500/30 bg-cyan-500/10 p-4">
+                            <div class="mb-1 text-lg font-medium text-gray-600">Клиент</div>
+                            <div class="text-lg font-medium text-cyan-500">{{ $caseData['client'] }}</div>
                         </div>
-                        <div class="p-4" style="background-color: #06b6d410; border: 1px solid #06b6d430;">
-                            <div class="font-medium text-lg text-gray-600 mb-1">Период</div>
-                            <div class="font-medium text-lg" style="color: #06b6d4;">{{ $caseData['period'] }}</div>
+                        <div class="border border-cyan-500/30 bg-cyan-500/10 p-4">
+                            <div class="mb-1 text-lg font-medium text-gray-600">Период</div>
+                            <div class="text-lg font-medium text-cyan-500">{{ $caseData['period'] }}</div>
                         </div>
                     </div>
                 </div>

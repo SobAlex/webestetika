@@ -47,10 +47,6 @@ class Blog extends Model implements ImageableInterface, PublishableInterface
         'image' => 'string',
     ];
 
-    // скопы реализованы в трейте
-
-    // методы ниже пока не разобраны. Разобраться, где применяются. Не нужные удалить.
-
     /**
      * Get the user that owns the blog post.
      */

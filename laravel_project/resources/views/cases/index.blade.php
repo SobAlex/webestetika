@@ -57,7 +57,7 @@
                                     <img src="{{ $case['image_url'] }}" alt="{{ $case['title'] }}"
                                         class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                                    <div class="absolute bottom-4 left-4 text-white">
+                                    <div class="absolute right-4 bottom-4 left-4 text-white">
                                         @if ($case['has_valid_category'])
                                             <a href="{{ route('cases.category', $case['industry']) }}"
                                                 class="bg-cyan-500 hover:bg-cyan-600 px-3 py-1 transition-colors inline-block text-white">{{ $case['industry_name'] }}</a>
@@ -73,9 +73,9 @@
                                     <p class="mb-4 line-clamp-2">{{ Str::limit($case['description_clean'], 120) }}</p>
                                     <div class="space-y-2">
                                         @foreach (array_slice($case['results'], 0, 2) as $result)
-                                            <div class="flex items-center">
-                                                <i class="material-icons text-cyan-500 mr-2 text-base">trending_up</i>
-                                                <span>{{ $result }}</span>
+                                            <div class="flex items-start">
+                                                <i class="material-icons mr-2 shrink-0 text-base text-cyan-500">trending_up</i>
+                                                <span class="min-w-0">{{ $result }}</span>
                                             </div>
                                         @endforeach
                                     </div>

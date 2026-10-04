@@ -26,8 +26,6 @@ class ContactService
         ];
     }
 
-    // ниже не разобрано
-
     /**
      * Get all contact settings.
      */
@@ -58,6 +56,7 @@ class ContactService
             'email' => null,
             'phone' => $data['phone'],
             'messageBody' => null,
+            ...$this->consentTrace(),
         ]);
     }
 
@@ -72,6 +71,7 @@ class ContactService
             'email' => $data['email'],
             'phone' => $data['phone'] ?? null,
             'messageBody' => $data['message'],
+            ...$this->consentTrace(),
         ]);
     }
 
@@ -102,6 +102,18 @@ class ContactService
             'attachmentPath' => $attachmentPath,
             'attachmentName' => $attachmentName,
             'attachmentMime' => $attachmentMime,
+            ...$this->consentTrace(),
         ]);
+    }
+
+    /**
+     * @return array{consentAt: string, consentEdition: string}
+     */
+    private function consentTrace(): array
+    {
+        return [
+            'consentAt' => now()->timezone(config('app.timezone'))->format('d.m.Y H:i'),
+            'consentEdition' => (string) config('legal.consent_edition'),
+        ];
     }
 }
