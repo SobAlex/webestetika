@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-8 max-w-3xl">
-        <h1 class="mb-2 text-center text-2xl font-bold">Согласие на обработку персональных данных</h1>
+        <h1 class="text-center">Согласие на обработку персональных данных</h1>
         <p class="text-center text-gray-600 text-sm mb-8">Редакция от {{ config('legal.consent_edition') }}</p>
 
         <div class="service-content">

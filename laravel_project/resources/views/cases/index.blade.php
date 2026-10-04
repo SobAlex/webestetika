@@ -93,7 +93,7 @@
             <h2 class="text-white">Хотите такой же результат?</h2>
             <p class="mb-6 section-subtitle text-white">Свяжитесь с нами для обсуждения вашего проекта</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="btn" onclick="openServiceOrderModal('Заказать продвижение')">Заказать продвижение</button>
+                <button class="btn-on-accent" onclick="openServiceOrderModal('Заказать продвижение')">Заказать продвижение</button>
             </div>
         </div>
     </section>

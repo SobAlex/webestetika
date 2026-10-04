@@ -37,7 +37,7 @@
                 @include('partials._consent')
 
                 <div class="flex items-center justify-end gap-3 pt-2">
-                    <button type="button" class="btn" @click="callbackOpen = false">Отмена</button>
+                    <button type="button" class="btn-outline" @click="callbackOpen = false">Отмена</button>
                     <button type="submit" class="btn">Отправить</button>
                 </div>
             </form>
@@ -141,7 +141,7 @@
 
             <!-- Кнопки - всегда видимые внизу -->
             <div class="flex items-center justify-end gap-3 pt-4 mt-4 divider sticky bottom-0 bg-white">
-                <button type="button" class="btn" onclick="closeServiceOrderModal()">Отмена</button>
+                <button type="button" class="btn-outline" onclick="closeServiceOrderModal()">Отмена</button>
                 <button type="submit" form="serviceOrderForm" class="btn">Заказать услугу</button>
             </div>
         </form>

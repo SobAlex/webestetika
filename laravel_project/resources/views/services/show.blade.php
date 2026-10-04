@@ -116,7 +116,7 @@
             <h2 class="section-title">Другие услуги</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($relatedServices as $relatedService)
-                    <article class="card">
+                    <article class="card-glass">
                         @if ($relatedService->image)
                             <div class="relative h-48 overflow-hidden">
                                 <img src="{{ asset('storage/' . $relatedService->image) }}"
@@ -124,24 +124,18 @@
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                             </div>
                         @else
-                            <div class="h-48 bg-gray-100 flex items-center justify-center">
-                                @if ($relatedService->icon)
-                                    <div class="flex h-16 w-16 items-center justify-center {{ \App\Support\Accent::frame($relatedService->color) }}">
-                                        <i class="material-icons text-4xl {{ \App\Support\Accent::text($relatedService->color) }}">{{ $relatedService->icon }}</i>
-                                    </div>
-                                @else
-                                    <i class="material-icons text-6xl text-gray-300">business</i>
-                                @endif
+                            <div class="media-fallback h-48">
+                                <i class="material-icons text-4xl text-white">{{ $relatedService->icon ?: 'business' }}</i>
                             </div>
                         @endif
                         <div class="p-6">
                             <a href="{{ route('services.show', $relatedService->slug) }}" class="group">
-                                <h3 class="mb-2 group-hover:text-cyan-500 transition-colors">{{ $relatedService->title }}
+                                <h3 class="mb-2 group-hover:text-cyan-600 transition-colors">{{ $relatedService->title }}
                                 </h3>
                             </a>
                             <p class="mb-4">{{ Str::limit($relatedService->description, 100) }}</p>
                             <div class="flex flex-wrap items-center justify-between gap-3">
-                                <span class="text-lg font-medium {{ \App\Support\Accent::text($relatedService->color) }}">{{ $relatedService->formatted_price }}</span>
+                                <span class="text-lg font-medium text-cyan-500">{{ $relatedService->formatted_price }}</span>
                                 <button class="btn"
                                     onclick="openServiceOrderModal('{{ $relatedService->title }}')">Заказать</button>
                             </div>
@@ -158,7 +152,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($relatedArticles as $article)
                     {{-- Добавлены классы h-full, flex, flex-col для вертикальной растяжки --}}
-                    <article class="card h-full flex flex-col">
+                    <article class="card-glass flex h-full flex-col">
                         @if ($article->image)
                             <div class="relative h-48 overflow-hidden flex-shrink-0">
                                 <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
@@ -174,17 +168,15 @@
                                 @endif
                             </div>
                         @else
-                            <div class="h-48 bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                <div class="w-16 h-16 bg-cyan-500 flex items-center justify-center">
-                                    <i class="material-icons text-white text-4xl">article</i>
-                                </div>
+                            <div class="media-fallback h-48 shrink-0">
+                                <i class="material-icons text-4xl text-white">article</i>
                             </div>
                         @endif
 
                         {{-- Внутренний контейнер – растягиваемая колонка --}}
                         <div class="p-6 flex-1 flex flex-col">
                             <h3 class="mb-2 line-clamp-2">
-                                <a href="{{ $article->url }}" class="hover:text-cyan-500">{{ $article->title }}</a>
+                                <a href="{{ $article->url }}" class="hover:text-cyan-600">{{ $article->title }}</a>
                             </h3>
                             <p class="mb-4 leading-relaxed line-clamp-3 flex-1">{{ Str::limit($article->excerpt, 120) }}
                             </p>
@@ -205,7 +197,7 @@
             <h2 class="section-title">Наши кейсы</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($relatedCases as $case)
-                    <article class="shadow-sm">
+                    <article class="card-glass">
                         {{-- Изображение --}}
                         @if ($case->image)
                             <div class="relative h-48 overflow-hidden">
@@ -227,7 +219,7 @@
                         <div class="p-6">
                             {{-- Заголовок --}}
                             <a href="{{ $case->url }}" class="group">
-                                <h3 class="mb-2 group-hover:text-cyan-500 transition-colors">{{ $case->title }}</h3>
+                                <h3 class="mb-2 group-hover:text-cyan-600 transition-colors">{{ $case->title }}</h3>
                             </a>
 
                             {{-- Клиент и период вместе --}}
@@ -277,7 +269,7 @@
             <h2 class="text-white">Готовы заказать {{ $service->title }}?</h2>
             <p class="mb-6 section-subtitle text-white">Свяжитесь с нами для обсуждения вашего проекта</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="btn" onclick="openServiceOrderModal('{{ $service->title }}')">Заказать
+                <button class="btn-on-accent" onclick="openServiceOrderModal('{{ $service->title }}')">Заказать
                     {{ $service->title }}</button>
             </div>
         </div>

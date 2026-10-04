@@ -27,7 +27,7 @@
                     <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
                 </div>
             @else
-                <div class="aspect-video bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                <div class="media-fallback aspect-video">
                     <i class="material-icons text-white text-6xl">
                         @if ($article->blogCategory && $article->blogCategory->slug === 'seo-news')
                             trending_up
@@ -64,18 +64,11 @@
         <div class="mt-12 pt-8 border-t border-gray-200">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 @if ($article->hasActiveCategory())
-                    <a href="{{ route('blog.category', $article->blogCategory->slug ?? 'uncategorized') }}"
-                        class="btn inline-flex items-center">
-                        <i class="material-icons text-sm mr-2">arrow_back</i>
-                        Все статьи в категории
-                    </a>
+                    <a href="{{ route('blog.category', $article->blogCategory->slug ?? 'uncategorized') }}">← Все статьи в категории</a>
                 @else
                     <div></div>
                 @endif
-                <a href="{{ route('blog.index') }}" class="btn inline-flex items-center">
-                    Все статьи блога
-                    <i class="material-icons text-sm ml-2">arrow_forward</i>
-                </a>
+                <a href="{{ route('blog.index') }}">Все статьи блога →</a>
             </div>
         </div>
 
@@ -84,7 +77,7 @@
                 <h2>Похожие статьи</h2>
                 <div class="grid md:grid-cols-3 gap-6">
                     @foreach ($relatedArticles as $relatedArticle)
-                        <article class="group card hover:shadow-md transition-shadow">
+                        <article class="card-glass">
                             <a href="{{ $relatedArticle->url }}">
                                 @if ($relatedArticle->image)
                                     <div class="aspect-video overflow-hidden">
@@ -93,7 +86,7 @@
                                     </div>
                                 @else
                                     <div
-                                        class="aspect-video bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                                        class="media-fallback aspect-video">
                                         <i class="material-icons text-white text-2xl">
                                             @if ($relatedArticle->blogCategory && $relatedArticle->blogCategory->slug === 'seo-news')
                                                 trending_up

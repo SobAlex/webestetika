@@ -15,9 +15,9 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             @forelse($services as $service)
-                <article class="bg-white/80 backdrop-blur-sm shadow-sm flex flex-col">
+                <article class="card-glass flex flex-col">
                     @if ($service->image)
                         <div class="aspect-video bg-gray-100 overflow-hidden">
                             <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}"
@@ -28,8 +28,8 @@
                         <div class="flex-1">
                             <div class="flex items-start mb-4">
                                 <div class="flex-1">
-                                    <h2 class="group-hover:text-cyan-500 transition-colors">
-                                        <a href="{{ route('services.show', $service->slug) }}" class="hover:text-cyan-500">
+                                    <h2 class="group-hover:text-cyan-600 transition-colors">
+                                        <a href="{{ route('services.show', $service->slug) }}" class="hover:text-cyan-600">
                                             {{ $service->title }}
                                         </a>
                                     </h2>
@@ -83,7 +83,7 @@
                 <h2 class="text-white">Готовы начать продвижение вашего сайта?</h2>
                 <p class="mb-6 section-subtitle text-white">Свяжитесь с нами для обсуждения вашего проекта</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="btn" onclick="openServiceOrderModal('Заказать продвижение')">Заказать
+                    <button class="btn-on-accent" onclick="openServiceOrderModal('Заказать продвижение')">Заказать
                         продвижение</button>
                 </div>
             </div>

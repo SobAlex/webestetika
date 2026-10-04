@@ -142,7 +142,7 @@
                 <h2 class="text-white">Хотите такой же результат?</h2>
                 <p class="mb-6 text-white section-subtitle">Свяжитесь с нами для обсуждения вашего проекта</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="btn" onclick="openServiceOrderModal('{{ $serviceData['service_name'] }}')">Заказать
+                    <button class="btn-on-accent" onclick="openServiceOrderModal('{{ $serviceData['service_name'] }}')">Заказать
                         услугу</button>
                 </div>
             </div>

@@ -26,7 +26,7 @@
             <div class="grid md:grid-cols-3 gap-6 mb-12">
                 @foreach ($activeBlogCategories as $category)
                     <a href="{{ route('blog.category', $category['slug']) }}"
-                        class="group bg-white/80 backdrop-blur-sm shadow-sm p-6 hover:shadow-md transition-shadow">
+                        class="card-glass group p-6">
                         <div class="flex items-center mb-4">
                             <i class="material-icons mr-4 text-2xl {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                             <h2 class="group-hover:text-cyan-600 transition-colors mb-0">
@@ -41,7 +41,7 @@
 
         <div class="mb-8">
             <h2 class="section-title">Последние статьи</h2>
-            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                 @foreach ($articles as $article)
                     <article class="card-glass">
                         @if ($article->image)
@@ -51,7 +51,7 @@
                             </div>
                         @else
                             <div
-                                class="aspect-video bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                                class="media-fallback aspect-video">
                                 <i class="material-icons text-white text-4xl">
                                     @if ($article->blogCategory && $article->blogCategory->slug === 'seo-news')
                                         trending_up

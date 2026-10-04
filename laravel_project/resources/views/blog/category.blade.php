@@ -26,7 +26,7 @@
             </p>
         </div>
 
-        <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             @foreach ($articles as $article)
                 <article class="card">
                     @if ($article->image)
@@ -36,7 +36,7 @@
                         </div>
                     @else
                         <div
-                            class="aspect-video bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                            class="media-fallback aspect-video">
                             <i class="material-icons text-white text-4xl">
                                 @if ($article->blogCategory && $article->blogCategory->slug === 'seo-news')
                                     trending_up
@@ -83,7 +83,7 @@
                     @foreach ($activeBlogCategories as $category)
                         @if ($category['slug'] !== $categorySlug)
                             <a href="{{ route('blog.category', $category['slug']) }}"
-                                class="group bg-white shadow-sm p-6 hover:shadow-md transition-shadow">
+                                class="card-glass group p-6">
                                 <div class="flex items-center mb-4">
                                     <i class="material-icons mr-4 text-xl {{ \App\Support\Accent::text($category['color']) }}">{{ $category['icon'] }}</i>
                                     <h3 class="group-hover:text-cyan-600 transition-colors mb-0">
