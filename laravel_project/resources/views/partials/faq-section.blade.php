@@ -26,6 +26,12 @@
         </div>
     </section>
 @elseif(isset($homepageFaqs) && $homepageFaqs && $homepageFaqs->count() > 0)
+    @php($faqPage = \App\Support\StructuredData::faqPage($homepageFaqs))
+    @if ($faqPage)
+        <script type="application/ld+json">
+            {!! \App\Support\StructuredData::encode($faqPage) !!}
+        </script>
+    @endif
     <section class="section-bg">
         <h2 class="section-title">Часто задаваемые вопросы</h2>
         <p class="section-subtitle">

@@ -116,6 +116,43 @@ class StructuredData
     }
 
     /**
+     * @param  iterable<int, object{question: string, answer: string}>  $faqs
+     * @return array<string, mixed>|null
+     */
+    public static function faqPage(iterable $faqs): ?array
+    {
+        $questions = [];
+
+        foreach ($faqs as $faq) {
+            $question = trim((string) $faq->question);
+            $answer = trim((string) $faq->answer);
+
+            if ($question === '' || $answer === '') {
+                continue;
+            }
+
+            $questions[] = [
+                '@type' => 'Question',
+                'name' => $question,
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $answer,
+                ],
+            ];
+        }
+
+        if ($questions === []) {
+            return null;
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => $questions,
+        ];
+    }
+
+    /**
      * @return array<string, string>
      */
     private static function author(Blog $article): array
