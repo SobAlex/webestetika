@@ -12,6 +12,7 @@ use App\Http\Controllers\CaseController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MediaController;
+use Filament\Http\Middleware\Authenticate as FilamentAuthenticate;
 
 
 // ============================================================================
@@ -56,9 +57,14 @@ Route::post('/service/order', [ContactController::class, 'submitServiceOrder'])
     ->name('service.order');
 
 // Media Library (protected routes)
-Route::middleware(['auth'])->group(function () {
+Route::middleware([FilamentAuthenticate::class])->group(function () {
     Route::get('/admin/media', [MediaLibraryController::class, 'index'])->name('media.library');
-    Route::post('/admin/media/upload', [MediaController::class, 'upload'])->name('media.upload');
+    Route::post('/admin/media/upload', [MediaController::class, 'upload'])
+        ->middleware('throttle:20,1')
+        ->name('media.upload');
+    Route::delete('/admin/media/{media}', [MediaController::class, 'destroy'])
+        ->middleware('throttle:20,1')
+        ->name('media.destroy');
 });
 
 // Sitemap

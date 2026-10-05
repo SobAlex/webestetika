@@ -30,7 +30,7 @@ class Media extends Model
      */
     public function getUrlAttribute(): string
     {
-        return Storage::url($this->path);
+        return Storage::disk('public')->url($this->path);
     }
 
     /**
@@ -38,7 +38,7 @@ class Media extends Model
      */
     public function getFullPathAttribute(): string
     {
-        return Storage::path($this->path);
+        return Storage::disk('public')->path($this->path);
     }
 
     /**
@@ -46,7 +46,7 @@ class Media extends Model
      */
     public function exists(): bool
     {
-        return Storage::exists($this->path);
+        return Storage::disk('public')->exists($this->path);
     }
 
     /**

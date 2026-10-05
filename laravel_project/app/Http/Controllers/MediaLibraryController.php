@@ -8,12 +8,7 @@ use Illuminate\Http\Request;
 
 class MediaLibraryController extends Controller
 {
-    protected MediaService $mediaService;
-
-    public function __construct(MediaService $mediaService)
-    {
-        $this->mediaService = $mediaService;
-    }
+    public function __construct(private readonly MediaService $mediaService) {}
 
     /**
      * Показать медиа библиотеку
@@ -22,29 +17,27 @@ class MediaLibraryController extends Controller
     {
         $query = Media::query();
 
-        // Фильтр по типу файла
-        if ($request->has('type')) {
-            $type = $request->get('type');
-            if ($type === 'image') {
-                $query->where('mime_type', 'like', 'image/%');
-            } elseif ($type === 'pdf') {
-                $query->where('mime_type', 'application/pdf');
-            } elseif ($type === 'text') {
-                $query->where('mime_type', 'like', 'text/%');
-            }
+        $type = (string) $request->input('type', '');
+
+        if ($type === 'image') {
+            $query->where('mime_type', 'like', 'image/%');
+        } elseif ($type === 'pdf') {
+            $query->where('mime_type', 'application/pdf');
         }
 
-        // Поиск
-        if ($request->has('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('original_name', 'like', "%{$search}%")
-                  ->orWhere('alt_text', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+        $search = trim((string) $request->input('search', ''));
+
+        if ($search !== '') {
+            $like = '%'.addcslashes($search, '%_\\').'%';
+
+            $query->where(function ($q) use ($like) {
+                $q->where('original_name', 'like', $like)
+                    ->orWhere('alt_text', 'like', $like)
+                    ->orWhere('description', 'like', $like);
             });
         }
 
-        $media = $query->orderBy('created_at', 'desc')->paginate(20);
+        $media = $query->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
         $stats = $this->mediaService->getStats();
 
         return view('admin.media-library', compact('media', 'stats'));

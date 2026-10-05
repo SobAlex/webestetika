@@ -6,6 +6,7 @@ use App\Models\Media;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class MediaService
 {
@@ -15,18 +16,24 @@ class MediaService
     public function uploadFile(UploadedFile $file, ?string $altText = null, ?string $description = null): Media
     {
         // Генерируем уникальное имя файла
-        $originalName = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
+        $originalName = mb_substr($file->getClientOriginalName(), 0, 255);
+        $extension = $this->extensionForMime((string) $file->getMimeType());
+
+        if ($extension === null) {
+            throw ValidationException::withMessages([
+                'file' => 'Допустимы только изображения JPEG, PNG, WebP, GIF и PDF.',
+            ]);
+        }
+
         $filename = Str::uuid() . '.' . $extension;
-
-        // Определяем директорию для загрузки
         $directory = 'media/' . date('Y/m');
-
-        // Сохраняем файл
         $path = $file->storeAs($directory, $filename, 'public');
 
-        // Создаем URL
-        $url = Storage::url($path);
+        if (! is_string($path) || $path === '') {
+            throw new \RuntimeException('Не удалось сохранить файл');
+        }
+
+        $url = Storage::disk('public')->url($path);
 
         // Создаем запись в базе данных
         $media = Media::create([
@@ -58,38 +65,6 @@ class MediaService
     }
 
     /**
-     * Получить все изображения
-     */
-    public function getImages()
-    {
-        return Media::where('mime_type', 'like', 'image/%')
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-
-    /**
-     * Получить все файлы определенного типа
-     */
-    public function getFilesByType(string $mimeType)
-    {
-        return Media::where('mime_type', $mimeType)
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-
-    /**
-     * Поиск файлов по имени
-     */
-    public function searchFiles(string $query)
-    {
-        return Media::where('original_name', 'like', "%{$query}%")
-            ->orWhere('alt_text', 'like', "%{$query}%")
-            ->orWhere('description', 'like', "%{$query}%")
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-
-    /**
      * Получить статистику медиа библиотеки
      */
     public function getStats(): array
@@ -106,6 +81,18 @@ class MediaService
             'image_count' => $imageCount,
             'pdf_count' => $pdfCount,
         ];
+    }
+
+    private function extensionForMime(string $mime): ?string
+    {
+        return match ($mime) {
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+            'application/pdf' => 'pdf',
+            default => null,
+        };
     }
 
     /**

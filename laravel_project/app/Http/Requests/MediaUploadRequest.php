@@ -22,7 +22,7 @@ class MediaUploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|max:10240', // 10MB
+            'file' => ['required', 'file', 'max:10240', 'mimes:jpg,jpeg,png,webp,gif,pdf'],
             'alt_text' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
         ];
@@ -36,7 +36,9 @@ class MediaUploadRequest extends FormRequest
         return [
             'file.required' => 'Файл обязателен для загрузки.',
             'file.file' => 'Загруженный файл должен быть валидным файлом.',
-            'file.max' => 'Размер файла не должен превышать 10MB.',
+            'file.max' => 'Файл больше 10 МБ и не загружается.',
+            'file.uploaded' => 'Файл больше 10 МБ и не загружается.',
+            'file.mimes' => 'Допустимы только изображения JPEG, PNG, WebP, GIF и PDF.',
             'alt_text.max' => 'Альтернативный текст не должен превышать 255 символов.',
             'description.max' => 'Описание не должно превышать 1000 символов.',
         ];
