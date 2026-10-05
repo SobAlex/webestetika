@@ -2,130 +2,167 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use Carbon\Carbon;
 use App\Models\Blog;
-use App\Models\Service;
-use App\Models\ProjectCase;
 use App\Models\BlogCategory;
+use App\Models\Contact;
 use App\Models\IndustryCategory;
+use App\Models\ProjectCase;
+use App\Models\Service;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Illuminate\Http\Response;
 
 class SitemapController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
+        $services = Service::published()->get();
+        $blogs = Blog::published()->with('activeBlogCategory')->get();
+        $cases = ProjectCase::published()->get();
+        $blogCategories = BlogCategory::query()->where('is_active', true)->orderBy('sort_order')->get();
+        $industryCategories = IndustryCategory::query()->where('is_active', true)->orderBy('sort_order')->get();
+
         $urls = [];
 
-        // Static pages
-        $urls[] = [
-            'loc' => URL::to('/'),
-            'lastmod' => Carbon::now()->toAtomString(),
-            'changefreq' => 'daily',
-            'priority' => '1.0'
-        ];
+        $this->addUrl($urls, route('home'), $this->latest(
+            $this->contactUpdatedAt(),
+            $this->latestOf($services),
+            $this->latestOf($blogs),
+            $this->latestOf($cases),
+        ), 'daily', '1.0');
 
-        $urls[] = [
-            'loc' => URL::to('/contacts'),
-            'lastmod' => Carbon::now()->toAtomString(),
-            'changefreq' => 'monthly',
-            'priority' => '0.8'
-        ];
+        $this->addUrl($urls, route('contacts'), $this->contactUpdatedAt(), 'monthly', '0.8');
+        $this->addUrl($urls, route('services.index'), $this->latestOf($services), 'weekly', '0.9');
+        $this->addUrl($urls, route('cases.index'), $this->latestOf($cases), 'weekly', '0.9');
+        $this->addUrl($urls, route('blog.index'), $this->latestOf($blogs), 'daily', '0.9');
 
-        $urls[] = [
-            'loc' => URL::to('/services'),
-            'lastmod' => Carbon::now()->toAtomString(),
-            'changefreq' => 'weekly',
-            'priority' => '0.9'
-        ];
-
-        $urls[] = [
-            'loc' => URL::to('/cases'),
-            'lastmod' => Carbon::now()->toAtomString(),
-            'changefreq' => 'weekly',
-            'priority' => '0.9'
-        ];
-
-        $urls[] = [
-            'loc' => URL::to('/blog'),
-            'lastmod' => Carbon::now()->toAtomString(),
-            'changefreq' => 'daily',
-            'priority' => '0.9'
-        ];
-
-        // Published services
-        $services = Service::published()->get();
         foreach ($services as $service) {
-            $urls[] = [
-                'loc' => URL::to('/services/' . $service->slug),
-                'lastmod' => $service->updated_at->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.8'
-            ];
+            $this->addUrl($urls, route('services.show', $service), $service->updated_at, 'monthly', '0.8');
         }
 
-        // Published blog posts
-        $blogs = Blog::published()->get();
         foreach ($blogs as $blog) {
-            $urls[] = [
-                'loc' => $blog->url,
-                'lastmod' => $blog->updated_at->toAtomString(),
-                'changefreq' => 'weekly',
-                'priority' => '0.7'
-            ];
+            $this->addUrl($urls, $blog->url, $blog->updated_at, 'weekly', '0.7');
         }
 
-        // Published project cases
-        $cases = ProjectCase::published()->get();
         foreach ($cases as $case) {
-            $urls[] = [
-                'loc' => URL::to('/cases/' . $case->case_id),
-                'lastmod' => $case->updated_at->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.6'
-            ];
+            $this->addUrl($urls, route('cases.show', $case->case_id), $case->updated_at, 'monthly', '0.6');
         }
 
-        // Blog categories
-        $blogCategories = BlogCategory::where('is_active', true)->get();
         foreach ($blogCategories as $category) {
-            $urls[] = [
-                'loc' => URL::to('/blog/category/' . $category->slug),
-                'lastmod' => Carbon::now()->toAtomString(),
-                'changefreq' => 'weekly',
-                'priority' => '0.6'
-            ];
+            $latestPost = Blog::published()->where('category_id', $category->id)->max('updated_at');
+
+            $this->addUrl(
+                $urls,
+                route('blog.category', $category->slug),
+                $latestPost ? Carbon::parse($latestPost) : $category->updated_at,
+                'weekly',
+                '0.6',
+            );
         }
 
-        // Industry categories
-        $industryCategories = IndustryCategory::where('is_active', true)->get();
         foreach ($industryCategories as $category) {
-            $urls[] = [
-                'loc' => URL::to('/cases/category/' . $category->slug),
-                'lastmod' => Carbon::now()->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.6'
-            ];
+            $latestCase = ProjectCase::published()->where('industry_category_id', $category->id)->max('updated_at');
+
+            $this->addUrl(
+                $urls,
+                route('cases.category', $category->slug),
+                $latestCase ? Carbon::parse($latestCase) : $category->updated_at,
+                'monthly',
+                '0.6',
+            );
         }
 
-        $xml = $this->generateSitemap($urls);
+        $this->addUrl($urls, route('policy'), $this->viewUpdatedAt('pages/policy.blade.php'), 'yearly', '0.3');
+        $this->addUrl($urls, route('soglasie'), $this->viewUpdatedAt('pages/soglasie.blade.php'), 'yearly', '0.3');
+        $this->addUrl($urls, route('terms'), $this->viewUpdatedAt('pages/terms.blade.php'), 'yearly', '0.3');
 
-        return response($xml, 200)->header('Content-Type', 'application/xml');
+        return response($this->xml($urls), 200)->header('Content-Type', 'application/xml; charset=UTF-8');
     }
 
-    private function generateSitemap($urls)
+    /**
+     * @param  array<int, array{loc: string, lastmod?: string, changefreq: string, priority: string}>  $urls
+     */
+    private function addUrl(array &$urls, string $loc, ?CarbonInterface $lastmod, string $changefreq, string $priority): void
+    {
+        $url = [
+            'loc' => $loc,
+            'changefreq' => $changefreq,
+            'priority' => $priority,
+        ];
+
+        if ($lastmod) {
+            $url['lastmod'] = $lastmod->toAtomString();
+        }
+
+        $urls[] = $url;
+    }
+
+    private function contactUpdatedAt(): ?Carbon
+    {
+        $updatedAt = Contact::query()->max('updated_at');
+
+        return $updatedAt ? Carbon::parse($updatedAt) : null;
+    }
+
+    /**
+     * @param  iterable<int, object>  $models
+     */
+    private function latestOf(iterable $models): ?CarbonInterface
+    {
+        $latest = null;
+
+        foreach ($models as $model) {
+            $updatedAt = $model->updated_at ?? null;
+
+            if ($updatedAt && ($latest === null || $updatedAt->gt($latest))) {
+                $latest = $updatedAt;
+            }
+        }
+
+        return $latest;
+    }
+
+    private function latest(?CarbonInterface ...$dates): ?CarbonInterface
+    {
+        $latest = null;
+
+        foreach ($dates as $date) {
+            if ($date && ($latest === null || $date->gt($latest))) {
+                $latest = $date;
+            }
+        }
+
+        return $latest;
+    }
+
+    private function viewUpdatedAt(string $view): ?Carbon
+    {
+        $path = resource_path('views/'.$view);
+        $time = is_file($path) ? filemtime($path) : false;
+
+        return $time ? Carbon::createFromTimestamp($time) : null;
+    }
+
+    /**
+     * @param  array<int, array{loc: string, lastmod?: string, changefreq: string, priority: string}>  $urls
+     */
+    private function xml(array $urls): string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
         $xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
         foreach ($urls as $url) {
             $urlTag = $xml->addChild('url');
-            $urlTag->addChild('loc', htmlspecialchars($url['loc'], ENT_XML1, 'UTF-8'));
-            $urlTag->addChild('lastmod', $url['lastmod']);
+            $urlTag->addChild('loc', $url['loc']);
+
+            if (isset($url['lastmod'])) {
+                $urlTag->addChild('lastmod', $url['lastmod']);
+            }
+
             $urlTag->addChild('changefreq', $url['changefreq']);
             $urlTag->addChild('priority', $url['priority']);
         }
 
-        return $xml->asXML();
+        return (string) $xml->asXML();
     }
 }
