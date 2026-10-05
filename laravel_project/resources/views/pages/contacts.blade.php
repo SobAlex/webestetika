@@ -17,30 +17,26 @@
         </div>
     </section>
 
-    <section class="section-bg" itemscope itemtype="https://schema.org/Organization">
+    <section class="section-bg">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
                 <h2 class="section-title">Наши контакты</h2>
                 <div class="space-y-8">
                     <!-- Адрес -->
-                    <div class="flex items-start space-x-4" itemprop="address" itemscope
-                        itemtype="https://schema.org/PostalAddress">
+                    <div class="flex items-start space-x-4">
                         <i class="material-icons mt-0.5 shrink-0 text-cyan-500">place</i>
                         <div>
                             <p class="contact-label">Адрес офиса</p>
-                            <p itemprop="streetAddress">{{ $contactInfo['address'] }}</p>
+                            <p>{{ $contactInfo['address'] }}</p>
                         </div>
                     </div>
 
                     <!-- Телефон -->
-                    <div class="flex items-start space-x-4" itemprop="contactPoint" itemscope
-                        itemtype="https://schema.org/ContactPoint">
-                        <meta itemprop="contactType" content="customer service">
+                    <div class="flex items-start space-x-4">
                         <i class="material-icons mt-0.5 shrink-0 text-cyan-500">call</i>
                         <div>
                             <p class="contact-label">Телефон</p>
-                            <a href="tel:{{ str_replace(' ', '', $contactInfo['phone']) }}"
-                                itemprop="telephone">{{ $contactInfo['phone'] }}</a>
+                            <a href="tel:{{ str_replace(' ', '', $contactInfo['phone']) }}">{{ $contactInfo['phone'] }}</a>
                         </div>
                     </div>
 
@@ -49,16 +45,16 @@
                         <i class="material-icons mt-0.5 shrink-0 text-cyan-500">mail</i>
                         <div>
                             <p class="contact-label">Email</p>
-                            <a href="mailto:{{ $contactInfo['email'] }}" itemprop="email">{{ $contactInfo['email'] }}</a>
+                            <a href="mailto:{{ $contactInfo['email'] }}">{{ $contactInfo['email'] }}</a>
                         </div>
                     </div>
 
                     <!-- Режим работы -->
                     <div class="flex items-start space-x-4">
                         <i class="material-icons mt-0.5 shrink-0 text-cyan-500">schedule</i>
-                        <div itemscope itemtype="https://schema.org/OpeningHoursSpecification">
+                        <div>
                             <p class="contact-label">Режим работы</p>
-                            <p itemprop="description">{{ $contactInfo['working_hours'] }}</p>
+                            <p>{{ $contactInfo['working_hours'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -70,19 +66,19 @@
                         <div class="flex items-center gap-4">
                             @if ($contactInfo['social']['telegram'])
                                 <a href="{{ $contactInfo['social']['telegram'] }}" target="_blank" rel="noopener noreferrer"
-                                    class="text-cyan-500 hover:text-cyan-600" itemprop="sameAs" aria-label="Telegram">
+                                    class="text-cyan-500 hover:text-cyan-600" aria-label="Telegram">
                                     <i class="material-icons">send</i>
                                 </a>
                             @endif
                             @if ($contactInfo['social']['whatsapp'])
                                 <a href="{{ $contactInfo['social']['whatsapp'] }}" target="_blank" rel="noopener noreferrer"
-                                    class="text-cyan-500 hover:text-cyan-600" itemprop="sameAs" aria-label="WhatsApp">
+                                    class="text-cyan-500 hover:text-cyan-600" aria-label="WhatsApp">
                                     <i class="material-icons">chat</i>
                                 </a>
                             @endif
                             @if ($contactInfo['social']['vk'])
                                 <a href="{{ $contactInfo['social']['vk'] }}" target="_blank" rel="noopener noreferrer"
-                                    class="text-cyan-500 hover:text-cyan-600" itemprop="sameAs" aria-label="ВКонтакте">
+                                    class="text-cyan-500 hover:text-cyan-600" aria-label="ВКонтакте">
                                     <i class="material-icons">group</i>
                                 </a>
                             @endif

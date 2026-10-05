@@ -3,25 +3,26 @@
         $jsonLdItems = [];
 
         // Добавляем главную страницу
+        $homeUrl = route('home');
         $jsonLdItems[] = [
             '@type' => 'ListItem',
             'position' => 1,
             'name' => 'Главная',
-            'item' => url(route('home')),
+            'item' => $homeUrl,
+            'url' => $homeUrl,
         ];
 
-        // Добавляем остальные крошки
         foreach ($breadcrumbs as $index => $breadcrumb) {
-            $position = $index + 2;
             $item = [
                 '@type' => 'ListItem',
-                'position' => $position,
+                'position' => $index + 2,
                 'name' => $breadcrumb['title'],
             ];
 
-            // Если это не последний элемент, добавляем URL
-            if (isset($breadcrumb['url']) && $breadcrumb['url']) {
-                $item['item'] = url($breadcrumb['url']);
+            if (! empty($breadcrumb['url'])) {
+                $crumbUrl = url($breadcrumb['url']);
+                $item['item'] = $crumbUrl;
+                $item['url'] = $crumbUrl;
             }
 
             $jsonLdItems[] = $item;
@@ -35,6 +36,6 @@
     @endphp
 
     <script type="application/ld+json">
-        {!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        {!! \App\Support\StructuredData::encode($jsonLd) !!}
     </script>
 @endif

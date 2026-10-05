@@ -3,6 +3,8 @@
 @section('title', 'SEO продвижение сайтов в интернете')
 
 @section('content')
+    @include('partials.organization-json-ld')
+
     {{-- hero --}}
     <section id="hero" class="section-bg relative">
         @if ($activeHeroes && $activeHeroes->count() > 0)

@@ -4,6 +4,8 @@
 @section('meta_description', $article->meta_description ?: $article->excerpt)
 
 @section('content')
+    @include('partials.article-json-ld')
+
     <!-- Breadcrumbs -->
     <div class="pt-8">
         @include('partials.breadcrumbs', [
