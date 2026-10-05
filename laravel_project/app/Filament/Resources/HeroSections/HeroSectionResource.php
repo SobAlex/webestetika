@@ -26,8 +26,6 @@ class HeroSectionResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Главный экран';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Сайт';
-
     protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema

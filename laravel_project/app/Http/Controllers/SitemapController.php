@@ -10,11 +10,32 @@ use App\Models\ProjectCase;
 use App\Models\Service;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class SitemapController extends Controller
 {
     public function index(): Response
+    {
+        return response($this->xml($this->urls()), 200)
+            ->header('Content-Type', 'application/xml; charset=UTF-8');
+    }
+
+    public function generate(): RedirectResponse
+    {
+        $urls = $this->urls();
+        $this->xml($urls);
+        $count = count($urls);
+
+        return redirect()
+            ->route('filament.admin.pages.robots')
+            ->with('sitemap_count', $count);
+    }
+
+    /**
+     * @return array<int, array{loc: string, lastmod?: string, changefreq: string, priority: string}>
+     */
+    private function urls(): array
     {
         $services = Service::published()->get();
         $blogs = Blog::published()->with('activeBlogCategory')->get();
@@ -76,7 +97,7 @@ class SitemapController extends Controller
         $this->addUrl($urls, route('soglasie'), $this->viewUpdatedAt('pages/soglasie.blade.php'), 'yearly', '0.3');
         $this->addUrl($urls, route('terms'), $this->viewUpdatedAt('pages/terms.blade.php'), 'yearly', '0.3');
 
-        return response($this->xml($urls), 200)->header('Content-Type', 'application/xml; charset=UTF-8');
+        return $urls;
     }
 
     /**

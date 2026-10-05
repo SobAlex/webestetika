@@ -26,9 +26,7 @@ class BlogResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Статьи';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Блог';
-
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 6;
 
     protected static ?string $recordTitleAttribute = 'title';
 

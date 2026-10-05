@@ -25,9 +25,7 @@ class ContactResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Контакты';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Сайт';
-
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 9;
 
     public static function form(Schema $schema): Schema
     {

@@ -39,17 +39,11 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->navigationGroups([
-                'Сайт',
-                'Кейсы',
-                'Блог',
-            ])
             ->navigationItems([
                 NavigationItem::make('Медиатека')
                     ->url(fn (): string => route('media.library'))
                     ->icon(Heroicon::OutlinedArchiveBox)
-                    ->group('Сайт')
-                    ->sort(6)
+                    ->sort(10)
                     ->isActiveWhen(fn (): bool => request()->routeIs('media.library')),
             ])
             ->widgets([

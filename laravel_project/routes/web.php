@@ -65,10 +65,13 @@ Route::middleware([FilamentAuthenticate::class])->group(function () {
     Route::delete('/admin/media/{media}', [MediaController::class, 'destroy'])
         ->middleware('throttle:20,1')
         ->name('media.destroy');
+    Route::post('/admin/sitemap', [SitemapController::class, 'generate'])
+        ->middleware('throttle:10,1')
+        ->name('sitemap.generate');
 });
 
 // Sitemap
-Route::get('/sitemap.xml', [SitemapController::class, 'index']);
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 
 // Additional static pages can be added here
