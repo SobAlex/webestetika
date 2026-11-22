@@ -87,7 +87,7 @@
     @if (isset($caseData['before_after']) && !empty($caseData['before_after']))
         <section class="section-bg">
             <div>
-                <h2 class="section-title">До и после</h2>
+                <h2 class="section-title">До/после</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($caseData['before_after'] as $metric => $values)
                         <div class="bg-white shadow-sm overflow-hidden">
